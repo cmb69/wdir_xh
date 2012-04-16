@@ -1,0 +1,4 @@
+table.wdir thead td {border: 2px outset}
+td.wdir_name {}
+td.wdir_size {text-align: right}
+td.wdir_changed {}
