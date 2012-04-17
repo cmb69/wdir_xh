@@ -1,5 +1,5 @@
 <?php
-echo 1;
+
 if (!empty($wdir)) {
     $o .= print_plugin_admin('off');
     switch ($admin) {
