@@ -1,0 +1,6 @@
+* wdir arg: relative to userfiles
+* filter by file extension
+
+* sortable table
+* preview (<http://cmsimpleforum.com/viewtopic.php?f=16&t=7646&p=42012#p41986>)
+* optinally download files via PHP
