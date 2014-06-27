@@ -1,73 +1,62 @@
 <?php
 
+/**
+ * The main program.
+ *
+ * PHP version 5
+ *
+ * @category  CMSimple_XH
+ * @package   Wdir
+ * @author    Christoph M. Becker <cmbecker69@gmx.de>
+ * @copyright 2012-2014 Christoph M. Becker <http://3-magi.net>
+ * @license   http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
+ * @version   SVN: $Id$
+ * @link      http://3-magi.net/?CMSimple_XH/Wdir_XH
+ */
 
-///**
-// * Returns $tx in its correct numerus according to $count.
-// *
-// * @param string $plugin  The name of the plugin.
-// * @param string $tx  The base name of the language string.
-// * @param int $count  The item's count.
-// * @return string
-// */
-//function cmb_numerus($plugin, $tx, $count) {
-//    global $plugin_tx;
-//
-//    $ptx = $plugin_tx[$plugin];
-//    $limit = isset($ptx['paucal_limit']) ? $ptx['paucal_limit'] : 4;
-//    $singular = isset($ptx[$tx.'_singular']) ? $ptx[$tx.'_singular'] : $ptx[$tx];
-//    $paucal = isset($ptx[$tx.'_paucal']) ? $ptx[$tx.'_paucal']
-//	    : ($ptx[$tx.'_plural'] ? $ptx[$tx.'_plural'] : $ptx[$tx]);
-//    $plural = isset($ptx[$tx.'_plural']) ? $ptx[$tx.'_plural'] : $ptx[$tx];
-//    if ($count > $limit || $count == 0) {
-//	return $plural;
-//    } elseif ($count > 1) {
-//	return $paucal;
-//    } else {
-//	return $singular;
-//    }
-//}
-
+/*
+ * Prevent direct access.
+ */
+if (!defined('CMSIMPLE_XH_VERSION')) {
+    header('HTTP/1.1 403 Forbidden');
+    exit;
+}
 
 /**
- * Returns all files in $folder.
- *
- * @param string $folder
- * @return array
+ * The domain layer.
  */
-function wdir_files($folder) {
-    $files = array();
-    $dh = opendir($folder);
-    while (($f = readdir($dh)) !== FALSE) {
-	if (is_file($folder.$f)) {
-	    $files[] = $f;
-	}
-    }
-    closedir($dh);
-    return $files;
+require_once $pth['folder']['plugin_classes'] . 'Domain.php';
+
+/**
+ * The presentation layer.
+ */
+require_once $pth['folder']['plugin_classes'] . 'Presentation.php';
+
+/**
+ * The plugin version.
+ */
+define('WDIR_VERSION', '@WDIR_VERSION@');
+
+/**
+ * Returns the wdir table view.
+ *
+ * @param string $path A folder path.
+ *
+ * @return string (X)HTML.
+ *
+ * @global Wdir_Controller The plugin controller.
+ */
+function wdir($path)
+{
+    global $_Wdir_controller;
+
+    return $_Wdir_controller->renderTable($path);
 }
 
-function wdir($folder) {
-    global $pth;
-
-    $o = '<table class="wdir">'
-	    .'<thead>'
-	    .'<tr>'
-	    .'<td>Name</td>'
-	    .'<td>Size</td>'
-	    .'<td>Changed</td>'
-	    .'</tr>'
-	    .'</thead>'
-	    .'<tbody>';
-    foreach (wdir_files($folder) as $file) {
-	$fn = $folder.$file;
-	$o .= '<tr>'
-		.'<td class="wdir_name">'.tag('img src="'.$pth['folder']['plugins'].'wdir/images/file-gif.png" width="16" height="16" alt="file"').'<a href="'.$fn.'">'.$file.'</a></td>'
-		.'<td class="wdir_size">'.filesize($fn).' Bytes</td>'
-		.'<td class="wdir_changed">'.date('d.m.Y H:i:s', filemtime($fn)).'</td>'
-		.'</tr>';
-    }
-    $o .= '</tbody></table>';
-    return $o;
-}
+/**
+ * The plugin controller.
+ */
+$_Wdir_controller = new Wdir_Controller();
+$_Wdir_controller->dispatch();
 
 ?>

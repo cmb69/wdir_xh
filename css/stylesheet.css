@@ -1,4 +1,39 @@
-table.wdir thead td {border: 2px outset}
-td.wdir_name {}
-td.wdir_size {text-align: right}
-td.wdir_changed {}
+/*
+ * Front-end
+ */
+
+.wdir_table {
+    border-collapse: collapse;
+    width: 100%;
+}
+.wdir_table thead td {
+    border: 1px solid #888;
+    padding: 0.2em 0.5em;
+}
+.wdir_table tbody td {
+    padding: 0.2em 0.5em;
+}
+.wdir_name {}
+.wdir_name img {
+    vertical-align: middle;
+}
+.wdir_name a {
+    line-height: 24px;
+    padding-left: 1em;
+}
+.wdir_size {
+    text-align: right;
+}
+.wdir_changed {}
+
+/*
+ * Back-end
+ */
+
+.wdir_icon {
+    float: left;
+    margin: 0 16px 0 0;
+}
+.wdir_license {
+    text-align: justify;
+}
