@@ -69,7 +69,7 @@ class Wdir_Folder
         $files = array();
         if ($dir = opendir($this->_path)) {
             while (($entry = readdir($dir)) !== false) {
-                $path = $this->_path . '/' . $entry;
+                $path = $this->_path . $entry;
                 if (is_file($path)) {
                     $files[] = $path;
                 }

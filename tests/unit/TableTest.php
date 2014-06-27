@@ -63,7 +63,11 @@ class TableTest extends PHPUnit_Framework_TestCase
         vfsStreamWrapper::register();
         vfsStreamWrapper::setRoot(new vfsStreamDirectory('test'));
         $this->_path = vfsStream::url('test');
-        $pth['folder']['plugins'] = $this->_path . '/';
+        $pth['folder'] = array(
+            'plugins' => $this->_path . '/',
+            'userfiles' => $this->_path . '/'
+        );
+        mkdir($this->_path . '/downloads/', 0777);
         touch($this->_path . '/one.txt');
         touch($this->_path . '/two.pdf');
         touch($this->_path . '/three');
@@ -84,7 +88,7 @@ class TableTest extends PHPUnit_Framework_TestCase
                 'tag' => 'table',
                 'attributes' => array('class' => 'wdir_table')
             ),
-            $subject->renderTable($this->_path)
+            $subject->renderTable('downloads')
         );
     }
 
@@ -110,7 +114,7 @@ class TableTest extends PHPUnit_Framework_TestCase
                 'parent' => array('tag' => 'thead'),
                 'ancestor' => array('tag' => 'table')
             ),
-            $subject->renderTable($this->_path)
+            $subject->renderTable('')
         );
     }
 
@@ -144,7 +148,7 @@ class TableTest extends PHPUnit_Framework_TestCase
                 ),
                 'parent' => array('tag' => 'table')
             ),
-            $subject->renderTable($this->_path)
+            $subject->renderTable('')
         );
     }
 
@@ -168,7 +172,7 @@ class TableTest extends PHPUnit_Framework_TestCase
                 'content' => $value,
                 'ancestor' => array('tag' => 'tbody')
             ),
-            $subject->renderTable($this->_path)
+            $subject->renderTable('')
         );
     }
 
@@ -202,7 +206,7 @@ class TableTest extends PHPUnit_Framework_TestCase
                 ),
                 'ancestor' => array('tag' => 'tbody')
             ),
-            $subject->renderTable($this->_path)
+            $subject->renderTable('')
         );
     }
 
@@ -232,7 +236,7 @@ class TableTest extends PHPUnit_Framework_TestCase
                     )
                 )
             ),
-            $subject->renderTable($this->_path)
+            $subject->renderTable('')
         );
     }
 
@@ -256,7 +260,7 @@ class TableTest extends PHPUnit_Framework_TestCase
                     )
                 )
             ),
-            $subject->renderTable($this->_path)
+            $subject->renderTable('')
         );
     }
 }

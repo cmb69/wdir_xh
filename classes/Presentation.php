@@ -174,7 +174,12 @@ class Wdir_TableView
      */
     public function __construct($path)
     {
-        $this->_path = (string) $path;
+        global $pth;
+
+        $this->_path = $pth['folder']['userfiles'] . (string) $path;
+        if ($this->_path[strlen($this->_path) - 1] != '/') {
+            $this->_path .= '/';
+        }
     }
 
     /**
