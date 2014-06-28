@@ -1,2 +1,6 @@
-Version 1.0beta1 -- released 20134-06-28
+Version 1.0beta2 -- released 2014-06-28
+* added table sorting (requires JS)
+* added Slovak translation (contributed by Tata)
+
+Version 1.0beta1 -- released 2014-06-28
 * initial release
