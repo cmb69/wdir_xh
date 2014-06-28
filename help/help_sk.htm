@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="sk">
+
+<head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<title>Wdir_XH - Manuál</title>
+<link rel="stylesheet" type="text/css" href="./stylesheet.css">
+</head>
+
+<body>
+
+<h1>Wdir_XH – CMSimple_XH Plugin</h1>
+<img src="../wdir.png" style="float:left; margin-right:16px" alt="File list
+view">
+<p>Wdir_XH umožňuje zobrazovanie obsahu adresárov na Vašej webstránke, takže umožňuje aj nastavenie rôznych zoznamov na sžahopvanie súborov.</p>
+<p>Wdir_XH možno považovať za nástupcu obľúbeného pluginu <a
+href="http://www.qualifire.de/cmsimple/en/?WDir">Wdir</a>, ktorý sa už dávnejšie nevyvíja. Škoda, že livencia, pod ktorou bol dostupný, neumožňuje modifikácie. Preto bol Wdir_XH od zájkladu prepísaný.</p>
+
+<ul id="nav">
+<li><a href="#notice">Dôležité upozornenie</a></li>
+<li><a href="#requirements">Požiadavky</a></li>
+<li><a href="#installation">Inštalácia</a></li>
+<li><a href="#settings">Nastavenia</a></li>
+<li><a href="#usage">Použitie</a>
+    <ul><li><a href="#usage-filter">Filtrovanie</a></li></ul>
+</li>
+<li><a href="#limitations">Obmedzenia</a></li>
+<li><a href="#license">Licencia</a></li>
+<li><a href="#credits">Záruky</a></li>
+</ul>
+
+<div id="body">
+
+<p><strong>Prv, než sa vystavíte nejakým problémom, <em>prečítajte si</em> tento manuál!</strong></p>
+
+<h2 id="notice">Dôležité upozornenie</h2>
+<p><strong>Wdir_XH zatiaľ nebol testovaný v rôznych prostrediach. Je to tzv. beta verzia. Používajte uvážlivo!</strong></p>
+<div class="toplink"><a href="#">na začiatok</a></div>
+
+<h2 id="requirements">Požiadavky</h2>
+<p>Wdir_XH je plugin pre CMSimple_XH. Vyžaduje CMSimple_XH &ge; 1.6 a PHP
+&ge; 5.</p>
+<div class="toplink"><a href="#">na začiatok</a></div>
+
+<h2 id="installation">Inštalácia</h2>
+<p>Inštalácia prebieha rovnako ako pri väčšine pluginov pre CMSimple_XH.
+Podrbonosti nájdete na <a href="http://www.cmsimple-xh.org/wiki/doku.php/installation">
+CMSimple_XH wiki</a>.</p>
+<ol>
+<li>Urogte si zálohu Vašich údajov na serveri.</li>
+<li>Rozbaľtw inštalačný balíček vo Vašom počítači.</li>
+<li>Skopírujte celý adresár wdir/ do adresára plugins/ na Vašom serveri.</li>
+<li>Nastavte potrebné oprávnenia pre adresáre css/<!--, config/--> a languages/.</li>
+<!--<li>Browse to Wdir's administration (Plugins &rarr; Wdir),
+and check if all requirements are fulfilled.</li>-->
+</ol>
+<div class="toplink"><a href="#">na začiatok</a></div>
+
+<h2 id="settings">Nastavenia</h2>
+<p>Konfigurácia pluginu sa vykonáva - rovnako ako pri väčšine pluginov pre CMSimple_XH - v správcovskom prostredí.
+Prihláste sa ako správca stránky a zvoľte "Wdir" v zozname "Plugins".</p>
+<!--<p>You can change the default settings of Wdir_XH under "Config". Hints for the
+options will be displayed when hovering over the help icon with your mouse.</p>-->
+<p><!-- *** Localisation (If not available in distribution) can be created bz actualizing the values under "Language". *** -->
+Jazykový súbor (ak nie je k dispozícii v inštalačnom balíku) vytvoríte aktualizáciou údajov v "Language".
+Tu môžete jednoducho preložiť textové reťazce do Vášho jazyka alebo ich upraviť podľa vašich potrieb.</p>
+<p>The look of Wdir_XH can be customized under "Stylesheet".</p>
+<div class="toplink"><a href="#">na začiatok</a></div>
+
+<h2 id="usage">Použitie</h2>
+<!-- *** <p>The default PATH for Wdir_XH is /userfiles directory.</p> *** -->
+<p>Východiskovým adresárom pre Wdir_XH je adresár /userfiles.</p>
+<p>Pre zobrazenie obsahu adresára na stránke použite:</p>
+<pre>{{{PLUGIN:wdir('PATH');}}}</pre>
+<p>kde PATH je názov podadresára v adresári /userfiles. TEda ak chcete zobraziť obsah adresára userfiles/downloads/, použijete:</p>
+<pre>{{{PLUGIN:wdir('downloads');}}}</pre>
+<p>Ak chcete zobraziť celý obsah adresára /userfiles, použite:</p>
+<pre>{{{PLUGIN:wdir('');}}}</pre>
+<p>Názvy súborov v zoznamoch sú formátované ako odkazy na tieto súbory, takže užívatelia k nim majú prástup v závislosti od nastavenia ich serverov (niektoré sa dajú priamo zobraziť v prehliadači, iné prostredníctvom ich lokálnych programov, alebo sa dajú stiahnuť a uložiť.</p>
+<p>Wdir_XH nezobrazuje žiadne podadresáre adresárov udaných ako argument funkcie Wdir, takže návštevníci k podadresárom nemajú prístup. Ak chcete návštevníkom umožniť prístup aj k podadresárom, musíte na stránke použiť pre každý z nich samostatný príkaz wdir().</p>
+<div class="toplink"><a href="#">na začiatok</a></div>
+
+<h3 id="usage-filter">Filtrovanie</h3>
+<p>Vo funkcii wdir() môžete použiť premenné na filtrovanie súborov vo vytvorených zoznamoch. Do zoznamov sa tak zaradia iba súbory, ktoré vyhovujú nastavenému filtru.</p>
+<p>Štandardne sa filtre nastavujú ako jednoduché masky, kde hviezdička (*) nahradzuje akýkoľvek textový reťazec a otáznik (?) jedno písmeno/znak.</p>
+<p>Ak chcete zobraziť napr. iba PDF súbory obsuahnuté v /userfiles, použite:</p>
+<pre>{{{PLUGIN:wdir('', '*.pdf');}}}</pre>
+<p>Ak chcete zobraziť všetky súbory v /userfiles, ktoré začínajú s "Zmluva_", použite:</p>
+<pre>{{{PLUGIN:wdir('', 'Zmluva_*');}}}</pre>
+<p>Precíznejšie filtrovanie môžete docieliť, ak povolíte použitie Filter &rarr; Regexp v nastavení pluginu. V takom prípade bude druhá premenná vo wdir() považovaná za štandardný výraz PERL. Tento mód je však určený iba pre skúsených správcov stránok, ktorí ovládajú potrebnú syntax. Viac v <a
+href="http://www.php.net/manual/en/pcre.pattern.php">PHP manual</a>.</p>
+<div class="toplink"><a href="#">na začiatok</a></div>
+
+<h2 id="limitations">Obmedzenia</h2>
+<p>Wdir_XH zatiaľ neposkytruje všetky funkcie, ktoré poskytuje Wdir 03beta. Niektoré z nich možno nebudú uvedené ani v budúcnosti (napr. zobrazovanie vlastníka súboru, oprávnení a i.).</p>
+<p>V niektorých prostrediach (napr. Windows s podporou PHP &lt; 5.3) nemusia fungovať jednoduché masky (*.*). V takom prípade musíte povoliť štandardné výrazy, alebo zvážte použitie samostatných funkcií s roznymi parametrami.</p>
+<div class="toplink"><a href="#">na začiatok</a></div>
+
+<h2 id="license">Licencia</h2>
+<p>Wdir_XH is licensed under <a
+href="http://www.gnu.org/licenses/gpl.html">GPLv3</a>.</p>
+<p>&copy; 2012-2014 Christoph M. Becker</p>
+<div class="toplink"><a href="#">na začiatok</a></div>
+
+<h2 id="credits">Záruky</h2>
+<p>Ikona pluginu je od <a href="http://www.famfamfam.com/">Alexander
+Moore</a>. Ďakujem za jej poskytnutie pod GPL.</p>
+<p>Ikony súborov sú od <a
+href="http://www.19eighty7.com/">19eighty7</a>. Ďakujem za ich poskytnutie pod liberálnou licenciou.</p>
+<!--<p>This plugin uses free applications icons from <a
+href="http://www.aha-soft.com/">Aha-Soft</a>. Many thanks to making these icons
+freely available.</p>-->
+<!--<p>Many thanks to the community at the <a
+href="http://www.cmsimpleforum.com/">CMSimple_XH forum</a> for tips, suggestions
+and testing</p>-->
+<p>A na koniec poďakovanie <a href="http://harteg.dk/">Petrovi
+Hartegovi</a>, "otcovi" CMSimple aa všetkým vývojárom <a
+href="http://www.cmsimple-xh.org/"> CMSimple_XH</a> bez ktorých by tento úžasný
+CMS neexistoval.</p>
+<div class="toplink"><a href="#">na začiatok</a></div>
+
+</div>
+
+</body>
+
+</html>
