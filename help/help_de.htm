@@ -24,7 +24,9 @@ Modifikationen, so dass Wdir_XH von Grund auf neu geschrieben wurde.</p>
 <li><a href="#requirements">Voraussetzungen</a></li>
 <li><a href="#installation">Installation</a></li>
 <li><a href="#settings">Einstellungen</a></li>
-<li><a href="#usage">Verwendung</a></li>
+<li><a href="#usage">Verwendung</a>
+    <ul><li><a href="#usage-filter">Filtern</a></li></ul>
+</li>
 <li><a href="#limitations">Beschränkungen</a></li>
 <li><a href="#license">Lizenz</a></li>
 <li><a href="#credits">Danksagung</a></li>
@@ -92,10 +94,37 @@ mehrere Aufrufe von wdir() auf einer Seite (oder verschiedenen Seiten)
 platzieren.</p>
 <div class="toplink"><a href="#">zum Seitenanfang</a></div>
 
+<h3 id="usage-filter">Filtern</h3>
+<p>Sie können wdir() ein zweites Argument übergeben, um die Dateien zu filter;
+d.h. nur die Dateinamen, die sich mit dem Filter decken, werden angezeigt.</p>
+<p>Im Standard-Modus sind die Filterausdrücke einfache Platzhalter-Schablonen,
+wobei ein Asterisk (*) einen Platzhalter für eine beliebige Anzahl von Zeichen,
+und ein Fragezeichen (?) einen Platzhalter für ein einzelnes Zeichen
+darstellt.</p>
+<p>Wenn Sie also nur PDF-Dateien im Userfiles Ordner anzeigen wollen, verwenden
+Sie:</p>
+<pre>{{{PLUGIN:wdir('', '*.pdf');}}}</pre>
+<p>Wenn Sie alle Dateien im Userfiles Ordner anzeigen möchten, die mit
+"Vertrag_" beginnen, schreiben Sie</p>
+<pre>{{{PLUGIN:wdir('', 'Vertrag_*');}}}</pre>
+<p>Eine sehr viel mächtigere Möglichkeit des Filterns kann durch Setzen der
+Konfigurationsoption Filter &rarr; Regexp aktiviert werden. Dann wird das zweite
+Argument für wdir() als PERL kompatibler regulärer Ausdruck interpretiert.
+Dieser Modus sollte nur von fortgeschrittenen Webmaster verwendet werden, die
+die Syntax im <a
+href="http://www.php.net/manual/de/pcre.pattern.php">PHP-Handbuch</a>
+nachschlagen können.</p>
+<div class="toplink"><a href="#">zum Seitenanfang</a></div>
+
 <h2><a name="limitations">Beschränkungen</a></h2>
 <p>Wdir_XH verfügt derzeit noch nicht über alle Möglichkeiten von Wdir 03beta,
 und ein paar werden wahrscheinlich niemals implementiert werden (wie die Anzeige
 des Datei-Besitzers und der -Berechtigungen).</p>
+<p>Auf manchen Systemen (z.B. Windows mit PHP &lt; 5.3) könnten die einfachen
+Platzhalter-Schablonen zum Filtern nicht funktionieren. In diesem Fall müssen
+Sie die regulären Ausdrücke aktivieren, wenn Sie das Filtern benötigen (ziehen
+Sie als Alternative in Erwägung die Dateien auf unterschiedliche Ordner zu
+verteilen).</p>
 <div class="toplink"><a href="#">zum Seitenanfang</a></div>
 
 <h2 id="license">Lizenz</h2>

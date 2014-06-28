@@ -40,17 +40,21 @@ define('WDIR_VERSION', '@WDIR_VERSION@');
 /**
  * Returns the wdir table view.
  *
- * @param string $path A folder path.
+ * @param string $path   A folder path.
+ * @param string $filter A filter expression.
  *
  * @return string (X)HTML.
  *
  * @global Wdir_Controller The plugin controller.
  */
-function wdir($path)
+function wdir($path, $filter = false)
 {
     global $_Wdir_controller;
 
-    return $_Wdir_controller->renderTable($path);
+    return $_Wdir_controller->renderTable(
+        html_entity_decode($path, ENT_QUOTES, 'UTF-8'),
+        html_entity_decode($filter, ENT_QUOTES, 'UTF-8')
+    );
 }
 
 /**

@@ -136,13 +136,14 @@ EOT;
     /**
      * Renders the table.
      *
-     * @param string $path A folder path.
+     * @param string $path   A folder path.
+     * @param string $filter A filter expression.
      *
      * @return string (X)HTML.
      */
-    public function renderTable($path)
+    public function renderTable($path, $filter = false)
     {
-        $view = new Wdir_TableView($path);
+        $view = new Wdir_TableView($path, $filter);
         return $view->render();
     }
 }
@@ -166,13 +167,21 @@ class Wdir_TableView
     private $_path;
 
     /**
+     * The filter expression.
+     *
+     * @var string
+     */
+    private $_filter;
+
+    /**
      * Initializes a new instance.
      *
-     * @param string $path A folder path.
+     * @param string $path   A folder path.
+     * @param string $filter A filter expression.
      *
      * @return void
      */
-    public function __construct($path)
+    public function __construct($path, $filter = false)
     {
         global $pth;
 
@@ -180,6 +189,7 @@ class Wdir_TableView
         if ($this->_path[strlen($this->_path) - 1] != '/') {
             $this->_path .= '/';
         }
+        $this->_filter = (string) $filter;
     }
 
     /**
@@ -222,7 +232,7 @@ class Wdir_TableView
     private function _renderBody()
     {
         $html = '<tbody>';
-        $folder = new Wdir_Folder($this->_path);
+        $folder = new Wdir_Folder($this->_path, $this->_filter);
         foreach ($folder->getFiles() as $file) {
             $html .= $this->_renderBodyRow($file);
         }

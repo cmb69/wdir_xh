@@ -24,7 +24,9 @@ allow for modifications, so Wdir_XH was rewritten from scratch.</p>
 <li><a href="#requirements">Requirements</a></li>
 <li><a href="#installation">Installation</a></li>
 <li><a href="#settings">Settings</a></li>
-<li><a href="#usage">Usage</a></li>
+<li><a href="#usage">Usage</a>
+    <ul><li><a href="#usage-filter">Filtering</a></li></ul>
+</li>
 <li><a href="#limitations">Limitations</a></li>
 <li><a href="#license">License</a></li>
 <li><a href="#credits">Credits</a></li>
@@ -77,6 +79,8 @@ strings to your own language, or customize them according to your needs.</p>
 <p>where PATH is a subfolder of the userfiles folder. If you want to display the
 contents of userfiles/downloads/, for instance, you write:</p>
 <pre>{{{PLUGIN:wdir('downloads');}}}</pre>
+<p>To display the contents of the userfiles folder, use:</p>
+<pre>{{{PLUGIN:wdir('');}}}</pre>
 <p>The filenames in the list are linked to the files, so visitors are able to
 browse to the files; depending on the server and the browser settings some file
 types can be viewed in the browser, while others are offered to download.</p>
@@ -86,10 +90,32 @@ to be able to access some of the subfolders, you have to place multiple calls to
 wdir() on a page (or different pages).</p>
 <div class="toplink"><a href="#">back to top</a></div>
 
+<h3 id="usage-filter">Filtering</h3>
+<p>You can pass a second argument to wdir() to filter the files; i.e. only
+filenames matching the filter will be displayed.</p>
+<p>In the default mode the filter expressions are simple wildcard patterns,
+where an asterisk (*) is a wildcard for any number of characters and a question
+mark (?) is a wildcard for a single character.</p>
+<p>So if you want to display only PDF files in the userfiles folder, use:</p>
+<pre>{{{PLUGIN:wdir('', '*.pdf');}}}</pre>
+<p>If you want to display all files in the userfiles folder which start with
+"Contract_", write:</p>
+<pre>{{{PLUGIN:wdir('', 'Contract_*');}}}</pre>
+<p>A much more powerful way of filtering can be enabled by activating the
+configuration option Filter &rarr; Regexp. Then the second argument to wdir() is
+treated as a PERL compatible regular expression. This mode should only be used
+by advanced webmasters, who can look up the syntax in the <a
+href="http://www.php.net/manual/en/pcre.pattern.php">PHP manual</a>.</p>
+<div class="toplink"><a href="#">back to top</a></div>
+
 <h2 id="limitations">Limitations</h2>
 <p>Wdir_XH does not yet have all the options offered by Wdir 03beta, and a few
 will probably never be implemented (such as the display of the file owner and
 permissions).</p>
+<p>On some architectures (e.g. Windows with PHP &lt; 5.3) the simple wildcard
+patterns for filtering may not work. In this case you have to enable the regular
+expression patterns, if you need filtering (consider to distribute the files to
+different folders instead).</p>
 <div class="toplink"><a href="#">back to top</a></div>
 
 <h2 id="license">License</h2>

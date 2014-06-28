@@ -50,8 +50,9 @@ class TableTest extends PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        global $pth, $plugin_tx;
+        global $pth, $plugin_cf, $plugin_tx;
 
+        $plugin_cf['wdir']['filter_regexp'] = '';
         $plugin_tx['wdir'] = array(
             'label_name' => 'Name',
             'label_size' => 'Size',
@@ -144,11 +145,55 @@ class TableTest extends PHPUnit_Framework_TestCase
             array(
                 'tag' => 'tbody',
                 'children' => array(
-                    'count' => 3
+                    'count' => 3,
+                    'only' => array('tag' => 'tr')
                 ),
                 'parent' => array('tag' => 'table')
             ),
             $subject->renderTable('')
+        );
+    }
+
+    /**
+     * Tests that one body is row is rendered, when filtered with wildcard pattern.
+     *
+     * @return void
+     */
+    public function testRenders1BodyRowWhenFilteredWithWildcardPattern()
+    {
+        $subject = new Wdir_Controller();
+        $this->assertTag(
+            array(
+                'tag' => 'tbody',
+                'children' => array(
+                    'count' => 1,
+                    'only' => array('tag' => 'tr')
+                )
+            ),
+            $subject->renderTable('', '*.pdf')
+        );
+    }
+
+    /**
+     * Tests that one body is row is rendered, when filtered with regexp pattern.
+     *
+     * @return void
+     */
+    public function testRenders1BodyRowWhenFilteredWithRegexpPattern()
+    {
+        global $plugin_cf;
+
+        $plugin_cf['wdir']['filter_regexp'] = 'true';
+        $subject = new Wdir_Controller();
+        $this->assertTag(
+            array(
+                'tag' => 'tbody',
+                'children' => array(
+                    'count' => 1,
+                    'only' => array('tag' => 'tr')
+                )
+            ),
+            $subject->renderTable('', '/\.pdf$/')
         );
     }
 

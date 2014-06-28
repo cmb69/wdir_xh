@@ -33,15 +33,24 @@ class Wdir_Folder
     private $_path;
 
     /**
+     * The filter expression.
+     *
+     * @var string
+     */
+    private $_filter;
+
+    /**
      * Initializes a new instance.
      *
-     * @param string $path A folder path.
+     * @param string $path   A folder path.
+     * @param string $filter A filter expression.
      *
      * @return void
      */
-    public function __construct($path)
+    public function __construct($path, $filter)
     {
         $this->_path = (string) $path;
+        $this->_filter = (string) $filter;
     }
 
     /**
@@ -70,7 +79,7 @@ class Wdir_Folder
         if ($dir = opendir($this->_path)) {
             while (($entry = readdir($dir)) !== false) {
                 $path = $this->_path . $entry;
-                if (is_file($path)) {
+                if ($this->_isAllowedFile($path)) {
                     $files[] = $path;
                 }
             }
@@ -78,6 +87,39 @@ class Wdir_Folder
         }
         natcasesort($files);
         return $files;
+    }
+
+    /**
+     * Returns whether a filename is allowed for the listing.
+     *
+     * @param string $filename A filename.
+     *
+     * @return bool
+     */
+    private function _isAllowedFile($filename)
+    {
+        return (!$this->_filter || $this->_matchesFilter(basename($filename)))
+            && is_file($filename);
+    }
+
+    /**
+     * Returns whether a basename matches the filter.
+     *
+     * @param string $basename A basename.
+     *
+     * @return bool
+     *
+     * @global array The configuration of the plugins.
+     */
+    private function _matchesFilter($basename)
+    {
+        global $plugin_cf;
+
+        if ($plugin_cf['wdir']['filter_regexp']) {
+            return (bool) preg_match($this->_filter, $basename);
+        } else {
+            return fnmatch($this->_filter, $basename);
+        }
     }
 }
 
