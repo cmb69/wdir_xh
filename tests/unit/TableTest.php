@@ -77,6 +77,49 @@ class TableTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests that the JS is emitted.
+     *
+     * @return void
+     *
+     * @global string The (X)HTML fragment to insert at the bottom of the body.
+     */
+    public function testEmitsJs()
+    {
+        global $bjs;
+
+        $subject = new Wdir_Controller();
+        $subject->renderTable('');
+        $this->assertTag(
+            array(
+                'tag' => 'script',
+                'attributes' => array(
+                    'type' => 'text/javascript',
+                    'src' => $this->_path . '/wdir/wdir.js'
+                )
+            ),
+            $bjs
+        );
+    }
+
+    /**
+     * Tests that the JS is emitted only once.
+     *
+     * @return void
+     *
+     * @global string The (X)HTML fragment to insert at the bottom of the body.
+     */
+    public function testEmitsJsOnlyOnce()
+    {
+        global $bjs;
+
+        $subject = new Wdir_Controller();
+        $subject->renderTable('');
+        $bjs = '';
+        $subject->renderTable('');
+        $this->assertEmpty($bjs);
+    }
+
+    /**
      * Tests that the table is rendered.
      *
      * @return void
@@ -200,21 +243,25 @@ class TableTest extends PHPUnit_Framework_TestCase
     /**
      * Tests that a cell is rendered.
      *
-     * @param string $name  A column name.
-     * @param string $value A cell value.
+     * @param string $name    A column name.
+     * @param string $content A content.
+     * @param string $value   A cell value.
      *
      * @return void
      *
      * @dataProvider cellData
      */
-    public function testRendersCell($name, $value)
+    public function testRendersCell($name, $content, $value)
     {
         $subject = new Wdir_Controller();
         $this->assertTag(
             array(
                 'tag' => 'td',
-                'attributes' => array('class' => 'wdir_' . $name),
-                'content' => $value,
+                'attributes' => array(
+                    'class' => 'wdir_' . $name,
+                    'data-wdir' => $value
+                ),
+                'content' => $content,
                 'ancestor' => array('tag' => 'tbody')
             ),
             $subject->renderTable('')
@@ -229,8 +276,8 @@ class TableTest extends PHPUnit_Framework_TestCase
     public function cellData()
     {
         return array(
-            array('name', 'one.txt'),
-            array('size', '0 KB')
+            array('name', 'one.txt', 'one.txt'),
+            array('size', '0 KB', '0')
         );
     }
 
@@ -245,7 +292,10 @@ class TableTest extends PHPUnit_Framework_TestCase
         $this->assertTag(
             array(
                 'tag' => 'td',
-                'attributes' => array('class' => 'wdir_modified'),
+                'attributes' => array(
+                    'class' => 'wdir_modified',
+                    'data-wdir' => filemtime($this->_path . '/one.txt')
+                ),
                 'content' => date(
                     'm/d/Y h:i a', filemtime($this->_path . '/one.txt')
                 ),

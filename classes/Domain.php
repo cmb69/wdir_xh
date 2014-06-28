@@ -85,7 +85,7 @@ class Wdir_Folder
             }
             closedir($dir);
         }
-        natcasesort($files);
+        sort($files);
         return $files;
     }
 

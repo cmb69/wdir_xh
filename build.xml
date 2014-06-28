@@ -102,18 +102,18 @@
                 </replacetokens>
             </filterchain>
         </move>
-        <!--<jsMin targetDir="dist" suffix="" failOnError="false">
+        <jsMin targetDir="dist" suffix="" failOnError="false">
             <fileset dir="export">
                 <include name="wdir.js"/>
             </fileset>
-        </jsMin>-->
+        </jsMin>
         <move todir="dist">
             <fileset dir="export">
                 <exclude name="tests/**"/>
                 <exclude name="build.xml"/>
                 <exclude name="composer.*"/>
                 <exclude name="coverage.xml"/>
-                <!--<exclude name="imgzoom.js"/>-->
+                <exclude name="wdir.js"/>
                 <exclude name="phpcompatinfo.xml"/>
                 <exclude name="TODO"/>
                 <exclude name="wdir.komodoproject"/>

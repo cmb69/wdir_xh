@@ -10,6 +10,18 @@
     border: 1px solid #888;
     padding: 0.2em 0.5em;
 }
+.wdir_ascdesc {
+    background: url("ascdesc.gif") no-repeat right center;
+    cursor: pointer;
+}
+.wdir_asc {
+    background: url("asc.gif") no-repeat right center;
+    cursor: pointer;
+}
+.wdir_desc {
+    background: url("desc.gif") no-repeat right center;
+    cursor: pointer;
+}
 .wdir_table tbody td {
     padding: 0.2em 0.5em;
 }

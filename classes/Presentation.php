@@ -26,6 +26,13 @@
 class Wdir_Controller
 {
     /**
+     * Whether the JS has already been emitted.
+     *
+     * @var bool
+     */
+    private $_isJsEmitted = false;
+
+    /**
      * Dispatches according to the request.
      *
      * @return void
@@ -143,9 +150,30 @@ EOT;
      */
     public function renderTable($path, $filter = false)
     {
+        if (!$this->_isJsEmitted) {
+            $this->_isJsEmitted = true;
+            $this->_emitJs();
+        }
         $view = new Wdir_TableView($path, $filter);
         return $view->render();
     }
+
+    /**
+     * Emits the JS to the bottom of the body element.
+     *
+     * @return void
+     *
+     * @global array The paths of system files and folders.
+     * @global string The (X)HTML fragment to insert at the bottom of the body.
+     */
+    private function _emitJs()
+    {
+        global $pth, $bjs;
+
+        $bjs .= '<script type="text/javascript" src="' . $pth['folder']['plugins']
+            . 'wdir/wdir.js"></script>';
+    }
+
 }
 
 /**
@@ -257,11 +285,14 @@ class Wdir_TableView
             $plugin_tx['wdir']['format_date'], $file->getModificationTime()
         );
         return '<tr>'
-            . '<td class="wdir_name">' . $this->_renderFileIcon($file)
+            . '<td class="wdir_name" data-wdir="' . $file->getName() . '">'
+            . $this->_renderFileIcon($file)
             . '<a href="' . $file->getPath() . '" target="_blank">'
             . $file->getName() . '</a>' . '</td>'
-            . '<td class="wdir_size">' . $this->_renderFileSize($file) . '</td>'
-            . '<td class="wdir_modified">' . $time . '</td>'
+            . '<td class="wdir_size" data-wdir="' . $file->getSize() . '">'
+            . $this->_renderFileSize($file) . '</td>'
+            . '<td class="wdir_modified" data-wdir="'
+            . $file->getModificationTime() . '">' . $time . '</td>'
             . '</tr>';
     }
 
