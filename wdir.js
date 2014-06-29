@@ -10,10 +10,13 @@ if (typeof addEventListener === "function") {
 
             tbody = table.querySelector("tbody");
             rows = Array.prototype.map.call(tbody.rows, function (tr, index) {
+                var value = tr.getElementsByTagName("td")[column]
+                        .getAttribute("data-wdir");
+                if (index > 0) {
+                    value = +value;
+                }
                 return {
-                    index: index,
-                    value: tr.getElementsByTagName("td")[column]
-                            .getAttribute("data-wdir"),
+                    value: value,
                     element: tr
                 };
             });
