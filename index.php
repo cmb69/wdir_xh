@@ -15,11 +15,18 @@
  */
 
 /*
- * Prevent direct access.
+ * Prevent direct access and usage from unsupported CMSimple_XH versions.
  */
-if (!defined('CMSIMPLE_XH_VERSION')) {
+if (!defined('CMSIMPLE_XH_VERSION')
+    || strpos(CMSIMPLE_XH_VERSION, 'CMSimple_XH') !== 0
+    || version_compare(CMSIMPLE_XH_VERSION, 'CMSimple_XH 1.6', 'lt')
+) {
     header('HTTP/1.1 403 Forbidden');
-    exit;
+    header('Content-Type: text/plain; charset=UTF-8');
+    die(
+        'Unsupported CMSimple_XH version detected. Deinstall Wdir_XH'
+        . ' or upgrade to a supported CMSimple_XH version!'
+    );
 }
 
 /**
