@@ -116,7 +116,6 @@
                 <exclude name="wdir.js"/>
                 <exclude name="phpcompatinfo.xml"/>
                 <exclude name="TODO"/>
-                <exclude name="wdir.komodoproject"/>
             </fileset>
         </move>
         <delete dir="export"/>
