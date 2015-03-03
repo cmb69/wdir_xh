@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="Wdir" default="default">
-
-    <!-- Properties -->
-
-    <property name="styledir" value="C:\xampp\php\data\phing\etc"/>
-
-    <!-- Filesets -->
+<project name="Wdir" default="help">
 
     <fileset id="php-sources" dir=".">
         <include name="classes/*.php"/>
@@ -17,29 +11,25 @@
         <include name="*Test.php"/>
     </fileset>
 
-<!--    <fileset id="attack-tests" dir="tests/attack">
-        <include name="*Test.php"/>
-    </fileset>
--->
-    <!-- Checks -->
+    <target name="help" description="lists available targets">
+        <exec command="phing -l" outputProperty="help"/>
+        <echo>${help}</echo>
+    </target>
 
-    <target name="sniff">
+    <target name="sniff" description="checks adherence to PEAR CS">
         <phpcodesniffer standard="PEAR" format="full">
             <fileset refid="php-sources"/>
             <fileset refid="unit-tests"/>
-            <!--<fileset refid="attack-tests"/>-->
         </phpcodesniffer>
     </target>
 
-    <target name="compat">
+    <target name="compat" description="checks PHP requirements">
         <exec command="phpcompatinfo --configuration phpcompatinfo.xml print
                                      --exclude-pattern wdir ."
               logoutput="true"/>
     </target>
 
-    <!-- Tests -->
-
-    <target name="unit-tests">
+    <target name="unit-tests" description="runs all unit tests">
         <phpunit haltonerror="true" haltonfailure="true">
             <formatter type="plain" usefile="false"/>
             <batchtest>
@@ -48,26 +38,12 @@
         </phpunit>
     </target>
 
-<!--    <target name="attack-tests">
-        <fail unless="env.CMSIMPLEDIR" message="CMSIMPLEDIR undefined!"/>
-        <phpunit haltonerror="true" haltonfailure="true">
-            <formatter type="plain" usefile="false"/>
-            <batchtest>
-                <fileset refid="attack-tests"/>
-            </batchtest>
-        </phpunit>
-    </target>
--->
-    <!-- Code coverage -->
-
-    <target name="coverage">
+    <target name="coverage" description="generates coverage report">
         <exec command="phpunit --configuration coverage.xml" logoutput="true"/>
     </target>
 
-    <!-- Documentation -->
-
-    <target name="php-doc">
-        <phpdoc title="Wdir_XH Developer Documentation" destdir="doc/php"
+    <target name="doc" description="generates the developer documentation">
+        <phpdoc title="Wdir_XH Developer Documentation" destdir="doc"
                 output="HTML:Smarty:HandS" defaultpackagename="Wdir"
                 defaultcategoryname="CMSimple_XH">
             <fileset refid="php-sources"/>
@@ -78,15 +54,7 @@
         </phpdoc>
     </target>
 
-<!--    <target name="js-doc">
-        <exec command="jsdoc -destination doc/js imgzoom.js" checkreturn="true"/>
-    </target>
--->
-    <target name="doc" depends="php-doc"/>
-
-    <!-- Build -->
-
-    <target name="build">
+    <target name="build" description="builds a distributable ZIP archive">
         <fail unless="version" message="version is not defined!"/>
         <svnexport revision="" repositoryurl="." todir="export"/>
         <move todir="dist">
