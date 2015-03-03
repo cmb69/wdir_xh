@@ -1,4 +1,4 @@
-/*global addEventListener*/
+/*global addEventListener */
 if (typeof addEventListener === "function") {
     addEventListener("load", function () {
         "use strict";
@@ -21,11 +21,13 @@ if (typeof addEventListener === "function") {
                 };
             });
             rows = rows.sort(function (a, b) {
-                return a.value === b.value ? 0 : a.value < b.value ? -1 : 1;
+                function xor(a, b) {
+                    return (a || b) && !(a && b);
+                }
+
+                return a.value === b.value ? 0 : xor(a.value < b.value, desc) ?
+                        -1 : 1;
             });
-            if (desc) {
-                rows = rows.reverse();
-            }
             rows.forEach(function (value) {
                 tbody.appendChild(value.element);
             });
