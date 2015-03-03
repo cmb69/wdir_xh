@@ -59,7 +59,7 @@ class AdministrationTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * (Re)defines a constant.
+     * Defines resp. redefines a constant.
      *
      * @param string $name  A name.
      * @param string $value A value.
