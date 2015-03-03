@@ -28,6 +28,67 @@ require_once '../../cmsimple/adminfuncs.php';
 class AdministrationTest extends PHPUnit_Framework_TestCase
 {
     /**
+     * The test subject.
+     *
+     * @var Wdir_Controller
+     */
+    protected $subject;
+
+    /**
+     * The XH_registerStandardPluginMenuItems() mock.
+     *
+     * @var object
+     */
+    protected $registerStandardPluginMenuItemsMock;
+
+    /**
+     * The print_plugin_admin() mock.
+     *
+     * @var object
+     */
+    protected $printPluginAdminMock;
+
+    /**
+     * The plugin_admin_common() mock.
+     *
+     * @var object
+     */
+    protected $pluginAdminCommonMock;
+
+    /**
+     * Sets up the test fixture.
+     *
+     * @return void
+     */
+    public function setUp()
+    {
+        $this->defineConstant('XH_ADM', true);
+        $this->subject = new Wdir_Controller();
+        $this->registerStandardPluginMenuItemsMock
+            = new PHPUnit_Extensions_MockFunction(
+                'XH_registerStandardPluginMenuItems', $this->subject
+            );
+        $this->printPluginAdminMock = new PHPUnit_Extensions_MockFunction(
+            'print_plugin_admin', $this->subject
+        );
+        $this->pluginAdminCommonMock = new PHPUnit_Extensions_MockFunction(
+            'plugin_admin_common', $this->subject
+        );
+    }
+
+    /**
+     * Tests that the standard plugin menu items are registered.
+     *
+     * @return void
+     */
+    public function testStandardPluginMenuItemsAreRegistered()
+    {
+        $this->registerStandardPluginMenuItemsMock->expects($this->once())
+            ->with(false);
+        $this->subject->dispatch();
+    }
+
+    /**
      * Tests the stylesheet administration.
      *
      * @return void
@@ -40,21 +101,13 @@ class AdministrationTest extends PHPUnit_Framework_TestCase
     {
         global $wdir, $admin, $action;
 
-        $this->defineConstant('XH_ADM', true);
         $wdir = 'true';
         $admin = 'plugin_stylesheet';
         $action = 'plugin_text';
-        $subject = new Wdir_Controller();
-        $printPluginAdmin = new PHPUnit_Extensions_MockFunction(
-            'print_plugin_admin', $subject
-        );
-        $printPluginAdmin->expects($this->once())->with('off');
-        $pluginAdminCommon = new PHPUnit_Extensions_MockFunction(
-            'plugin_admin_common', $subject
-        );
-        $pluginAdminCommon->expects($this->once())
+        $this->printPluginAdminMock->expects($this->once())->with('off');
+        $this->pluginAdminCommonMock->expects($this->once())
             ->with($action, $admin, 'wdir');
-        $subject->dispatch();
+        $this->subject->dispatch();
     }
 
     /**

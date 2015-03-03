@@ -35,16 +35,33 @@ class Wdir_Controller
      * Dispatches according to the request.
      *
      * @return void
-     *
-     * @global string Whether the plugin administration is requested.
      */
     public function dispatch()
     {
+        if (XH_ADM) {
+            if (function_exists('XH_registerStandardPluginMenuItems')) {
+                XH_registerStandardPluginMenuItems(false);
+            }
+            if ($this->isAdministrationRequested()) {
+                $this->handleAdministration();
+            }
+        }
+    }
+
+    /**
+     * Returns whether the plugin administration is requested.
+     *
+     * @return bool
+     *
+     * @global string Whether the plugin administration is requested.
+     */
+    protected function isAdministrationRequested()
+    {
         global $wdir;
 
-        if (XH_ADM && isset($wdir) && $wdir == 'true') {
-            $this->handleAdministration();
-        }
+        return function_exists('XH_wantsPluginAdministration')
+            && XH_wantsPluginAdministration('wdir')
+            || isset($wdir) && $wdir == 'true';
     }
 
     /**
