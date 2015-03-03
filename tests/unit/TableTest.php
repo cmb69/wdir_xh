@@ -36,7 +36,7 @@ class TableTest extends PHPUnit_Framework_TestCase
      *
      * @var string
      */
-    private $_path;
+    protected $path;
 
     /**
      * Sets up the test fixture.
@@ -60,17 +60,17 @@ class TableTest extends PHPUnit_Framework_TestCase
         );
         vfsStreamWrapper::register();
         vfsStreamWrapper::setRoot(new vfsStreamDirectory('test'));
-        $this->_path = vfsStream::url('test');
+        $this->path = vfsStream::url('test');
         $pth['folder'] = array(
-            'plugins' => $this->_path . '/',
-            'userfiles' => $this->_path . '/'
+            'plugins' => $this->path . '/',
+            'userfiles' => $this->path . '/'
         );
-        mkdir($this->_path . '/downloads/', 0777);
-        touch($this->_path . '/one.txt');
-        touch($this->_path . '/two.pdf');
-        touch($this->_path . '/three');
-        mkdir($this->_path . '/wdir/images', 0777, true);
-        touch($this->_path . '/wdir/images/file-txt.png');
+        mkdir($this->path . '/downloads/', 0777);
+        touch($this->path . '/one.txt');
+        touch($this->path . '/two.pdf');
+        touch($this->path . '/three');
+        mkdir($this->path . '/wdir/images', 0777, true);
+        touch($this->path . '/wdir/images/file-txt.png');
     }
 
     /**
@@ -91,7 +91,7 @@ class TableTest extends PHPUnit_Framework_TestCase
                 'tag' => 'script',
                 'attributes' => array(
                     'type' => 'text/javascript',
-                    'src' => $this->_path . '/wdir/wdir.js'
+                    'src' => $this->path . '/wdir/wdir.js'
                 )
             ),
             $bjs
@@ -291,10 +291,10 @@ class TableTest extends PHPUnit_Framework_TestCase
                 'tag' => 'td',
                 'attributes' => array(
                     'class' => 'wdir_modified',
-                    'data-wdir' => filemtime($this->_path . '/one.txt')
+                    'data-wdir' => filemtime($this->path . '/one.txt')
                 ),
                 'content' => date(
-                    'm/d/Y h:i a', filemtime($this->_path . '/one.txt')
+                    'm/d/Y h:i a', filemtime($this->path . '/one.txt')
                 ),
                 'ancestor' => array('tag' => 'tbody')
             ),
@@ -347,7 +347,7 @@ class TableTest extends PHPUnit_Framework_TestCase
                 'child' => array(
                     'tag' => 'a',
                     'attributes' => array(
-                        'href' => $this->_path . '/one.txt',
+                        'href' => $this->path . '/one.txt',
                         'target' => '_blank'
                     )
                 )

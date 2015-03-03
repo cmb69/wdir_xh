@@ -29,14 +29,14 @@ class Wdir_Folder
      *
      * @var string
      */
-    private $_path;
+    protected $path;
 
     /**
      * The filter expression.
      *
      * @var string
      */
-    private $_filter;
+    protected $filter;
 
     /**
      * Initializes a new instance.
@@ -48,8 +48,8 @@ class Wdir_Folder
      */
     public function __construct($path, $filter)
     {
-        $this->_path = (string) $path;
-        $this->_filter = (string) $filter;
+        $this->path = (string) $path;
+        $this->filter = (string) $filter;
     }
 
     /**
@@ -60,7 +60,7 @@ class Wdir_Folder
     public function getFiles()
     {
         $files = array();
-        $paths = $this->_getFilePaths();
+        $paths = $this->getFilePaths();
         foreach ($paths as $path) {
             $files[] = new Wdir_File($path);
         }
@@ -72,13 +72,13 @@ class Wdir_Folder
      *
      * @return array
      */
-    private function _getFilePaths()
+    protected function getFilePaths()
     {
         $files = array();
-        if ($dir = opendir($this->_path)) {
+        if ($dir = opendir($this->path)) {
             while (($entry = readdir($dir)) !== false) {
-                $path = $this->_path . $entry;
-                if ($this->_isAllowedFile($path)) {
+                $path = $this->path . $entry;
+                if ($this->isAllowedFile($path)) {
                     $files[] = $path;
                 }
             }
@@ -95,9 +95,9 @@ class Wdir_Folder
      *
      * @return bool
      */
-    private function _isAllowedFile($filename)
+    protected function isAllowedFile($filename)
     {
-        return (!$this->_filter || $this->_matchesFilter(basename($filename)))
+        return (!$this->filter || $this->matchesFilter(basename($filename)))
             && is_file($filename);
     }
 
@@ -110,14 +110,14 @@ class Wdir_Folder
      *
      * @global array The configuration of the plugins.
      */
-    private function _matchesFilter($basename)
+    protected function matchesFilter($basename)
     {
         global $plugin_cf;
 
         if ($plugin_cf['wdir']['filter_regexp']) {
-            return (bool) preg_match($this->_filter, $basename);
+            return (bool) preg_match($this->filter, $basename);
         } else {
-            return fnmatch($this->_filter, $basename);
+            return fnmatch($this->filter, $basename);
         }
     }
 }

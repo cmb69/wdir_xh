@@ -29,7 +29,7 @@ class Wdir_Controller
      *
      * @var bool
      */
-    private $_isJsEmitted = false;
+    protected $isJsEmitted = false;
 
     /**
      * Dispatches according to the request.
@@ -43,7 +43,7 @@ class Wdir_Controller
         global $wdir;
 
         if (XH_ADM && isset($wdir) && $wdir == 'true') {
-            $this->_handleAdministration();
+            $this->handleAdministration();
         }
     }
 
@@ -56,14 +56,14 @@ class Wdir_Controller
      * @global string The value of the <var>action</var> GP parameter.
      * @global string The (X)HTML fragment to insert into the contents area.
      */
-    private function _handleAdministration()
+    protected function handleAdministration()
     {
         global $admin, $action, $o;
 
         $o .= print_plugin_admin('off');
         switch ($admin) {
         case '':
-            $o .= $this->_renderInfo();
+            $o .= $this->renderInfo();
             break;
         default:
             $o .= plugin_admin_common($action, $admin, 'wdir');
@@ -75,12 +75,12 @@ class Wdir_Controller
      *
      * @return string (X)HTML.
      */
-    private function _renderInfo()
+    protected function renderInfo()
     {
         return '<h1>Wdir</h1>'
-            . $this->_renderIcon()
+            . $this->renderIcon()
             . '<p>Version: ' . WDIR_VERSION . '</p>'
-            . $this->_renderCopyright() . $this->_renderLicense();
+            . $this->renderCopyright() . $this->renderLicense();
     }
 
     /**
@@ -91,7 +91,7 @@ class Wdir_Controller
      * @global array The paths of system files and folders.
      * @global array The localization of the plugins.
      */
-    private function _renderIcon()
+    protected function renderIcon()
     {
         global $pth, $plugin_tx;
 
@@ -107,7 +107,7 @@ class Wdir_Controller
      *
      * @return string (X)HTML.
      */
-    private function _renderCopyright()
+    protected function renderCopyright()
     {
         return <<<EOT
 <p>Copyright &copy; 2012-2015
@@ -121,7 +121,7 @@ EOT;
      *
      * @return string (X)HTML.
      */
-    private function _renderLicense()
+    protected function renderLicense()
     {
         return <<<EOT
 <p class="wdir_license">This program is free software: you can
@@ -149,9 +149,9 @@ EOT;
      */
     public function renderTable($path, $filter = false)
     {
-        if (!$this->_isJsEmitted) {
-            $this->_isJsEmitted = true;
-            $this->_emitJs();
+        if (!$this->isJsEmitted) {
+            $this->isJsEmitted = true;
+            $this->emitJs();
         }
         $view = new Wdir_TableView($path, $filter);
         return $view->render();
@@ -165,7 +165,7 @@ EOT;
      * @global array The paths of system files and folders.
      * @global string The (X)HTML fragment to insert at the bottom of the body.
      */
-    private function _emitJs()
+    protected function emitJs()
     {
         global $pth, $bjs;
 

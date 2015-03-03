@@ -29,7 +29,7 @@ class Wdir_File
      *
      * @var string
      */
-    private $_path;
+    protected $path;
 
     /**
      * Initializes a new instance.
@@ -40,7 +40,7 @@ class Wdir_File
      */
     public function __construct($path)
     {
-        $this->_path = (string) $path;
+        $this->path = (string) $path;
     }
 
     /**
@@ -50,7 +50,7 @@ class Wdir_File
      */
     public function getPath()
     {
-        return $this->_path;
+        return $this->path;
     }
 
     /**
@@ -60,7 +60,7 @@ class Wdir_File
      */
     public function getName()
     {
-        return basename($this->_path);
+        return basename($this->path);
     }
 
     /**
@@ -70,7 +70,7 @@ class Wdir_File
      */
     public function getExtension()
     {
-        return pathinfo($this->_path, PATHINFO_EXTENSION);
+        return pathinfo($this->path, PATHINFO_EXTENSION);
     }
 
     /**
@@ -80,7 +80,7 @@ class Wdir_File
      */
     public function getSize()
     {
-        return filesize($this->_path);
+        return filesize($this->path);
     }
 
     /**
@@ -90,7 +90,7 @@ class Wdir_File
      */
     public function getModificationTime()
     {
-        return filemtime($this->_path);
+        return filemtime($this->path);
     }
 }
 

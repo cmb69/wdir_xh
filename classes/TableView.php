@@ -29,14 +29,14 @@ class Wdir_TableView
      *
      * @var string
      */
-    private $_path;
+    protected $path;
 
     /**
      * The filter expression.
      *
      * @var string
      */
-    private $_filter;
+    protected $filter;
 
     /**
      * Initializes a new instance.
@@ -50,11 +50,11 @@ class Wdir_TableView
     {
         global $pth;
 
-        $this->_path = $pth['folder']['userfiles'] . (string) $path;
-        if ($this->_path[strlen($this->_path) - 1] != '/') {
-            $this->_path .= '/';
+        $this->path = $pth['folder']['userfiles'] . (string) $path;
+        if ($this->path[strlen($this->path) - 1] != '/') {
+            $this->path .= '/';
         }
-        $this->_filter = (string) $filter;
+        $this->filter = (string) $filter;
     }
 
     /**
@@ -65,7 +65,7 @@ class Wdir_TableView
     public function render()
     {
         $html = '<table class="wdir_table">'
-            . $this->_renderHead() . $this->_renderBody()
+            . $this->renderHead() . $this->renderBody()
             . '</table>';
         return $html;
     }
@@ -77,7 +77,7 @@ class Wdir_TableView
      *
      * @global array The localization of the plugins.
      */
-    private function _renderHead()
+    protected function renderHead()
     {
         global $plugin_tx;
 
@@ -94,12 +94,12 @@ class Wdir_TableView
      *
      * @return string (X)HTML.
      */
-    private function _renderBody()
+    protected function renderBody()
     {
         $html = '<tbody>';
-        $folder = new Wdir_Folder($this->_path, $this->_filter);
+        $folder = new Wdir_Folder($this->path, $this->filter);
         foreach ($folder->getFiles() as $file) {
-            $html .= $this->_renderBodyRow($file);
+            $html .= $this->renderBodyRow($file);
         }
         $html .= '</tbody>';
         return $html;
@@ -114,7 +114,7 @@ class Wdir_TableView
      *
      * @global array The localization of the plugins.
      */
-    private function _renderBodyRow($file)
+    protected function renderBodyRow($file)
     {
         global $plugin_tx;
 
@@ -123,11 +123,11 @@ class Wdir_TableView
         );
         return '<tr>'
             . '<td class="wdir_name" data-wdir="' . $file->getName() . '">'
-            . $this->_renderFileIcon($file)
+            . $this->renderFileIcon($file)
             . '<a href="' . $file->getPath() . '" target="_blank">'
             . $file->getName() . '</a>' . '</td>'
             . '<td class="wdir_size" data-wdir="' . $file->getSize() . '">'
-            . $this->_renderFileSize($file) . '</td>'
+            . $this->renderFileSize($file) . '</td>'
             . '<td class="wdir_modified" data-wdir="'
             . $file->getModificationTime() . '">' . $time . '</td>'
             . '</tr>';
@@ -140,7 +140,7 @@ class Wdir_TableView
      *
      * @return string (X)HTML.
      */
-    private function _renderFileSize($file)
+    protected function renderFileSize($file)
     {
         return ceil($file->getSize() / 1024) . ' KB';
     }
@@ -157,7 +157,7 @@ class Wdir_TableView
      *
      * @todo alt attribute!
      */
-    private function _renderFileIcon($file)
+    protected function renderFileIcon($file)
     {
         global $pth, $plugin_tx;
 
