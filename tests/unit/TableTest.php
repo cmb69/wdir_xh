@@ -88,7 +88,7 @@ class TableTest extends PHPUnit_Framework_TestCase
 
         $subject = new Wdir_Controller();
         $subject->renderTable('');
-        $this->assertTag(
+        @$this->assertTag(
             array(
                 'tag' => 'script',
                 'attributes' => array(
@@ -126,7 +126,7 @@ class TableTest extends PHPUnit_Framework_TestCase
     public function testRendersTable()
     {
         $subject = new Wdir_Controller();
-        $this->assertTag(
+        @$this->assertTag(
             array(
                 'tag' => 'table',
                 'attributes' => array('class' => 'wdir_table')
@@ -147,7 +147,7 @@ class TableTest extends PHPUnit_Framework_TestCase
     public function testRendersColumnHeading($name)
     {
         $subject = new Wdir_Controller();
-        $this->assertTag(
+        @$this->assertTag(
             array(
                 'tag' => 'tr',
                 'child' => array(
@@ -183,7 +183,7 @@ class TableTest extends PHPUnit_Framework_TestCase
     public function testRenders3BodyRows()
     {
         $subject = new Wdir_Controller();
-        $this->assertTag(
+        @$this->assertTag(
             array(
                 'tag' => 'tbody',
                 'children' => array(
@@ -204,7 +204,7 @@ class TableTest extends PHPUnit_Framework_TestCase
     public function testRenders1BodyRowWhenFilteredWithWildcardPattern()
     {
         $subject = new Wdir_Controller();
-        $this->assertTag(
+        @$this->assertTag(
             array(
                 'tag' => 'tbody',
                 'children' => array(
@@ -227,7 +227,7 @@ class TableTest extends PHPUnit_Framework_TestCase
 
         $plugin_cf['wdir']['filter_regexp'] = 'true';
         $subject = new Wdir_Controller();
-        $this->assertTag(
+        @$this->assertTag(
             array(
                 'tag' => 'tbody',
                 'children' => array(
@@ -253,7 +253,7 @@ class TableTest extends PHPUnit_Framework_TestCase
     public function testRendersCell($name, $content, $value)
     {
         $subject = new Wdir_Controller();
-        $this->assertTag(
+        @$this->assertTag(
             array(
                 'tag' => 'td',
                 'attributes' => array(
@@ -288,7 +288,7 @@ class TableTest extends PHPUnit_Framework_TestCase
     public function testRendersModifiedCell()
     {
         $subject = new Wdir_Controller();
-        $this->assertTag(
+        @$this->assertTag(
             array(
                 'tag' => 'td',
                 'attributes' => array(
@@ -317,7 +317,7 @@ class TableTest extends PHPUnit_Framework_TestCase
 
         $pth['folder']['plugins'] = './';
         $subject = new Wdir_Controller();
-        $this->assertTag(
+        @$this->assertTag(
             array(
                 'tag' => 'td',
                 'attributes' => array('class' => 'wdir_name'),
@@ -342,7 +342,7 @@ class TableTest extends PHPUnit_Framework_TestCase
     public function testRendersFilenameAsLink()
     {
         $subject = new Wdir_Controller();
-        $this->assertTag(
+        @$this->assertTag(
             array(
                 'tag' => 'td',
                 'attributes' => array('class' => 'wdir_name'),
