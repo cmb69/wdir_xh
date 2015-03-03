@@ -24,9 +24,7 @@
     </target>
 
     <target name="compat" description="checks PHP requirements">
-        <exec command="phpcompatinfo --configuration phpcompatinfo.xml print
-                                     --exclude-pattern wdir ."
-              logoutput="true"/>
+        <exec command="phpcompatinfo analyser:run ." logoutput="true"/>
     </target>
 
     <target name="unit-tests" description="runs all unit tests">
