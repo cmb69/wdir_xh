@@ -1,3 +1,4 @@
+/*jslint browser: true, maxlen: 80 */
 /*global addEventListener */
 if (typeof addEventListener === "function") {
     addEventListener("load", function () {
@@ -9,7 +10,7 @@ if (typeof addEventListener === "function") {
             var tbody, rows;
 
             tbody = table.querySelector("tbody");
-            rows = Array.prototype.map.call(tbody.rows, function (tr, index) {
+            rows = Array.prototype.map.call(tbody.rows, function (tr) {
                 var value = tr.getElementsByTagName("td")[column]
                         .getAttribute("data-wdir");
                 if (column > 0) {
