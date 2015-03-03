@@ -30,16 +30,6 @@ EOT
 }
 
 /**
- * The domain layer.
- */
-require_once $pth['folder']['plugin_classes'] . 'Domain.php';
-
-/**
- * The presentation layer.
- */
-require_once $pth['folder']['plugin_classes'] . 'Presentation.php';
-
-/**
  * The plugin version.
  */
 define('WDIR_VERSION', '@WDIR_VERSION@');
