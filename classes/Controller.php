@@ -163,14 +163,22 @@ EOT;
      * @param string $filter A filter expression.
      *
      * @return string (X)HTML.
+     *
+     * @global array The paths of system files and folders.
      */
     public function renderTable($path, $filter = false)
     {
+        global $pth;
+
         if (!$this->isJsEmitted) {
             $this->isJsEmitted = true;
             $this->emitJs();
         }
-        $view = new Wdir_TableView($path, $filter);
+        $path = $pth['folder']['userfiles'] . (string) $path;
+        if ($path[strlen($path) - 1] != '/') {
+            $path .= '/';
+        }
+        $view = new Wdir_TableView(new Wdir_Folder($path, $filter));
         return $view->render();
     }
 

@@ -25,36 +25,22 @@
 class Wdir_TableView
 {
     /**
-     * The path of the folder.
+     * The folder.
      *
-     * @var string
+     * @var Wdir_Folder
      */
-    protected $path;
-
-    /**
-     * The filter expression.
-     *
-     * @var string
-     */
-    protected $filter;
+    protected $folder;
 
     /**
      * Initializes a new instance.
      *
-     * @param string $path   A folder path.
-     * @param string $filter A filter expression.
+     * @param Wdir_Folder $folder A folder.
      *
      * @return void
      */
-    public function __construct($path, $filter = false)
+    public function __construct(Wdir_Folder $folder)
     {
-        global $pth;
-
-        $this->path = $pth['folder']['userfiles'] . (string) $path;
-        if ($this->path[strlen($this->path) - 1] != '/') {
-            $this->path .= '/';
-        }
-        $this->filter = (string) $filter;
+        $this->folder = $folder;
     }
 
     /**
@@ -97,8 +83,7 @@ class Wdir_TableView
     protected function renderBody()
     {
         $html = '<tbody>';
-        $folder = new Wdir_Folder($this->path, $this->filter);
-        foreach ($folder->getFiles() as $file) {
+        foreach ($this->folder->getFiles() as $file) {
             $html .= $this->renderBodyRow($file);
         }
         $html .= '</tbody>';

@@ -48,8 +48,8 @@ class Wdir_Folder
      */
     public function __construct($path, $filter)
     {
-        $this->path = (string) $path;
-        $this->filter = (string) $filter;
+        $this->path = $path;
+        $this->filter = $filter;
     }
 
     /**
@@ -64,7 +64,7 @@ class Wdir_Folder
         foreach ($paths as $path) {
             $files[] = new Wdir_File($path);
         }
-        return $files;
+        return $this->sortFiles($files);
     }
 
     /**
@@ -84,7 +84,6 @@ class Wdir_Folder
             }
             closedir($dir);
         }
-        sort($files);
         return $files;
     }
 
@@ -119,6 +118,60 @@ class Wdir_Folder
         } else {
             return fnmatch($this->filter, $basename);
         }
+    }
+
+    /**
+     * Sorts and returns the files according to the configuration.
+     *
+     * @param array $files An array of files.
+     *
+     * @return array
+     */
+    protected function sortFiles($files)
+    {
+        global $plugin_cf;
+
+        switch ($plugin_cf['wdir']['sort_column']) {
+        case 'name':
+            sort($files);
+            break;
+        case 'size':
+            usort($files, array($this, 'compareFilesBySize'));
+            break;
+        case 'date':
+            usort($files, array($this, 'compareFilesByTime'));
+            break;
+        }
+        if (!$plugin_cf['wdir']['sort_ascending']) {
+            $files = array_reverse($files);
+        }
+        return $files;
+    }
+
+    /**
+     * Compares two files by size and returns the result.
+     *
+     * @param Wdir_File $a A file.
+     * @param Wdir_File $b Another file.
+     *
+     * @return int
+     */
+    protected function compareFilesBySize(Wdir_File $a, Wdir_File $b)
+    {
+        return $a->getSize() - $b->getSize();
+    }
+
+    /**
+     * Compares two files by modification time and returns the result.
+     *
+     * @param Wdir_File $a A file.
+     * @param Wdir_File $b Another file.
+     *
+     * @return int
+     */
+    protected function compareFilesByTime(Wdir_File $a, Wdir_File $b)
+    {
+        return $a->getModificationTime() - $b->getModificationTime();
     }
 }
 

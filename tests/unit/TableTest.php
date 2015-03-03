@@ -49,7 +49,11 @@ class TableTest extends PHPUnit_Framework_TestCase
     {
         global $pth, $plugin_cf, $plugin_tx;
 
-        $plugin_cf['wdir']['filter_regexp'] = '';
+        $plugin_cf['wdir'] = array(
+            'sort_column' => 'name',
+            'sort_ascending' => 'true',
+            'filter_regexp' => ''
+        );
         $plugin_tx['wdir'] = array(
             'label_name' => 'Name',
             'label_size' => 'Size',
