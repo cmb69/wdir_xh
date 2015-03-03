@@ -12,7 +12,7 @@ if (typeof addEventListener === "function") {
             rows = Array.prototype.map.call(tbody.rows, function (tr, index) {
                 var value = tr.getElementsByTagName("td")[column]
                         .getAttribute("data-wdir");
-                if (index > 0) {
+                if (column > 0) {
                     value = +value;
                 }
                 return {
