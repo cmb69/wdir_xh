@@ -1,5 +1,5 @@
 /*jslint browser: true, maxlen: 80 */
-/*global addEventListener */
+/*global WDIR */
 (function () {
     "use strict";
 
@@ -60,7 +60,11 @@
 
                 value = tr.getElementsByTagName("td")[column]
                         .getAttribute("data-wdir");
-                if (column > 0) {
+                if (column === 0) {
+                    if (WDIR.caseInsensitive) {
+                        value = value.toLowerCase();
+                    }
+                } else {
                     value = +value;
                 }
                 return {

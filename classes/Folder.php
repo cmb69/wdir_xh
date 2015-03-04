@@ -135,6 +135,9 @@ class Wdir_Folder
         case 'name':
             sort($files);
             break;
+        case 'name/i':
+            usort($files, 'strcasecmp');
+            break;
         case 'size':
             usort($files, array($this, 'compareFilesBySize'));
             break;

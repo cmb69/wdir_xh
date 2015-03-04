@@ -78,6 +78,28 @@ class TableTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests that the JS configuration is written to $bjs.
+     *
+     * @return void
+     *
+     * @global string The (X)HTML fragment to insert at the bottom of the body.
+     */
+    public function testJSConfigurationIsWrittenToBJS()
+    {
+        global $bjs;
+
+        $subject = new Wdir_Controller();
+        $subject->renderTable('');
+        @$this->assertTag(
+            array(
+                'tag' => 'script',
+                'content' => 'var WDIR'
+            ),
+            $bjs
+        );
+    }
+
+    /**
      * Tests that the JS is emitted.
      *
      * @return void

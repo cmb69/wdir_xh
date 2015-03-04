@@ -54,8 +54,8 @@ class FolderTest extends PHPUnit_Framework_TestCase
         touch(vfsStream::url('test/foo.txt'), 345678);
         file_put_contents(vfsStream::url('test/bar.txt'), '**');
         touch(vfsStream::url('test/bar.txt'), 234567);
-        file_put_contents(vfsStream::url('test/baz.txt'), '*');
-        touch(vfsStream::url('test/baz.txt'), 123456);
+        file_put_contents(vfsStream::url('test/Baz.txt'), '*');
+        touch(vfsStream::url('test/Baz.txt'), 123456);
         touch(vfsStream::url('test/foo.bar'));
 
         $plugin_cf['wdir'] = array(
@@ -97,6 +97,22 @@ class FolderTest extends PHPUnit_Framework_TestCase
     public function testFilesAreSortedByName()
     {
         $files = $this->subject->getFiles();
+        $this->assertEquals('Baz.txt', $files[0]->getName());
+    }
+
+    /**
+     * Tests that the files are sorted by name, case insensitive.
+     *
+     * @return void
+     *
+     * @global array The configuration of the plugins.
+     */
+    public function testFilesAreSortedByNameCaseInsensitive()
+    {
+        global $plugin_cf;
+
+        $plugin_cf['wdir']['sort_column'] = 'name/i';
+        $files = $this->subject->getFiles();
         $this->assertEquals('bar.txt', $files[0]->getName());
     }
 
@@ -113,7 +129,7 @@ class FolderTest extends PHPUnit_Framework_TestCase
 
         $plugin_cf['wdir']['sort_column'] = 'size';
         $files = $this->subject->getFiles();
-        $this->assertEquals('baz.txt', $files[0]->getName());
+        $this->assertEquals('Baz.txt', $files[0]->getName());
     }
 
     /**
@@ -129,7 +145,7 @@ class FolderTest extends PHPUnit_Framework_TestCase
 
         $plugin_cf['wdir']['sort_column'] = 'date';
         $files = $this->subject->getFiles();
-        $this->assertEquals('baz.txt', $files[0]->getName());
+        $this->assertEquals('Baz.txt', $files[0]->getName());
     }
 
     /**
@@ -145,7 +161,7 @@ class FolderTest extends PHPUnit_Framework_TestCase
 
         $plugin_cf['wdir']['sort_ascending'] = '';
         $files = $this->subject->getFiles();
-        $this->assertEquals('bar.txt', $files[2]->getName());
+        $this->assertEquals('Baz.txt', $files[2]->getName());
     }
 
     /**

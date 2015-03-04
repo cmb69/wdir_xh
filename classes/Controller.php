@@ -187,14 +187,21 @@ EOT;
      *
      * @return void
      *
-     * @global array The paths of system files and folders.
+     * @global array  The paths of system files and folders.
+     * @global array  The configuration of the plugins.
      * @global string The (X)HTML fragment to insert at the bottom of the body.
      */
     protected function emitJs()
     {
-        global $pth, $bjs;
+        global $pth, $plugin_cf, $bjs;
 
-        $bjs .= '<script type="text/javascript" src="' . $pth['folder']['plugins']
+        $config = array(
+            'caseInsensitive' => $plugin_cf['wdir']['sort_column'] == 'name/i'
+        );
+        $bjs .= '<script type="text/javascript">/* <![CDATA[ */'
+            . 'var WDIR = ' . json_encode($config) . ';'
+            . '/* ]]> */</script>'
+            . '<script type="text/javascript" src="' . $pth['folder']['plugins']
             . 'wdir/wdir.js"></script>';
     }
 }

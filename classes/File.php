@@ -44,6 +44,16 @@ class Wdir_File
     }
 
     /**
+     * Returns a string representation of the object.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
+    /**
      * Returns the file path.
      *
      * @return string
