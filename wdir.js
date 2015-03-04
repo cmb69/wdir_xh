@@ -1,8 +1,25 @@
+/*!
+ * Wdir_XH.
+ *
+ * @author  Christoph M. Becker <cmbecker69@gmx.de>
+ * @license GPL-3.0+
+ */
+
 /*jslint browser: true, maxlen: 80 */
 /*global WDIR */
+
 (function () {
     "use strict";
 
+    /**
+     * Returns a list of results of applying a function
+     * to each element of a list.
+     *
+     * @param {Array}    element
+     * @param {Function} func
+     *
+     * @returns {Array}
+     */
     function map(elements, func) {
         var i, len, result;
 
@@ -13,6 +30,14 @@
         return result;
     }
 
+    /**
+     * Calls a function for each element in elements.
+     *
+     * @param {Array}    elements
+     * @param {Function} func
+     *
+     * @returns {undefined}
+     */
     function forEach(elements, func) {
         var i, len;
 
@@ -21,6 +46,15 @@
         }
     }
 
+    /**
+     * Registers an event listener.
+     *
+     * @param {EventTarget}   element
+     * @param {String}        type
+     * @param {EventListener} listener
+     *
+     * @returns {undefined}
+     */
     function on(element, type, listener) {
         if (typeof element.addEventListener !== "undefined") {
             element.addEventListener(type, listener, false);
@@ -32,7 +66,11 @@
     on(window, "load", function () {
         var headings;
 
-
+        /**
+         * Returns the wdir table heading cells.
+         *
+         * @return {Array}
+         */
         function findTableHeadingCells() {
             var tables, result;
 
@@ -51,6 +89,15 @@
             return result;
         }
 
+        /**
+         * Sorts the rows of a table.
+         *
+         * @param {HTMLTableElement} table
+         * @param {Number}           column
+         * @param {Boolean}          desc
+         *
+         * @returns {undefined}
+         */
         function sort(table, column, desc) {
             var tbody, rows;
 
