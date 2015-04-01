@@ -60,10 +60,10 @@ class InfoViewTest extends PHPUnit_Framework_TestCase
             'wdir' => array('alt_icon' => 'Facebook')
         );
         $this->subject = new Wdir_Controller();
-        $registerStandardPluginMenuItemsMock = new PHPUnit_Extensions_MockFunction(
+        new PHPUnit_Extensions_MockFunction(
             'XH_registerStandardPluginMenuItems', $this->subject
         );
-        $printPluginAdmin = new PHPUnit_Extensions_MockFunction(
+        new PHPUnit_Extensions_MockFunction(
             'print_plugin_admin', $this->subject
         );
         $this->subject->dispatch();
