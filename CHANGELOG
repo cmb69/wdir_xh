@@ -1,3 +1,6 @@
+Version 1.0 - released 2015-04-01
+* no relevant changes
+
 Version 1.0rc1 - released 2015-03-04
 * lifted requirements to PHP >= 5.2.0
 * fixed bug, where sorting of "name" column was unreliable (fix contributed by
