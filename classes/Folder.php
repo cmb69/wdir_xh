@@ -116,7 +116,7 @@ class Wdir_Folder
         if ($plugin_cf['wdir']['filter_regexp']) {
             return (bool) preg_match($this->filter, $basename);
         } else {
-            return $this->match($this->filter, $basename);
+            return $this->matchesSimpleFilter($this->filter, $basename);
         }
     }
 
@@ -125,17 +125,17 @@ class Wdir_Folder
      *
      * This is primarily a workaround for fnmatch() which might not be
      * available on all platforms. To have the same behavior everywhere, we're
-     * using is throughout, though.
+     * using it throughout, though.
      *
-     * @param string $pattern A simplyfied glob pattern.
-     * @param string $string  A string to be matched.
+     * @param string $filter A simplyfied glob pattern.
+     * @param string $string A string to be matched.
      *
      * @return bool
      */
-    protected function match($pattern, $string)
+    protected function matchesSimpleFilter($filter, $string)
     {
         $pattern = strtr(
-            preg_quote($pattern, '/'),
+            preg_quote($filter, '/'),
             array(
                 '\\*' => '.*',
                 '\\?' => '.'
