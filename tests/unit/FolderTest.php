@@ -165,6 +165,24 @@ class FolderTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests the simple filter.
+     *
+     * @return void
+     *
+     * @global array The configuration of the plugins.
+     */
+    public function testSimpleFilter()
+    {
+        global $plugin_cf;
+
+        $plugin_cf['wdir']['filter_regexp'] = '';
+        $subject = new Wdir_Folder(vfsStream::url('test/'), '?a?.txt');
+        $this->assertCount(2, $subject->getFiles());
+        $subject = new Wdir_Folder(vfsStream::url('test/'), 'foo.*');
+        $this->assertCount(2, $subject->getFiles());
+    }
+
+    /**
      * Tests the regexp filter.
      *
      * @return void
