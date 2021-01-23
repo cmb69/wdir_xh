@@ -32,7 +32,7 @@ EOT
 /**
  * The plugin version.
  */
-define('WDIR_VERSION', '@WDIR_VERSION@');
+define('WDIR_VERSION', '1.1');
 
 /**
  * Returns the wdir table view.
