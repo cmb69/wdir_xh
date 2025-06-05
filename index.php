@@ -22,7 +22,8 @@ if (!defined('CMSIMPLE_XH_VERSION')
 ) {
     header('HTTP/1.1 403 Forbidden');
     header('Content-Type: text/plain; charset=UTF-8');
-    die(<<<EOT
+    die(
+        <<<EOT
 Wdir_XH detected an unsupported CMSimple_XH version.
 Deinstall Wdir_XH or upgrade to a supported CMSimple_XH version!
 EOT
