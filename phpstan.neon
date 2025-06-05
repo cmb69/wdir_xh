@@ -2,7 +2,7 @@ parameters:
   level: 5
   paths:
     - classes
-#    - views
+    - views
     - admin.php
     - index.php
   bootstrapFiles:
@@ -11,5 +11,5 @@ parameters:
     - ../../cmsimple/adminfuncs.php
     - ../../cmsimple/functions.php
     - ../../cmsimple/compat.php
-#  scanDirectories:
-#    - ../plib/classes
+  scanDirectories:
+    - ../plib/classes

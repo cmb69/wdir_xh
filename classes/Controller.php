@@ -21,9 +21,17 @@
 
 namespace Wdir;
 
+use Plib\View;
+
 class Controller
 {
     private bool $isJsEmitted = false;
+    private View $view;
+
+    public function __construct(View $view)
+    {
+        $this->view = $view;
+    }
 
     public function renderTable(string $path, string $filter = ""): string
     {
@@ -47,11 +55,10 @@ class Controller
         $config = array(
             'caseInsensitive' => $plugin_cf['wdir']['sort_column'] == 'name/i'
         );
-        $bjs .= '<script type="text/javascript">/* <![CDATA[ */'
-            . 'var WDIR = ' . json_encode($config) . ';'
-            . '/* ]]> */</script>' . "\n"
-            . '<script type="text/javascript" src="' . $pth['folder']['plugins']
-            . 'wdir/wdir.js"></script>' . "\n";
+        $bjs .= $this->view->render("wdir", [
+            "config" => $config,
+            "script" => $pth['folder']['plugins'] . "wdir/wdir.js",
+        ]);
     }
 
     private function render(Folder $folder): string

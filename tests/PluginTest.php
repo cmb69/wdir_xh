@@ -6,6 +6,13 @@ use PHPUnit\Framework\TestCase;
 
 class PluginTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        global $pth, $plugin_tx;
+        $pth = ["folder" => ["plugins" => ""]];
+        $plugin_tx = ["wdir" => []];
+    }
+
     public function testMakesController(): void
     {
         $this->assertInstanceOf(Controller::class, Plugin::controller());

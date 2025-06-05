@@ -26,10 +26,12 @@ use org\bovigo\vfs\vfsStreamWrapper;
 use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
+use Plib\View;
 
 class ControllerTest extends TestCase
 {
     protected string $path;
+    private View $view;
 
     protected function setUp(): void
     {
@@ -61,32 +63,34 @@ class ControllerTest extends TestCase
         touch($this->path . '/three', 1749127703);
         mkdir($this->path . '/wdir/images', 0777, true);
         touch($this->path . '/wdir/images/file-txt.png', 1749127703);
+        $this->view = new View("./views/", XH_includeVar("./languages/en.php", "plugin_tx")["wdir"]);
+    }
+
+    private function sut(): Controller
+    {
+        return new Controller($this->view);
     }
 
     public function testJSConfigurationIsWrittenToBJS(): void
     {
         global $bjs;
-
-        $subject = new Controller();
-        $subject->renderTable('');
+        $this->sut()->renderTable('');
         Approvals::verifyHtml($bjs);
     }
 
     public function testEmitsJsOnlyOnce(): void
     {
         global $bjs;
-
-        $subject = new Controller();
-        $subject->renderTable('');
+        $sut = $this->sut();
+        $sut->renderTable('');
         $bjs = '';
-        $subject->renderTable('');
+        $sut->renderTable('');
         $this->assertEmpty($bjs);
     }
 
     public function testRendersTable(): void
     {
-        $subject = new Controller();
-        $output = $subject->renderTable('downloads');
+        $output = $this->sut()->renderTable('downloads');
         $this->assertSame(
             "<table class=\"wdir_table\"><thead><tr>\n"
             . "<td>Name</td>\n<td>Size</td>\n<td>Modified</td>\n</tr></thead>\n"
@@ -97,14 +101,14 @@ class ControllerTest extends TestCase
 
     public function testRendersColumnHeading(): void
     {
-        $subject = new Controller();
+        $subject = new Controller($this->view);
         $output = $subject->renderTable('');
         Approvals::verifyHtml($output);
     }
 
     public function testRenders1BodyRowWhenFilteredWithWildcardPattern(): void
     {
-        $subject = new Controller();
+        $subject = new Controller($this->view);
         $output = $subject->renderTable('', '*.pdf');
         Approvals::verifyHtml($output);
     }
@@ -114,7 +118,7 @@ class ControllerTest extends TestCase
         global $plugin_cf;
 
         $plugin_cf['wdir']['filter_regexp'] = 'true';
-        $subject = new Controller();
+        $subject = new Controller($this->view);
         $output = $subject->renderTable('', '/\.pdf$/');
         Approvals::verifyHtml($output);
     }

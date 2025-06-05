@@ -21,17 +21,25 @@
 
 namespace Wdir;
 
+use Plib\View;
+
 class Plugin
 {
     public const VERSION = "1.1";
 
     public static function controller(): Controller
     {
-        return new Controller();
+        return new Controller(self::view());
     }
 
     public static function infoCommand(): InfoCommand
     {
         return new InfoCommand();
+    }
+
+    private static function view(): View
+    {
+        global $pth, $plugin_tx;
+        return new View($pth["folder"]["plugins"] . "wdir/views/", $plugin_tx["wdir"]);
     }
 }
