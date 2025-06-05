@@ -70,11 +70,11 @@ class TableView
         global $plugin_tx;
 
         $ptx = $plugin_tx['wdir'];
-        return '<thead><tr>'
-            . '<td>' . $ptx['label_name'] . '</td>'
-            . '<td>' . $ptx['label_size'] . '</td>'
-            . '<td>' . $ptx['label_modified'] . '</td>'
-            . '</tr></thead>';
+        return '<thead><tr>' . "\n"
+            . '<td>' . $ptx['label_name'] . '</td>' . "\n"
+            . '<td>' . $ptx['label_size'] . '</td>' . "\n"
+            . '<td>' . $ptx['label_modified'] . '</td>' . "\n"
+            . '</tr></thead>' . "\n";
     }
 
     /**
@@ -106,16 +106,16 @@ class TableView
         global $plugin_tx;
 
         $time = date($plugin_tx['wdir']['format_date'], $file->getModificationTime());
-        return '<tr>'
+        return '<tr>' . "\n"
             . '<td class="wdir_name" data-wdir="' . $file->getName() . '">'
             . $this->renderFileIcon($file)
             . '<a href="' . $file->getPath() . '" target="_blank">'
-            . $file->getName() . '</a>' . '</td>'
+            . $file->getName() . '</a>' . '</td>' . "\n"
             . '<td class="wdir_size" data-wdir="' . $file->getSize() . '">'
-            . $this->renderFileSize($file) . '</td>'
+            . $this->renderFileSize($file) . '</td>' . "\n"
             . '<td class="wdir_modified" data-wdir="'
-            . $file->getModificationTime() . '">' . $time . '</td>'
-            . '</tr>';
+            . $file->getModificationTime() . '">' . $time . '</td>' . "\n"
+            . '</tr>' . "\n";
     }
 
     /**

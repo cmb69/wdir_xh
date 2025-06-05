@@ -202,8 +202,8 @@ EOT;
         );
         $bjs .= '<script type="text/javascript">/* <![CDATA[ */'
             . 'var WDIR = ' . json_encode($config) . ';'
-            . '/* ]]> */</script>'
+            . '/* ]]> */</script>' . "\n"
             . '<script type="text/javascript" src="' . $pth['folder']['plugins']
-            . 'wdir/wdir.js"></script>';
+            . 'wdir/wdir.js"></script>' . "\n";
     }
 }
