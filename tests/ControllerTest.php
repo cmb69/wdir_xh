@@ -38,11 +38,11 @@ class ControllerTest extends TestCase
     {
         global $plugin_cf;
 
-        $plugin_cf['wdir'] = array(
+        $plugin_cf['wdir'] = [
             'sort_column' => 'name',
             'sort_ascending' => 'true',
             'filter_regexp' => ''
-        );
+        ];
         vfsStreamWrapper::register();
         vfsStreamWrapper::setRoot(new vfsStreamDirectory('test'));
         $this->path = vfsStream::url('test');

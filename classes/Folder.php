@@ -36,7 +36,7 @@ class Folder
     /** @return list<File> */
     public function getFiles(): array
     {
-        $files = array();
+        $files = [];
         $paths = $this->getFilePaths();
         foreach ($paths as $path) {
             $files[] = new File($path);
@@ -47,7 +47,7 @@ class Folder
     /** @return list<string> */
     private function getFilePaths(): array
     {
-        $files = array();
+        $files = [];
         if ($dir = opendir($this->path)) {
             while (($entry = readdir($dir)) !== false) {
                 $path = $this->path . $entry;
@@ -88,10 +88,10 @@ class Folder
     {
         $pattern = strtr(
             preg_quote($filter, '/'),
-            array(
+            [
                 '\\*' => '.*',
                 '\\?' => '.'
-            )
+            ]
         );
         return (bool) preg_match('/^' . $pattern . '$/', $string);
     }
@@ -108,10 +108,10 @@ class Folder
                 usort($files, 'strcasecmp');
                 break;
             case 'size':
-                usort($files, array($this, 'compareFilesBySize'));
+                usort($files, [$this, 'compareFilesBySize']);
                 break;
             case 'date':
-                usort($files, array($this, 'compareFilesByTime'));
+                usort($files, [$this, 'compareFilesByTime']);
                 break;
         }
         if (!$plugin_cf['wdir']['sort_ascending']) {

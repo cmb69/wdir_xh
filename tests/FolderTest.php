@@ -25,11 +25,11 @@ class FolderTest extends TestCase
         touch(vfsStream::url('test/Baz.txt'), 123456);
         touch(vfsStream::url('test/foo.bar'));
 
-        $plugin_cf['wdir'] = array(
+        $plugin_cf['wdir'] = [
             'sort_column' => 'name',
             'sort_ascending' => 'true',
             'filter_regexp' => ''
-        );
+        ];
 
         $this->subject = new Folder(vfsStream::url('test/'), '*.txt');
     }
