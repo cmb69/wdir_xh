@@ -15,9 +15,6 @@
 
 use PHPUnit\Framework\TestCase;
 
-require_once './vendor/autoload.php';
-require_once '../../cmsimple/functions.php';
-
 /**
  * Testing the info view.
  *

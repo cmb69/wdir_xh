@@ -17,8 +17,6 @@ namespace Wdir;
 
 use PHPUnit\Framework\TestCase;
 
-require_once './vendor/autoload.php';
-
 /**
  * Testing the general plugin administration.
  *

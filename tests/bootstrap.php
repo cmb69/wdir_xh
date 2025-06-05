@@ -13,6 +13,11 @@
  * @link      http://3-magi.net/?CMSimple_XH/Wdir_XH
  */
 
+require_once "./vendor/autoload.php";
+
+require_once "../../cmsimple/functions.php";
+require_once "../../cmsimple/compat.php";
+
 require_once "./classes/Controller.php";
 require_once "./classes/File.php";
 require_once "./classes/Folder.php";

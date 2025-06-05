@@ -15,10 +15,6 @@
 
 namespace Wdir;
 
-require_once './vendor/autoload.php';
-require_once '../../cmsimple/functions.php';
-require_once '../../cmsimple/compat.php';
-
 use org\bovigo\vfs\vfsStreamWrapper;
 use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStream;
