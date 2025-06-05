@@ -83,9 +83,7 @@ class ControllerTest extends TestCase
 
     public function testRenders1BodyRowWhenFilteredWithRegexpPattern(): void
     {
-        global $plugin_cf;
-
-        $plugin_cf['wdir']['filter_regexp'] = 'true';
+        $this->conf["filter_regexp"] = "true";
         $subject = $this->sut();
         $output = $subject->renderTable('', '/\.pdf$/');
         Approvals::verifyHtml($output);

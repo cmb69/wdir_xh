@@ -24,13 +24,16 @@ namespace Wdir;
 class Folder
 {
     private string $path;
-
     private string $filter;
+    /** @var array<string,string> */
+    private array $conf;
 
-    public function __construct(string $path, string $filter)
+    /** @param array<string,string> $conf */
+    public function __construct(string $path, string $filter, array $conf)
     {
         $this->path = $path;
         $this->filter = $filter;
+        $this->conf = $conf;
     }
 
     /** @return list<File> */
@@ -68,9 +71,7 @@ class Folder
 
     private function matchesFilter(string $basename): bool
     {
-        global $plugin_cf;
-
-        if ($plugin_cf['wdir']['filter_regexp']) {
+        if ($this->conf["filter_regexp"]) {
             return (bool) preg_match($this->filter, $basename);
         } else {
             return $this->matchesSimpleFilter($this->filter, $basename);
@@ -102,9 +103,7 @@ class Folder
      */
     private function sortFiles(array $files): array
     {
-        global $plugin_cf;
-
-        switch ($plugin_cf['wdir']['sort_column']) {
+        switch ($this->conf["sort_column"]) {
             case 'name':
                 usort($files, fn (File $a, File $b) => strcmp($a->getName(), $b->getName()));
                 break;
@@ -118,7 +117,7 @@ class Folder
                 usort($files, fn (File $a, File $b) => $a->getModificationTime() - $b->getModificationTime());
                 break;
         }
-        if (!$plugin_cf['wdir']['sort_ascending']) {
+        if (!$this->conf["sort_ascending"]) {
             $files = array_reverse($files);
         }
         return $files;

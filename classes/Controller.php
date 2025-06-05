@@ -46,7 +46,7 @@ class Controller
         if ($path[strlen($path) - 1] != '/') {
             $path .= '/';
         }
-        return $this->render(new Folder($path, $filter));
+        return $this->render(new Folder($path, $filter, $this->conf));
     }
 
     private function render(Folder $folder): string

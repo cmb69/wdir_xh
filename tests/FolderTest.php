@@ -10,11 +10,10 @@ use PHPUnit\Framework\TestCase;
 class FolderTest extends TestCase
 {
     private Folder $subject;
+    private array $conf;
 
     protected function setUp(): void
     {
-        global $plugin_cf;
-
         vfsStreamWrapper::register();
         vfsStreamWrapper::setRoot(new vfsStreamDirectory('test'));
         file_put_contents(vfsStream::url('test/foo.txt'), '***');
@@ -25,13 +24,13 @@ class FolderTest extends TestCase
         touch(vfsStream::url('test/Baz.txt'), 123456);
         touch(vfsStream::url('test/foo.bar'));
 
-        $plugin_cf['wdir'] = [
-            'sort_column' => 'name',
-            'sort_ascending' => 'true',
-            'filter_regexp' => ''
-        ];
+        $this->conf = XH_includeVar("./config/config.php", "plugin_cf")["wdir"];
+        $this->subject = new Folder(vfsStream::url('test/'), '*.txt', $this->conf);
+    }
 
-        $this->subject = new Folder(vfsStream::url('test/'), '*.txt');
+    private function sut(): Folder
+    {
+        return new Folder(vfsStream::url('test/'), '*.txt', $this->conf);
     }
 
     public function testTwoFilesAreFound(): void
@@ -52,10 +51,8 @@ class FolderTest extends TestCase
 
     public function testFilesAreSortedByNameCaseInsensitive(): void
     {
-        global $plugin_cf;
-
-        $plugin_cf['wdir']['sort_column'] = 'name/i';
-        $files = $this->subject->getFiles();
+        $this->conf["sort_column"] = "name/i";
+        $files = $this->sut()->getFiles();
         $this->assertEquals('bar.txt', $files[0]->getName());
     }
 
@@ -79,10 +76,8 @@ class FolderTest extends TestCase
 
     public function testFilesAreSortedDescendingByName(): void
     {
-        global $plugin_cf;
-
-        $plugin_cf['wdir']['sort_ascending'] = '';
-        $files = $this->subject->getFiles();
+        $this->conf["sort_ascending"] = "";
+        $files = $this->sut()->getFiles();
         $this->assertEquals('Baz.txt', $files[2]->getName());
     }
 
@@ -91,18 +86,16 @@ class FolderTest extends TestCase
         global $plugin_cf;
 
         $plugin_cf['wdir']['filter_regexp'] = '';
-        $subject = new Folder(vfsStream::url('test/'), '?a?.txt');
+        $subject = new Folder(vfsStream::url('test/'), '?a?.txt', $this->conf);
         $this->assertCount(2, $subject->getFiles());
-        $subject = new Folder(vfsStream::url('test/'), 'foo.*');
+        $subject = new Folder(vfsStream::url('test/'), 'foo.*', $this->conf);
         $this->assertCount(2, $subject->getFiles());
     }
 
     public function testRegexpFilter(): void
     {
-        global $plugin_cf;
-
-        $plugin_cf['wdir']['filter_regexp'] = 'true';
-        $subject = new Folder(vfsStream::url('test/'), '/^foo/');
+        $this->conf["filter_regexp"] = "true";
+        $subject = new Folder(vfsStream::url('test/'), '/^foo/', $this->conf);
         $this->assertCount(2, $subject->getFiles());
     }
 }
