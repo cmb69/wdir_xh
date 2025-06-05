@@ -38,7 +38,7 @@ class Wdir_Controller
      */
     public function dispatch()
     {
-        if (XH_ADM) {
+        if (XH_ADM) { // @phpstan-ignore-line
             if (function_exists('XH_registerStandardPluginMenuItems')) {
                 XH_registerStandardPluginMenuItems(false);
             }
@@ -83,7 +83,7 @@ class Wdir_Controller
             $o .= $this->renderInfo();
             break;
         default:
-            $o .= plugin_admin_common($action, $admin, 'wdir');
+            $o .= plugin_admin_common($action, $admin, 'wdir'); // @phpstan-ignore-line
         }
     }
 
@@ -166,7 +166,7 @@ EOT;
      *
      * @global array The paths of system files and folders.
      */
-    public function renderTable($path, $filter = false)
+    public function renderTable($path, $filter = "")
     {
         global $pth;
 

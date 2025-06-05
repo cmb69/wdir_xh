@@ -18,7 +18,7 @@
  */
 if (!defined('CMSIMPLE_XH_VERSION')
     || strpos(CMSIMPLE_XH_VERSION, 'CMSimple_XH') !== 0
-    || version_compare(CMSIMPLE_XH_VERSION, 'CMSimple_XH 1.6', 'lt')
+    || version_compare(CMSIMPLE_XH_VERSION, 'CMSimple_XH 1.6', 'lt') // @phpstan-ignore-line
 ) {
     header('HTTP/1.1 403 Forbidden');
     header('Content-Type: text/plain; charset=UTF-8');
@@ -45,7 +45,7 @@ define('WDIR_VERSION', '1.1');
  *
  * @global Wdir_Controller The plugin controller.
  */
-function wdir($path, $filter = false)
+function wdir($path, $filter = "")
 {
     global $_Wdir_controller;
 

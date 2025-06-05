@@ -55,7 +55,7 @@ class Wdir_Folder
     /**
      * Returns a list of files.
      *
-     * @return array
+     * @return list<Wdir_File>
      */
     public function getFiles()
     {
@@ -70,7 +70,7 @@ class Wdir_Folder
     /**
      * Returns a list of filepaths.
      *
-     * @return array
+     * @return list<string>
      */
     protected function getFilePaths()
     {
