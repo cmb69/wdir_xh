@@ -9,7 +9,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
  * @var array $config
  * @var string $script
  * @var string $head
- * @var list<string> $rows
+ * @var list<object{name:string,icon:string,path:string,size:int,rsize:string,mtime:int}> $rows
  */
 ?>
 
@@ -25,7 +25,11 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
 </thead>
 <tbody>
 <?foreach ($rows as $row):?>
-<?=$this->raw($row)?>
+  <tr>
+    <td class="wdir_name" data-wdir="<?=$this->esc($row->name)?>"><?=$this->raw($row->icon)?><a href="<?=$this->esc($row->path)?>" target="_blank"><?=$this->esc($row->name)?></a></td>
+    <td class="wdir_size" data-wdir="<?=$this->esc($row->size)?>"><?=$this->raw($row->rsize)?></td>
+    <td class="wdir_modified" data-wdir="<?=$this->esc($row->mtime)?>"><?=$this->date("format_date", $row->mtime)?></td>
+  </tr>
 <?endforeach?>
 </tbody>
 </table>

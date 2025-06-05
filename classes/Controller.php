@@ -65,26 +65,24 @@ class Controller
     {
         $res = [];
         foreach ($folder->getFiles() as $file) {
-            $res[] = $this->renderBodyRow($file);
+            $res[] = $this->rowRecord($file);
         }
         return $res;
     }
 
-    private function renderBodyRow(File $file): string
+    /** @return object{name:string,icon:string,path:string,size:int,rsize:string,mtime:int} */
+    private function rowRecord(File $file)
     {
         global $plugin_tx;
 
-        $time = date($plugin_tx['wdir']['format_date'], $file->getModificationTime());
-        return '<tr>' . "\n"
-            . '<td class="wdir_name" data-wdir="' . $file->getName() . '">'
-            . $this->renderFileIcon($file)
-            . '<a href="' . $file->getPath() . '" target="_blank">'
-            . $file->getName() . '</a>' . '</td>' . "\n"
-            . '<td class="wdir_size" data-wdir="' . $file->getSize() . '">'
-            . $this->renderFileSize($file) . '</td>' . "\n"
-            . '<td class="wdir_modified" data-wdir="'
-            . $file->getModificationTime() . '">' . $time . '</td>' . "\n"
-            . '</tr>' . "\n";
+        return (object) [
+            "name" => $file->getName(),
+            "icon" => $this->renderFileIcon($file),
+            "path" => $file->getPath(),
+            "size" => $file->getSize(),
+            "rsize" => $this->renderFileSize($file),
+            "mtime" => $file->getModificationTime(),
+        ];
     }
 
     private function renderFileSize(File $file): string
