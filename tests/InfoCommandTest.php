@@ -4,19 +4,20 @@ namespace Wdir;
 
 use ApprovalTests\Approvals;
 use PHPUnit\Framework\TestCase;
+use Plib\View;
 
 class InfoCommandTest extends TestCase
 {
+    private View $view;
+
     protected function setUp(): void
     {
-        global $pth, $plugin_tx;
-        $pth = ["folder" => ["plugins" => "./plugins/"]];
-        $plugin_tx = XH_includeVar("./languages/en.php", "plugin_tx");
+        $this->view = new View("./views/", XH_includeVar("./languages/en.php", "plugin_tx")["wdir"]);
     }
 
     private function sut(): InfoCommand
     {
-        return new InfoCommand();
+        return new InfoCommand("./plugins/wdir/", $this->view);
     }
 
     public function testRendersInfo(): void

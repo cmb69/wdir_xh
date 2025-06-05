@@ -40,7 +40,11 @@ class Plugin
 
     public static function infoCommand(): InfoCommand
     {
-        return new InfoCommand();
+        global $pth;
+        return new InfoCommand(
+            $pth["folder"]["plugins"] . "wdir/",
+            self::view()
+        );
     }
 
     private static function view(): View

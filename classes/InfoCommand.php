@@ -21,8 +21,19 @@
 
 namespace Wdir;
 
+use Plib\View;
+
 class InfoCommand
 {
+    private string $pluginFolder;
+    private View $view;
+
+    public function __construct(string $pluginFolder, View $view)
+    {
+        $this->pluginFolder = $pluginFolder;
+        $this->view = $view;
+    }
+
     public function __invoke(): string
     {
         return '<h1>Wdir</h1>' . "\n"
@@ -33,11 +44,9 @@ class InfoCommand
 
     private function renderIcon(): string
     {
-        global $pth, $plugin_tx;
-
-        return '<img src="' . $pth['folder']['plugins']
-            . 'wdir/wdir.png" class="wdir_icon"'
-            . ' alt="' . $plugin_tx['wdir']['alt_icon'] . '">';
+        return '<img src="' . $this->pluginFolder
+            . 'wdir.png" class="wdir_icon"'
+            . ' alt="' . $this->view->text("alt_icon") . '">';
     }
 
     private function renderCopyright(): string
