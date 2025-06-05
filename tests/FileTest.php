@@ -9,9 +9,9 @@ use PHPUnit\Framework\TestCase;
 
 class FileTest extends TestCase
 {
-    protected File $subject;
+    private File $subject;
 
-    protected string $path;
+    private string $path;
 
     protected function setUp(): void
     {

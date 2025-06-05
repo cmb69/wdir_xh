@@ -23,9 +23,9 @@ namespace Wdir;
 
 class Folder
 {
-    protected string $path;
+    private string $path;
 
-    protected string $filter;
+    private string $filter;
 
     public function __construct(string $path, string $filter)
     {
@@ -45,7 +45,7 @@ class Folder
     }
 
     /** @return list<string> */
-    protected function getFilePaths(): array
+    private function getFilePaths(): array
     {
         $files = array();
         if ($dir = opendir($this->path)) {
@@ -60,13 +60,13 @@ class Folder
         return $files;
     }
 
-    protected function isAllowedFile(string $filename): bool
+    private function isAllowedFile(string $filename): bool
     {
         return (!$this->filter || $this->matchesFilter(basename($filename)))
             && is_file($filename);
     }
 
-    protected function matchesFilter(string $basename): bool
+    private function matchesFilter(string $basename): bool
     {
         global $plugin_cf;
 
@@ -84,7 +84,7 @@ class Folder
      * available on all platforms. To have the same behavior everywhere, we're
      * using it throughout, though.
      */
-    protected function matchesSimpleFilter(string $filter, string $string): bool
+    private function matchesSimpleFilter(string $filter, string $string): bool
     {
         $pattern = strtr(
             preg_quote($filter, '/'),
@@ -96,7 +96,7 @@ class Folder
         return (bool) preg_match('/^' . $pattern . '$/', $string);
     }
 
-    protected function sortFiles(array $files): array
+    private function sortFiles(array $files): array
     {
         global $plugin_cf;
 
@@ -120,12 +120,12 @@ class Folder
         return $files;
     }
 
-    protected function compareFilesBySize(File $a, File $b): int
+    private function compareFilesBySize(File $a, File $b): int
     {
         return $a->getSize() - $b->getSize();
     }
 
-    protected function compareFilesByTime(File $a, File $b): int
+    private function compareFilesByTime(File $a, File $b): int
     {
         return $a->getModificationTime() - $b->getModificationTime();
     }

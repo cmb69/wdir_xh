@@ -23,7 +23,7 @@ namespace Wdir;
 
 class File
 {
-    protected string $path;
+    private string $path;
 
     public function __construct(string $path)
     {

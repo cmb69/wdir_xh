@@ -30,7 +30,7 @@ use Plib\View;
 
 class ControllerTest extends TestCase
 {
-    protected string $path;
+    private string $path;
     private array $conf;
     private View $view;
 

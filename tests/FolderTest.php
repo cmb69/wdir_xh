@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class FolderTest extends TestCase
 {
-    protected Folder $subject;
+    private Folder $subject;
 
     protected function setUp(): void
     {
