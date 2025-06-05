@@ -108,25 +108,15 @@ class Folder
                 usort($files, 'strcasecmp');
                 break;
             case 'size':
-                usort($files, [$this, 'compareFilesBySize']);
+                usort($files, fn (File $a, File $b) => $a->getSize() - $b->getSize());
                 break;
             case 'date':
-                usort($files, [$this, 'compareFilesByTime']);
+                usort($files, fn (File $a, File $b) => $a->getModificationTime() - $b->getModificationTime());
                 break;
         }
         if (!$plugin_cf['wdir']['sort_ascending']) {
             $files = array_reverse($files);
         }
         return $files;
-    }
-
-    private function compareFilesBySize(File $a, File $b): int
-    {
-        return $a->getSize() - $b->getSize();
-    }
-
-    private function compareFilesByTime(File $a, File $b): int
-    {
-        return $a->getModificationTime() - $b->getModificationTime();
     }
 }
