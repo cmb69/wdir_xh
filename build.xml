@@ -7,7 +7,7 @@
         <include name="index.php"/>
     </fileset>
 
-    <fileset id="unit-tests" dir="tests/unit">
+    <fileset id="tests" dir="tests">
         <include name="*Test.php"/>
     </fileset>
 
@@ -24,11 +24,11 @@
         </exec>
     </target>
 
-    <target name="unit-tests" description="runs all unit tests">
+    <target name="test" description="runs all developer tests">
         <phpunit bootstrap="tests/autoload.php" haltonerror="true" haltonfailure="true">
             <formatter type="plain" usefile="false"/>
             <batchtest>
-                <fileset refid="unit-tests"/>
+                <fileset refid="tests"/>
             </batchtest>
         </phpunit>
     </target>
