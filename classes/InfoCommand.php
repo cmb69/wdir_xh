@@ -35,11 +35,9 @@ class InfoCommand
     {
         global $pth, $plugin_tx;
 
-        return tag(
-            'img src="' . $pth['folder']['plugins']
+        return '<img src="' . $pth['folder']['plugins']
             . 'wdir/wdir.png" class="wdir_icon"'
-            . ' alt="' . $plugin_tx['wdir']['alt_icon'] . '"'
-        );
+            . ' alt="' . $plugin_tx['wdir']['alt_icon'] . '">';
     }
 
     private function renderCopyright(): string

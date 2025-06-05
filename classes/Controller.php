@@ -120,8 +120,6 @@ class Controller
             $src = $imageFolder . 'file.png';
             $alt = $plugin_tx['wdir']['label_file'];
         }
-        return tag(
-            'img src="' . $src . '" alt="' . $alt . '" title="' . $alt . '"'
-        );
+        return '<img src="' . $src . '" alt="' . $alt . '" title="' . $alt . '">';
     }
 }
