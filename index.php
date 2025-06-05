@@ -27,7 +27,7 @@ use Wdir\Controller;
 if (
     !defined('CMSIMPLE_XH_VERSION')
     || strpos(CMSIMPLE_XH_VERSION, 'CMSimple_XH') !== 0
-    || version_compare(CMSIMPLE_XH_VERSION, 'CMSimple_XH 1.6', 'lt') // @phpstan-ignore-line
+    || version_compare(CMSIMPLE_XH_VERSION, 'CMSimple_XH 1.8', 'lt') // @phpstan-ignore-line
 ) {
     header('HTTP/1.1 403 Forbidden');
     header('Content-Type: text/plain; charset=UTF-8');
