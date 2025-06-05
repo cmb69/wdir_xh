@@ -34,5 +34,3 @@ function Wdir_autoload($class)
 }
 
 spl_autoload_register('Wdir_autoload');
-
-?>

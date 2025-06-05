@@ -328,9 +328,7 @@ class TableTest extends TestCase
                     'class' => 'wdir_modified',
                     'data-wdir' => filemtime($this->path . '/one.txt')
                 ),
-                'content' => date(
-                    'm/d/Y h:i a', filemtime($this->path . '/one.txt')
-                ),
+                'content' => date('m/d/Y h:i a', filemtime($this->path . '/one.txt')),
                 'ancestor' => array('tag' => 'tbody')
             ),
             $subject->renderTable('')
@@ -393,5 +391,3 @@ class TableTest extends TestCase
         );
     }
 }
-
-?>

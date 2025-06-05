@@ -105,9 +105,7 @@ class TableView
     {
         global $plugin_tx;
 
-        $time = date(
-            $plugin_tx['wdir']['format_date'], $file->getModificationTime()
-        );
+        $time = date($plugin_tx['wdir']['format_date'], $file->getModificationTime());
         return '<tr>'
             . '<td class="wdir_name" data-wdir="' . $file->getName() . '">'
             . $this->renderFileIcon($file)
@@ -162,5 +160,3 @@ class TableView
         );
     }
 }
-
-?>

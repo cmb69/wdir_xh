@@ -157,18 +157,18 @@ class Folder
         global $plugin_cf;
 
         switch ($plugin_cf['wdir']['sort_column']) {
-        case 'name':
-            sort($files);
-            break;
-        case 'name/i':
-            usort($files, 'strcasecmp');
-            break;
-        case 'size':
-            usort($files, array($this, 'compareFilesBySize'));
-            break;
-        case 'date':
-            usort($files, array($this, 'compareFilesByTime'));
-            break;
+            case 'name':
+                sort($files);
+                break;
+            case 'name/i':
+                usort($files, 'strcasecmp');
+                break;
+            case 'size':
+                usort($files, array($this, 'compareFilesBySize'));
+                break;
+            case 'date':
+                usort($files, array($this, 'compareFilesByTime'));
+                break;
         }
         if (!$plugin_cf['wdir']['sort_ascending']) {
             $files = array_reverse($files);
@@ -202,5 +202,3 @@ class Folder
         return $a->getModificationTime() - $b->getModificationTime();
     }
 }
-
-?>

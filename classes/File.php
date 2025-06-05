@@ -105,5 +105,3 @@ class File
         return filemtime($this->path);
     }
 }
-
-?>

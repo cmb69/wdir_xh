@@ -81,11 +81,11 @@ class Controller
 
         $o .= print_plugin_admin('off');
         switch ($admin) {
-        case '':
-            $o .= $this->renderInfo();
-            break;
-        default:
-            $o .= plugin_admin_common($action, $admin, 'wdir'); // @phpstan-ignore-line
+            case '':
+                $o .= $this->renderInfo();
+                break;
+            default:
+                $o .= plugin_admin_common($action, $admin, 'wdir'); // @phpstan-ignore-line
         }
     }
 
@@ -207,5 +207,3 @@ EOT;
             . 'wdir/wdir.js"></script>';
     }
 }
-
-?>

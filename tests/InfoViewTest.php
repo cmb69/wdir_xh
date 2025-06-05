@@ -13,6 +13,8 @@
  * @link      http://3-magi.net/?CMSimple_XH/Wdir_XH
  */
 
+namespace Wdir;
+
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -59,12 +61,8 @@ class InfoViewTest extends TestCase
             'wdir' => array('alt_icon' => 'Facebook')
         );
         $this->subject = new Controller();
-        new PHPUnit_Extensions_MockFunction(
-            'XH_registerStandardPluginMenuItems', $this->subject
-        );
-        new PHPUnit_Extensions_MockFunction(
-            'print_plugin_admin', $this->subject
-        );
+        new PHPUnit_Extensions_MockFunction('XH_registerStandardPluginMenuItems', $this->subject);
+        new PHPUnit_Extensions_MockFunction('print_plugin_admin', $this->subject);
         $this->subject->dispatch();
     }
 
@@ -198,5 +196,3 @@ class InfoViewTest extends TestCase
         }
     }
 }
-
-?>

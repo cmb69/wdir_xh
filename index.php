@@ -18,7 +18,8 @@ use Wdir\Controller;
 /*
  * Prevent direct access and usage from unsupported CMSimple_XH versions.
  */
-if (!defined('CMSIMPLE_XH_VERSION')
+if (
+    !defined('CMSIMPLE_XH_VERSION')
     || strpos(CMSIMPLE_XH_VERSION, 'CMSimple_XH') !== 0
     || version_compare(CMSIMPLE_XH_VERSION, 'CMSimple_XH 1.6', 'lt') // @phpstan-ignore-line
 ) {
@@ -62,5 +63,3 @@ function wdir($path, $filter = "")
  */
 $_Wdir_controller = new Controller();
 $_Wdir_controller->dispatch();
-
-?>

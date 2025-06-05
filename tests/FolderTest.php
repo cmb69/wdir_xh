@@ -85,9 +85,7 @@ class FolderTest extends TestCase
      */
     public function testAllFindingsAreFileInstances()
     {
-        $this->assertContainsOnlyInstancesOf(
-            File::class, $this->subject->getFiles()
-        );
+        $this->assertContainsOnlyInstancesOf(File::class, $this->subject->getFiles());
     }
 
     /**
@@ -199,5 +197,3 @@ class FolderTest extends TestCase
         $this->assertCount(2, $subject->getFiles());
     }
 }
-
-?>

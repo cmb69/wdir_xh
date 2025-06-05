@@ -15,8 +15,6 @@
 
 namespace Wdir;
 
-require_once './vendor/autoload.php';
-
 use org\bovigo\vfs\vfsStreamWrapper;
 use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStream;
@@ -112,5 +110,3 @@ class FileTest extends TestCase
         $this->assertEquals(123456, $this->subject->getModificationTime());
     }
 }
-
-?>

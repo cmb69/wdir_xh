@@ -67,15 +67,9 @@ class AdministrationTest extends TestCase
         $this->defineConstant('XH_ADM', true);
         $this->subject = new Controller();
         $this->registerStandardPluginMenuItemsMock
-            = new PHPUnit_Extensions_MockFunction(
-                'XH_registerStandardPluginMenuItems', $this->subject
-            );
-        $this->printPluginAdminMock = new PHPUnit_Extensions_MockFunction(
-            'print_plugin_admin', $this->subject
-        );
-        $this->pluginAdminCommonMock = new PHPUnit_Extensions_MockFunction(
-            'plugin_admin_common', $this->subject
-        );
+            = new PHPUnit_Extensions_MockFunction('XH_registerStandardPluginMenuItems', $this->subject);
+        $this->printPluginAdminMock = new PHPUnit_Extensions_MockFunction('print_plugin_admin', $this->subject);
+        $this->pluginAdminCommonMock = new PHPUnit_Extensions_MockFunction('plugin_admin_common', $this->subject);
     }
 
     /**
@@ -129,5 +123,3 @@ class AdministrationTest extends TestCase
         }
     }
 }
-
-?>
