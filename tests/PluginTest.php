@@ -8,8 +8,9 @@ class PluginTest extends TestCase
 {
     protected function setUp(): void
     {
-        global $pth, $plugin_tx;
+        global $pth, $plugin_cf, $plugin_tx;
         $pth = ["folder" => ["plugins" => "", "userfiles" => ""]];
+        $plugin_cf = ["wdir" => []];
         $plugin_tx = ["wdir" => []];
     }
 

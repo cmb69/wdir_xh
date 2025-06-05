@@ -29,10 +29,11 @@ class Plugin
 
     public static function controller(): Controller
     {
-        global $pth;
+        global $pth, $plugin_cf;
         return new Controller(
             $pth["folder"]["plugins"] . "wdir/",
             $pth["folder"]["userfiles"],
+            $plugin_cf["wdir"],
             self::view()
         );
     }

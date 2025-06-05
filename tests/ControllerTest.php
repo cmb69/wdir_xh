@@ -31,6 +31,7 @@ use Plib\View;
 class ControllerTest extends TestCase
 {
     protected string $path;
+    private array $conf;
     private View $view;
 
     protected function setUp(): void
@@ -51,12 +52,13 @@ class ControllerTest extends TestCase
         touch($this->path . '/three', 1749127703);
         mkdir($this->path . '/wdir/images', 0777, true);
         touch($this->path . '/wdir/images/file-txt.png', 1749127703);
+        $this->conf = XH_includeVar("./config/config.php", "plugin_cf")["wdir"];
         $this->view = new View("./views/", XH_includeVar("./languages/en.php", "plugin_tx")["wdir"]);
     }
 
     private function sut(): Controller
     {
-        return new Controller($this->path . '/wdir/', $this->path . "/", $this->view);
+        return new Controller($this->path . '/wdir/', $this->path . "/", $this->conf, $this->view);
     }
 
     public function testRendersTable(): void

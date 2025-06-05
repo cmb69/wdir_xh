@@ -27,12 +27,16 @@ class Controller
 {
     private string $pluginFolder;
     private string $userfilesFolder;
+    /** @var array<string,string> */
+    private array $conf;
     private View $view;
 
-    public function __construct(string $pluginFolder, string $userfilesFolder, View $view)
+    /** @param array<string,string> $conf */
+    public function __construct(string $pluginFolder, string $userfilesFolder, array $conf, View $view)
     {
         $this->pluginFolder = $pluginFolder;
         $this->userfilesFolder = $userfilesFolder;
+        $this->conf = $conf;
         $this->view = $view;
     }
 
@@ -56,9 +60,8 @@ class Controller
 
     private function jsConf(): array
     {
-        global $plugin_cf;
         return [
-            'caseInsensitive' => $plugin_cf['wdir']['sort_column'] == 'name/i'
+            'caseInsensitive' => $this->conf["sort_column"] == 'name/i'
         ];
     }
 
