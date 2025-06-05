@@ -71,28 +71,13 @@ class ControllerTest extends TestCase
         return new Controller($this->view);
     }
 
-    public function testJSConfigurationIsWrittenToBJS(): void
-    {
-        global $bjs;
-        $this->sut()->renderTable('');
-        Approvals::verifyHtml($bjs);
-    }
-
-    public function testEmitsJsOnlyOnce(): void
-    {
-        global $bjs;
-        $sut = $this->sut();
-        $sut->renderTable('');
-        $bjs = '';
-        $sut->renderTable('');
-        $this->assertEmpty($bjs);
-    }
-
     public function testRendersTable(): void
     {
         $output = $this->sut()->renderTable('downloads');
         $this->assertSame(
-            "<table class=\"wdir_table\"><thead><tr>\n"
+            "\n<div class=\"wdir_config\" data-config='{\"caseInsensitive\":false}' style=\"display:none\"></div>\n"
+            . "<script type=\"module\" src=\"vfs://test/wdir/wdir.js\"></script>\n"
+            . "<table class=\"wdir_table\"><thead><tr>\n"
             . "<td>Name</td>\n<td>Size</td>\n<td>Modified</td>\n</tr></thead>\n"
             . '<tbody></tbody></table>',
             $output

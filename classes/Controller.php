@@ -25,7 +25,6 @@ use Plib\View;
 
 class Controller
 {
-    private bool $isJsEmitted = false;
     private View $view;
 
     public function __construct(View $view)
@@ -37,25 +36,21 @@ class Controller
     {
         global $pth;
 
-        if (!$this->isJsEmitted) {
-            $this->isJsEmitted = true;
-            $this->emitJs();
-        }
         $path = $pth['folder']['userfiles'] . (string) $path;
         if ($path[strlen($path) - 1] != '/') {
             $path .= '/';
         }
-        return $this->render(new Folder($path, $filter));
+        return $this->emitJs() . $this->render(new Folder($path, $filter));
     }
 
-    private function emitJs(): void
+    private function emitJs(): string
     {
-        global $pth, $plugin_cf, $bjs;
+        global $pth, $plugin_cf;
 
         $config = array(
             'caseInsensitive' => $plugin_cf['wdir']['sort_column'] == 'name/i'
         );
-        $bjs .= $this->view->render("wdir", [
+        return $this->view->render("wdir", [
             "config" => $config,
             "script" => $pth['folder']['plugins'] . "wdir/wdir.js",
         ]);
