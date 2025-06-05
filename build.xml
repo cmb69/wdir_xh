@@ -2,15 +2,6 @@
 
 <project name="Wdir" default="help">
 
-    <fileset id="php-sources" dir=".">
-        <include name="classes/*.php"/>
-        <include name="index.php"/>
-    </fileset>
-
-    <fileset id="tests" dir="tests">
-        <include name="*Test.php"/>
-    </fileset>
-
     <target name="help" description="lists available targets">
         <exec executable="phing" outputProperty="help">
             <arg line="-l"/>
@@ -25,17 +16,12 @@
     </target>
 
     <target name="test" description="runs all developer tests">
-        <phpunit bootstrap="tests/bootstrap.php" haltonerror="true" haltonfailure="true">
-            <formatter type="plain" usefile="false"/>
-            <batchtest>
-                <fileset refid="tests"/>
-            </batchtest>
-        </phpunit>
+        <exec executable="phpunit" passthru="true" checkreturn="true"/>
     </target>
 
     <target name="coverage" description="generates coverage report">
-        <exec executable="phpunit" logoutput="true">
-            <arg line="--configuration coverage.xml"/>
+        <exec executable="phpunit" passthru="true" checkreturn="true">
+            <arg line="--coverage-html coverage"/>
         </exec>
     </target>
 
