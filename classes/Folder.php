@@ -26,40 +26,18 @@ namespace Wdir;
  */
 class Folder
 {
-    /**
-     * The folder path.
-     *
-     * @var string
-     */
-    protected $path;
+    protected string $path;
 
-    /**
-     * The filter expression.
-     *
-     * @var string
-     */
-    protected $filter;
+    protected string $filter;
 
-    /**
-     * Initializes a new instance.
-     *
-     * @param string $path   A folder path.
-     * @param string $filter A filter expression.
-     *
-     * @return void
-     */
-    public function __construct($path, $filter)
+    public function __construct(string $path, string $filter)
     {
         $this->path = $path;
         $this->filter = $filter;
     }
 
-    /**
-     * Returns a list of files.
-     *
-     * @return list<File>
-     */
-    public function getFiles()
+    /** @return list<File> */
+    public function getFiles(): array
     {
         $files = array();
         $paths = $this->getFilePaths();
@@ -69,12 +47,8 @@ class Folder
         return $this->sortFiles($files);
     }
 
-    /**
-     * Returns a list of filepaths.
-     *
-     * @return list<string>
-     */
-    protected function getFilePaths()
+    /** @return list<string> */
+    protected function getFilePaths(): array
     {
         $files = array();
         if ($dir = opendir($this->path)) {
@@ -89,29 +63,13 @@ class Folder
         return $files;
     }
 
-    /**
-     * Returns whether a filename is allowed for the listing.
-     *
-     * @param string $filename A filename.
-     *
-     * @return bool
-     */
-    protected function isAllowedFile($filename)
+    protected function isAllowedFile(string $filename): bool
     {
         return (!$this->filter || $this->matchesFilter(basename($filename)))
             && is_file($filename);
     }
 
-    /**
-     * Returns whether a basename matches the filter.
-     *
-     * @param string $basename A basename.
-     *
-     * @return bool
-     *
-     * @global array The configuration of the plugins.
-     */
-    protected function matchesFilter($basename)
+    protected function matchesFilter(string $basename): bool
     {
         global $plugin_cf;
 
@@ -128,13 +86,8 @@ class Folder
      * This is primarily a workaround for fnmatch() which might not be
      * available on all platforms. To have the same behavior everywhere, we're
      * using it throughout, though.
-     *
-     * @param string $filter A simplyfied glob pattern.
-     * @param string $string A string to be matched.
-     *
-     * @return bool
      */
-    protected function matchesSimpleFilter($filter, $string)
+    protected function matchesSimpleFilter(string $filter, string $string): bool
     {
         $pattern = strtr(
             preg_quote($filter, '/'),
@@ -145,14 +98,8 @@ class Folder
         );
         return (bool) preg_match('/^' . $pattern . '$/', $string);
     }
-    /**
-     * Sorts and returns the files according to the configuration.
-     *
-     * @param array $files An array of files.
-     *
-     * @return array
-     */
-    protected function sortFiles($files)
+
+    protected function sortFiles(array $files): array
     {
         global $plugin_cf;
 
@@ -176,28 +123,12 @@ class Folder
         return $files;
     }
 
-    /**
-     * Compares two files by size and returns the result.
-     *
-     * @param File $a A file.
-     * @param File $b Another file.
-     *
-     * @return int
-     */
-    protected function compareFilesBySize(File $a, File $b)
+    protected function compareFilesBySize(File $a, File $b): int
     {
         return $a->getSize() - $b->getSize();
     }
 
-    /**
-     * Compares two files by modification time and returns the result.
-     *
-     * @param File $a A file.
-     * @param File $b Another file.
-     *
-     * @return int
-     */
-    protected function compareFilesByTime(File $a, File $b)
+    protected function compareFilesByTime(File $a, File $b): int
     {
         return $a->getModificationTime() - $b->getModificationTime();
     }

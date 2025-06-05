@@ -26,31 +26,14 @@ namespace Wdir;
  */
 class TableView
 {
-    /**
-     * The folder.
-     *
-     * @var Folder
-     */
-    protected $folder;
+    protected Folder $folder;
 
-    /**
-     * Initializes a new instance.
-     *
-     * @param Folder $folder A folder.
-     *
-     * @return void
-     */
     public function __construct(Folder $folder)
     {
         $this->folder = $folder;
     }
 
-    /**
-     * Renders the view.
-     *
-     * @return string (X)HTML.
-     */
-    public function render()
+    public function render(): string
     {
         $html = '<table class="wdir_table">'
             . $this->renderHead() . $this->renderBody()
@@ -58,14 +41,7 @@ class TableView
         return $html;
     }
 
-    /**
-     * Renders the table head.
-     *
-     * @return string (X)HTML.
-     *
-     * @global array The localization of the plugins.
-     */
-    protected function renderHead()
+    protected function renderHead(): string
     {
         global $plugin_tx;
 
@@ -77,12 +53,7 @@ class TableView
             . '</tr></thead>' . "\n";
     }
 
-    /**
-     * Renders the table body.
-     *
-     * @return string (X)HTML.
-     */
-    protected function renderBody()
+    protected function renderBody(): string
     {
         $html = '<tbody>';
         foreach ($this->folder->getFiles() as $file) {
@@ -92,16 +63,7 @@ class TableView
         return $html;
     }
 
-    /**
-     * Renders a table body row.
-     *
-     * @param File $file A file.
-     *
-     * @return string (X)HTML.
-     *
-     * @global array The localization of the plugins.
-     */
-    protected function renderBodyRow($file)
+    protected function renderBodyRow(File $file): string
     {
         global $plugin_tx;
 
@@ -118,31 +80,13 @@ class TableView
             . '</tr>' . "\n";
     }
 
-    /**
-     * Returns the size of a file in KB (rounded up).
-     *
-     * @param File $file A file.
-     *
-     * @return string (X)HTML.
-     */
-    protected function renderFileSize($file)
+    protected function renderFileSize(File $file): string
     {
         return ceil($file->getSize() / 1024) . ' KB';
     }
 
-    /**
-     * Renders a file icon.
-     *
-     * @param File $file A file.
-     *
-     * @return string (X)HTML.
-     *
-     * @global array The paths of system files and folders.
-     * @global array The localization of the plugins.
-     *
-     * @todo alt attribute!
-     */
-    protected function renderFileIcon($file)
+    /** @todo alt attribute! */
+    protected function renderFileIcon(File $file): string
     {
         global $pth, $plugin_tx;
 

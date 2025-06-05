@@ -26,81 +26,39 @@ namespace Wdir;
  */
 class File
 {
-    /**
-     * The file path.
-     *
-     * @var string
-     */
-    protected $path;
+    protected string $path;
 
-    /**
-     * Initializes a new instance.
-     *
-     * @param string $path A file path.
-     *
-     * @return void
-     */
-    public function __construct($path)
+    public function __construct(string $path)
     {
-        $this->path = (string) $path;
+        $this->path = $path;
     }
 
-    /**
-     * Returns a string representation of the object.
-     *
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getName();
     }
 
-    /**
-     * Returns the file path.
-     *
-     * @return string
-     */
-    public function getPath()
+    public function getPath(): string
     {
         return $this->path;
     }
 
-    /**
-     * Returns the file basename.
-     *
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return basename($this->path);
     }
 
-    /**
-     * Returns the file extension.
-     *
-     * @return string
-     */
-    public function getExtension()
+    public function getExtension(): string
     {
         return pathinfo($this->path, PATHINFO_EXTENSION);
     }
 
-    /**
-     * Returns the file size.
-     *
-     * @return int
-     */
-    public function getSize()
+    public function getSize(): int
     {
         return filesize($this->path);
     }
 
-    /**
-     * Returns the timestamp of the last modification.
-     *
-     * @return int
-     */
-    public function getModificationTime()
+    public function getModificationTime(): int
     {
         return filemtime($this->path);
     }

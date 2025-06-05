@@ -20,36 +20,12 @@ use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Testing the file class.
- *
- * @category Testing
- * @package  Wdir
- * @author   Christoph M. Becker <cmbecker69@gmx.de>
- * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
- * @link     http://3-magi.net/?CMSimple_XH/Wdir_XH
- */
 class FileTest extends TestCase
 {
-    /**
-     * The test subect.
-     *
-     * @var File
-     */
-    protected $subject;
+    protected File $subject;
 
-    /**
-     * The path of the test file.
-     *
-     * @var string
-     */
-    protected $path;
+    protected string $path;
 
-    /**
-     * Sets up the test fixture.
-     *
-     * @return void
-     */
     protected function setUp(): void
     {
         vfsStreamWrapper::register();
@@ -59,52 +35,27 @@ class FileTest extends TestCase
         $this->subject = new File($this->path);
     }
 
-    /**
-     * Tests that the path is correct.
-     *
-     * @return void
-     */
-    public function testPathIsCorrect()
+    public function testPathIsCorrect(): void
     {
         $this->assertEquals($this->path, $this->subject->getPath());
     }
 
-    /**
-     * Tests that the name is correct.
-     *
-     * @return void
-     */
-    public function testNameIsCorrect()
+    public function testNameIsCorrect(): void
     {
         $this->assertEquals('foo.bar', $this->subject->getName());
     }
 
-    /**
-     * Tests that the extension is correct.
-     *
-     * @return void
-     */
-    public function testExtensionIsCorrect()
+    public function testExtensionIsCorrect(): void
     {
         $this->assertEquals('bar', $this->subject->getExtension());
     }
 
-    /**
-     * Tests that the size is correct.
-     *
-     * @return void
-     */
-    public function testSizeIsCorrect()
+    public function testSizeIsCorrect(): void
     {
         $this->assertEquals(6, $this->subject->getSize());
     }
 
-    /**
-     * Tests that the modification time is correct.
-     *
-     * @return void
-     */
-    public function testModificationTimeIsCorrect()
+    public function testModificationTimeIsCorrect(): void
     {
         touch($this->path, 123456);
         $this->assertEquals(123456, $this->subject->getModificationTime());

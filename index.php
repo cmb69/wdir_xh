@@ -38,17 +38,7 @@ EOT
  */
 define('WDIR_VERSION', '1.1');
 
-/**
- * Returns the wdir table view.
- *
- * @param string $path   A folder path.
- * @param string $filter A filter expression.
- *
- * @return string (X)HTML.
- *
- * @global Controller The plugin controller.
- */
-function wdir($path, $filter = "")
+function wdir(string $path, string $filter = ""): string
 {
     global $_Wdir_controller;
 

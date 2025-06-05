@@ -17,34 +17,10 @@ namespace Wdir;
 
 use PHPUnit\Framework\TestCase;
 
-/**
- * Testing the info view.
- *
- * @category Testing
- * @package  Wdir
- * @author   Christoph M. Becker <cmbecker69@gmx.de>
- * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
- * @link     http://3-magi.net/?CMSimple_XH/Wdir_XH
- */
 class InfoViewTest extends TestCase
 {
-    /**
-     * The subject under test.
-     *
-     * @var Controller
-     */
-    protected $subject;
+    protected Controller $subject;
 
-    /**
-     * Sets up the test fixture.
-     *
-     * @return void
-     *
-     * @global string Whether the plugin administration is requested.
-     * @global string The (X)HTML of the contents area.
-     * @global array  The paths of system files and folders.
-     * @global array  The localization of the plugins.
-     */
     protected function setUp(): void
     {
         global $wdir, $o, $pth, $plugin_tx;
@@ -66,14 +42,7 @@ class InfoViewTest extends TestCase
         $this->subject->dispatch();
     }
 
-    /**
-     * Tests that the heading is rendered.
-     *
-     * @return void
-     *
-     * @global string The (X)HTML of the contents area.
-     */
-    public function testRendersHeading()
+    public function testRendersHeading(): void
     {
         global $o;
 
@@ -86,14 +55,7 @@ class InfoViewTest extends TestCase
         );
     }
 
-    /**
-     * Tests that the plugin icon is rendered.
-     *
-     * @return void
-     *
-     * @global string The (X)HTML of the contents area.
-     */
-    public function testRendersIcon()
+    public function testRendersIcon(): void
     {
         global $o;
 
@@ -110,14 +72,7 @@ class InfoViewTest extends TestCase
         );
     }
 
-    /**
-     * Tests that the version info is rendered.
-     *
-     * @return void
-     *
-     * @global string The (X)HTML of the contents area.
-     */
-    public function testRendersVersion()
+    public function testRendersVersion(): void
     {
         global $o;
 
@@ -130,14 +85,7 @@ class InfoViewTest extends TestCase
         );
     }
 
-    /**
-     * Tests that the copyright info is rendered.
-     *
-     * @return void
-     *
-     * @global string The (X)HTML of the contents area.
-     */
-    public function testRendersCopyright()
+    public function testRendersCopyright(): void
     {
         global $o;
 
@@ -158,14 +106,7 @@ class InfoViewTest extends TestCase
         );
     }
 
-    /**
-     * Tests that the license info is rendered.
-     *
-     * @return void
-     *
-     * @global string The (X)HTML of the contents area.
-     */
-    public function testRendersLicense()
+    public function testRendersLicense(): void
     {
         global $o;
 
@@ -179,15 +120,7 @@ class InfoViewTest extends TestCase
         );
     }
 
-    /**
-     * Defines resp. redefines a constant.
-     *
-     * @param string $name  A name.
-     * @param string $value A value.
-     *
-     * @return void
-     */
-    protected function defineConstant($name, $value)
+    protected function defineConstant(string $name, string $value): void
     {
         if (!defined($name)) {
             define($name, $value);

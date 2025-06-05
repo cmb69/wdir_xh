@@ -15,30 +15,11 @@
 
 namespace Wdir;
 
-/**
- * The controllers.
- *
- * @category CMSimple_XH
- * @package  Wdir
- * @author   Christoph M. Becker <cmbecker69@gmx.de>
- * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
- * @link     http://3-magi.net/?CMSimple_XH/Wdir_XH
- */
 class Controller
 {
-    /**
-     * Whether the JS has already been emitted.
-     *
-     * @var bool
-     */
-    protected $isJsEmitted = false;
+    protected bool $isJsEmitted = false;
 
-    /**
-     * Dispatches according to the request.
-     *
-     * @return void
-     */
-    public function dispatch()
+    public function dispatch(): void
     {
         if (XH_ADM) { // @phpstan-ignore-line
             if (function_exists('XH_registerStandardPluginMenuItems')) {
@@ -50,14 +31,7 @@ class Controller
         }
     }
 
-    /**
-     * Returns whether the plugin administration is requested.
-     *
-     * @return bool
-     *
-     * @global string Whether the plugin administration is requested.
-     */
-    protected function isAdministrationRequested()
+    protected function isAdministrationRequested(): bool
     {
         global $wdir;
 
@@ -66,16 +40,7 @@ class Controller
             || isset($wdir) && $wdir == 'true';
     }
 
-    /**
-     * Handles the plugin administration.
-     *
-     * @return void
-     *
-     * @global string The value of the <var>admin</var> GP parameter.
-     * @global string The value of the <var>action</var> GP parameter.
-     * @global string The (X)HTML fragment to insert into the contents area.
-     */
-    protected function handleAdministration()
+    protected function handleAdministration(): void
     {
         global $admin, $action, $o;
 
@@ -89,12 +54,7 @@ class Controller
         }
     }
 
-    /**
-     * Renders the plugin info.
-     *
-     * @return string (X)HTML.
-     */
-    protected function renderInfo()
+    protected function renderInfo(): string
     {
         return '<h1>Wdir</h1>'
             . $this->renderIcon()
@@ -102,15 +62,7 @@ class Controller
             . $this->renderCopyright() . $this->renderLicense();
     }
 
-    /**
-     * Renders the plugin icon.
-     *
-     * @return string (X)HTML.
-     *
-     * @global array The paths of system files and folders.
-     * @global array The localization of the plugins.
-     */
-    protected function renderIcon()
+    protected function renderIcon(): string
     {
         global $pth, $plugin_tx;
 
@@ -121,12 +73,7 @@ class Controller
         );
     }
 
-    /**
-     * Renders the copyright info.
-     *
-     * @return string (X)HTML.
-     */
-    protected function renderCopyright()
+    protected function renderCopyright(): string
     {
         return <<<EOT
 <p>Copyright &copy; 2012-2015
@@ -135,12 +82,7 @@ class Controller
 EOT;
     }
 
-    /**
-     * Renders the license info.
-     *
-     * @return string (X)HTML.
-     */
-    protected function renderLicense()
+    protected function renderLicense(): string
     {
         return <<<EOT
 <p class="wdir_license">This program is free software: you can
@@ -158,17 +100,7 @@ href="http://www.gnu.org/licenses/" target="_blank">http://www.gnu.org/licenses/
 EOT;
     }
 
-    /**
-     * Renders the table.
-     *
-     * @param string $path   A folder path.
-     * @param string $filter A filter expression.
-     *
-     * @return string (X)HTML.
-     *
-     * @global array The paths of system files and folders.
-     */
-    public function renderTable($path, $filter = "")
+    public function renderTable(string $path, string $filter = ""): string
     {
         global $pth;
 
@@ -184,16 +116,7 @@ EOT;
         return $view->render();
     }
 
-    /**
-     * Emits the JS to the bottom of the body element.
-     *
-     * @return void
-     *
-     * @global array  The paths of system files and folders.
-     * @global array  The configuration of the plugins.
-     * @global string The (X)HTML fragment to insert at the bottom of the body.
-     */
-    protected function emitJs()
+    protected function emitJs(): void
     {
         global $pth, $plugin_cf, $bjs;
 

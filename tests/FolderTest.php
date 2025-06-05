@@ -20,31 +20,10 @@ use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Testing the folder class.
- *
- * @category Testing
- * @package  Wdir
- * @author   Christoph M. Becker <cmbecker69@gmx.de>
- * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
- * @link     http://3-magi.net/?CMSimple_XH/Wdir_XH
- */
 class FolderTest extends TestCase
 {
-    /**
-     * The test subject.
-     *
-     * @var Folder
-     */
-    protected $subject;
+    protected Folder $subject;
 
-    /**
-     * Sets up the test fixture.
-     *
-     * @return void
-     *
-     * @global array The configuration of the plugins.
-     */
     protected function setUp(): void
     {
         global $plugin_cf;
@@ -68,45 +47,23 @@ class FolderTest extends TestCase
         $this->subject = new Folder(vfsStream::url('test/'), '*.txt');
     }
 
-    /**
-     * Tests that two files are found.
-     *
-     * @return void
-     */
-    public function testTwoFilesAreFound()
+    public function testTwoFilesAreFound(): void
     {
         $this->assertCount(3, $this->subject->getFiles());
     }
 
-    /**
-     * Tests that all findings are File instances.
-     *
-     * @return void
-     */
-    public function testAllFindingsAreFileInstances()
+    public function testAllFindingsAreFileInstances(): void
     {
         $this->assertContainsOnlyInstancesOf(File::class, $this->subject->getFiles());
     }
 
-    /**
-     * Tests that the files are sorted by name.
-     *
-     * @return void
-     */
-    public function testFilesAreSortedByName()
+    public function testFilesAreSortedByName(): void
     {
         $files = $this->subject->getFiles();
         $this->assertEquals('Baz.txt', $files[0]->getName());
     }
 
-    /**
-     * Tests that the files are sorted by name, case insensitive.
-     *
-     * @return void
-     *
-     * @global array The configuration of the plugins.
-     */
-    public function testFilesAreSortedByNameCaseInsensitive()
+    public function testFilesAreSortedByNameCaseInsensitive(): void
     {
         global $plugin_cf;
 
@@ -115,14 +72,7 @@ class FolderTest extends TestCase
         $this->assertEquals('bar.txt', $files[0]->getName());
     }
 
-    /**
-     * Tests that the files are sorted by size.
-     *
-     * @return void
-     *
-     * @global array The configuration of the plugins.
-     */
-    public function testFilesAreSortedBySize()
+    public function testFilesAreSortedBySize(): void
     {
         global $plugin_cf;
 
@@ -131,14 +81,7 @@ class FolderTest extends TestCase
         $this->assertEquals('Baz.txt', $files[0]->getName());
     }
 
-    /**
-     * Tests that the files are sorted by date.
-     *
-     * @return void
-     *
-     * @global array The configuration of the plugins.
-     */
-    public function testFilesAreSortedByDate()
+    public function testFilesAreSortedByDate(): void
     {
         global $plugin_cf;
 
@@ -147,14 +90,7 @@ class FolderTest extends TestCase
         $this->assertEquals('Baz.txt', $files[0]->getName());
     }
 
-    /**
-     * Tests that the files are sorted descending by name.
-     *
-     * @return void
-     *
-     * @global array The configuration of the plugins.
-     */
-    public function testFilesAreSortedDescendingByName()
+    public function testFilesAreSortedDescendingByName(): void
     {
         global $plugin_cf;
 
@@ -163,14 +99,7 @@ class FolderTest extends TestCase
         $this->assertEquals('Baz.txt', $files[2]->getName());
     }
 
-    /**
-     * Tests the simple filter.
-     *
-     * @return void
-     *
-     * @global array The configuration of the plugins.
-     */
-    public function testSimpleFilter()
+    public function testSimpleFilter(): void
     {
         global $plugin_cf;
 
@@ -181,14 +110,7 @@ class FolderTest extends TestCase
         $this->assertCount(2, $subject->getFiles());
     }
 
-    /**
-     * Tests the regexp filter.
-     *
-     * @return void
-     *
-     * @global array The configuration of the plugins.
-     */
-    public function testRegexpFilter()
+    public function testRegexpFilter(): void
     {
         global $plugin_cf;
 

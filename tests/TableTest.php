@@ -21,31 +21,10 @@ use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Testing the table view.
- *
- * @category Testing
- * @package  Wdir
- * @author   Christoph M. Becker <cmbecker69@gmx.de>
- * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
- * @link     http://3-magi.net/?CMSimple_XH/Wdir_XH
- */
 class TableTest extends TestCase
 {
-    /**
-     * The path of the test folder.
-     *
-     * @var string
-     */
-    protected $path;
+    protected string $path;
 
-    /**
-     * Sets up the test fixture.
-     *
-     * @return void
-     *
-     * @global array The localization of the plugin.
-     */
     protected function setUp(): void
     {
         global $pth, $plugin_cf, $plugin_tx;
@@ -78,14 +57,7 @@ class TableTest extends TestCase
         touch($this->path . '/wdir/images/file-txt.png', 1749127703);
     }
 
-    /**
-     * Tests that the JS configuration is written to $bjs.
-     *
-     * @return void
-     *
-     * @global string The (X)HTML fragment to insert at the bottom of the body.
-     */
-    public function testJSConfigurationIsWrittenToBJS()
+    public function testJSConfigurationIsWrittenToBJS(): void
     {
         global $bjs;
 
@@ -94,14 +66,7 @@ class TableTest extends TestCase
         Approvals::verifyHtml($bjs);
     }
 
-    /**
-     * Tests that the JS is emitted only once.
-     *
-     * @return void
-     *
-     * @global string The (X)HTML fragment to insert at the bottom of the body.
-     */
-    public function testEmitsJsOnlyOnce()
+    public function testEmitsJsOnlyOnce(): void
     {
         global $bjs;
 
@@ -112,12 +77,7 @@ class TableTest extends TestCase
         $this->assertEmpty($bjs);
     }
 
-    /**
-     * Tests that the table is rendered.
-     *
-     * @return void
-     */
-    public function testRendersTable()
+    public function testRendersTable(): void
     {
         $subject = new Controller();
         $output = $subject->renderTable('downloads');
@@ -129,36 +89,21 @@ class TableTest extends TestCase
         );
     }
 
-    /**
-     * Tests that a column heading is rendered.
-     *
-     * @return void
-     */
-    public function testRendersColumnHeading()
+    public function testRendersColumnHeading(): void
     {
         $subject = new Controller();
         $output = $subject->renderTable('');
         Approvals::verifyHtml($output);
     }
 
-    /**
-     * Tests that one body is row is rendered, when filtered with wildcard pattern.
-     *
-     * @return void
-     */
-    public function testRenders1BodyRowWhenFilteredWithWildcardPattern()
+    public function testRenders1BodyRowWhenFilteredWithWildcardPattern(): void
     {
         $subject = new Controller();
         $output = $subject->renderTable('', '*.pdf');
         Approvals::verifyHtml($output);
     }
 
-    /**
-     * Tests that one body is row is rendered, when filtered with regexp pattern.
-     *
-     * @return void
-     */
-    public function testRenders1BodyRowWhenFilteredWithRegexpPattern()
+    public function testRenders1BodyRowWhenFilteredWithRegexpPattern(): void
     {
         global $plugin_cf;
 
