@@ -53,57 +53,11 @@ class Controller
         $o .= print_plugin_admin('off');
         switch ($admin) {
             case '':
-                $o .= $this->renderInfo();
+                $o .= (new InfoCommand())();
                 break;
             default:
                 $o .= plugin_admin_common($action, $admin, 'wdir'); // @phpstan-ignore-line
         }
-    }
-
-    protected function renderInfo(): string
-    {
-        return '<h1>Wdir</h1>'
-            . $this->renderIcon()
-            . '<p>Version: ' . WDIR_VERSION . '</p>'
-            . $this->renderCopyright() . $this->renderLicense();
-    }
-
-    protected function renderIcon(): string
-    {
-        global $pth, $plugin_tx;
-
-        return tag(
-            'img src="' . $pth['folder']['plugins']
-            . 'wdir/wdir.png" class="wdir_icon"'
-            . ' alt="' . $plugin_tx['wdir']['alt_icon'] . '"'
-        );
-    }
-
-    protected function renderCopyright(): string
-    {
-        return <<<EOT
-<p>Copyright &copy; 2012-2015
-    <a href="http://3-magi.net/" target="_blank">Christoph M. Becker</a>
-</p>
-EOT;
-    }
-
-    protected function renderLicense(): string
-    {
-        return <<<EOT
-<p class="wdir_license">This program is free software: you can
-redistribute it and/or modify it under the terms of the GNU General Public
-License as published by the Free Software Foundation, either version 3 of the
-License, or (at your option) any later version.</p>
-<p class="wdir_license">This program is distributed in the hope that it
-will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHAN&shy;TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
-Public License for more details.</p>
-<p class="wdir_license">You should have received a copy of the GNU
-General Public License along with this program. If not, see <a
-href="http://www.gnu.org/licenses/" target="_blank">http://www.gnu.org/licenses/</a>.
-</p>
-EOT;
     }
 
     public function renderTable(string $path, string $filter = ""): string
