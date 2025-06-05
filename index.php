@@ -21,22 +21,9 @@
 
 use Wdir\Controller;
 
-/*
- * Prevent direct access and usage from unsupported CMSimple_XH versions.
- */
-if (
-    !defined('CMSIMPLE_XH_VERSION')
-    || strpos(CMSIMPLE_XH_VERSION, 'CMSimple_XH') !== 0
-    || version_compare(CMSIMPLE_XH_VERSION, 'CMSimple_XH 1.8', 'lt') // @phpstan-ignore-line
-) {
-    header('HTTP/1.1 403 Forbidden');
-    header('Content-Type: text/plain; charset=UTF-8');
-    die(
-        <<<EOT
-Wdir_XH detected an unsupported CMSimple_XH version.
-Deinstall Wdir_XH or upgrade to a supported CMSimple_XH version!
-EOT
-    );
+if (!defined("CMSIMPLE_XH_VERSION")) {
+    http_response_code(403);
+    exit;
 }
 
 /**
@@ -58,4 +45,3 @@ function wdir(string $path, string $filter = ""): string
  * The plugin controller.
  */
 $_Wdir_controller = new Controller();
-$_Wdir_controller->dispatch();

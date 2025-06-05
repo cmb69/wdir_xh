@@ -25,30 +25,6 @@ class Controller
 {
     protected bool $isJsEmitted = false;
 
-    public function dispatch(): void
-    {
-        if (XH_ADM) { // @phpstan-ignore-line
-            XH_registerStandardPluginMenuItems(false);
-            if (XH_wantsPluginAdministration('wdir')) {
-                $this->handleAdministration();
-            }
-        }
-    }
-
-    protected function handleAdministration(): void
-    {
-        global $admin, $action, $o;
-
-        $o .= print_plugin_admin('off');
-        switch ($admin) {
-            case '':
-                $o .= (new InfoCommand())();
-                break;
-            default:
-                $o .= plugin_admin_common();
-        }
-    }
-
     public function renderTable(string $path, string $filter = ""): string
     {
         global $pth;
