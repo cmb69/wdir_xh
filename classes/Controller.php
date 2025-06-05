@@ -92,16 +92,14 @@ class Controller
     /** @todo alt attribute! */
     private function renderFileIcon(File $file): string
     {
-        global $plugin_tx;
-
         $ext = $file->getExtension();
         $imageFolder = $this->pluginFolder . 'images/';
         $src = $imageFolder . 'file-' . $ext . '.png';
         if (file_exists($src)) {
-            $alt = sprintf($plugin_tx['wdir']['format_type'], strtoupper($ext));
+            $alt = $this->view->text("format_type", strtoupper($ext));
         } else {
             $src = $imageFolder . 'file.png';
-            $alt = $plugin_tx['wdir']['label_file'];
+            $alt = $this->view->text("label_file");
         }
         return '<img src="' . $src . '" alt="' . $alt . '" title="' . $alt . '">';
     }

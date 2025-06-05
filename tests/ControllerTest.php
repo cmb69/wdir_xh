@@ -35,20 +35,12 @@ class ControllerTest extends TestCase
 
     protected function setUp(): void
     {
-        global $plugin_cf, $plugin_tx;
+        global $plugin_cf;
 
         $plugin_cf['wdir'] = array(
             'sort_column' => 'name',
             'sort_ascending' => 'true',
             'filter_regexp' => ''
-        );
-        $plugin_tx['wdir'] = array(
-            'label_name' => 'Name',
-            'label_size' => 'Size',
-            'label_modified' => 'Modified',
-            'label_file' => 'File',
-            'format_type' => '%s file',
-            'format_date' => 'm/d/Y h:i a'
         );
         vfsStreamWrapper::register();
         vfsStreamWrapper::setRoot(new vfsStreamDirectory('test'));
