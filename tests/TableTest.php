@@ -13,6 +13,8 @@
  * @link      http://3-magi.net/?CMSimple_XH/Wdir_XH
  */
 
+namespace Wdir;
+
 require_once './vendor/autoload.php';
 require_once '../../cmsimple/functions.php';
 require_once '../../cmsimple/compat.php';
@@ -91,7 +93,7 @@ class TableTest extends TestCase
         global $bjs;
 
         $this->markTestSkipped("requires ::assertTag");
-        $subject = new Wdir_Controller();
+        $subject = new Controller();
         $subject->renderTable('');
         @$this->assertTag(
             array(
@@ -114,7 +116,7 @@ class TableTest extends TestCase
         global $bjs;
 
         $this->markTestSkipped("requires ::assertTag");
-        $subject = new Wdir_Controller();
+        $subject = new Controller();
         $subject->renderTable('');
         @$this->assertTag(
             array(
@@ -139,7 +141,7 @@ class TableTest extends TestCase
     {
         global $bjs;
 
-        $subject = new Wdir_Controller();
+        $subject = new Controller();
         $subject->renderTable('');
         $bjs = '';
         $subject->renderTable('');
@@ -154,7 +156,7 @@ class TableTest extends TestCase
     public function testRendersTable()
     {
         $this->markTestSkipped("requires ::assertTag");
-        $subject = new Wdir_Controller();
+        $subject = new Controller();
         @$this->assertTag(
             array(
                 'tag' => 'table',
@@ -176,7 +178,7 @@ class TableTest extends TestCase
     public function testRendersColumnHeading($name)
     {
         $this->markTestSkipped("requires ::assertTag");
-        $subject = new Wdir_Controller();
+        $subject = new Controller();
         @$this->assertTag(
             array(
                 'tag' => 'tr',
@@ -213,7 +215,7 @@ class TableTest extends TestCase
     public function testRenders3BodyRows()
     {
         $this->markTestSkipped("requires ::assertTag");
-        $subject = new Wdir_Controller();
+        $subject = new Controller();
         @$this->assertTag(
             array(
                 'tag' => 'tbody',
@@ -235,7 +237,7 @@ class TableTest extends TestCase
     public function testRenders1BodyRowWhenFilteredWithWildcardPattern()
     {
         $this->markTestSkipped("requires ::assertTag");
-        $subject = new Wdir_Controller();
+        $subject = new Controller();
         @$this->assertTag(
             array(
                 'tag' => 'tbody',
@@ -259,7 +261,7 @@ class TableTest extends TestCase
 
         $this->markTestSkipped("requires ::assertTag");
         $plugin_cf['wdir']['filter_regexp'] = 'true';
-        $subject = new Wdir_Controller();
+        $subject = new Controller();
         @$this->assertTag(
             array(
                 'tag' => 'tbody',
@@ -286,7 +288,7 @@ class TableTest extends TestCase
     public function testRendersCell($name, $content, $value)
     {
         $this->markTestSkipped("requires ::assertTag");
-        $subject = new Wdir_Controller();
+        $subject = new Controller();
         @$this->assertTag(
             array(
                 'tag' => 'td',
@@ -322,7 +324,7 @@ class TableTest extends TestCase
     public function testRendersModifiedCell()
     {
         $this->markTestSkipped("requires ::assertTag");
-        $subject = new Wdir_Controller();
+        $subject = new Controller();
         @$this->assertTag(
             array(
                 'tag' => 'td',
@@ -352,7 +354,7 @@ class TableTest extends TestCase
 
         $this->markTestSkipped("requires ::assertTag");
         $pth['folder']['plugins'] = './';
-        $subject = new Wdir_Controller();
+        $subject = new Controller();
         @$this->assertTag(
             array(
                 'tag' => 'td',
@@ -378,7 +380,7 @@ class TableTest extends TestCase
     public function testRendersFilenameAsLink()
     {
         $this->markTestSkipped("requires ::assertTag");
-        $subject = new Wdir_Controller();
+        $subject = new Controller();
         @$this->assertTag(
             array(
                 'tag' => 'td',

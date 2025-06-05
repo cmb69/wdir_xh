@@ -13,6 +13,8 @@
  * @link      http://3-magi.net/?CMSimple_XH/Wdir_XH
  */
 
+namespace Wdir;
+
 /**
  * The folders.
  *
@@ -22,7 +24,7 @@
  * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
  * @link     http://3-magi.net/?CMSimple_XH/Wdir_XH
  */
-class Wdir_Folder
+class Folder
 {
     /**
      * The folder path.
@@ -55,14 +57,14 @@ class Wdir_Folder
     /**
      * Returns a list of files.
      *
-     * @return list<Wdir_File>
+     * @return list<File>
      */
     public function getFiles()
     {
         $files = array();
         $paths = $this->getFilePaths();
         foreach ($paths as $path) {
-            $files[] = new Wdir_File($path);
+            $files[] = new File($path);
         }
         return $this->sortFiles($files);
     }
@@ -177,12 +179,12 @@ class Wdir_Folder
     /**
      * Compares two files by size and returns the result.
      *
-     * @param Wdir_File $a A file.
-     * @param Wdir_File $b Another file.
+     * @param File $a A file.
+     * @param File $b Another file.
      *
      * @return int
      */
-    protected function compareFilesBySize(Wdir_File $a, Wdir_File $b)
+    protected function compareFilesBySize(File $a, File $b)
     {
         return $a->getSize() - $b->getSize();
     }
@@ -190,12 +192,12 @@ class Wdir_Folder
     /**
      * Compares two files by modification time and returns the result.
      *
-     * @param Wdir_File $a A file.
-     * @param Wdir_File $b Another file.
+     * @param File $a A file.
+     * @param File $b Another file.
      *
      * @return int
      */
-    protected function compareFilesByTime(Wdir_File $a, Wdir_File $b)
+    protected function compareFilesByTime(File $a, File $b)
     {
         return $a->getModificationTime() - $b->getModificationTime();
     }

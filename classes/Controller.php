@@ -13,6 +13,8 @@
  * @link      http://3-magi.net/?CMSimple_XH/Wdir_XH
  */
 
+namespace Wdir;
+
 /**
  * The controllers.
  *
@@ -22,7 +24,7 @@
  * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
  * @link     http://3-magi.net/?CMSimple_XH/Wdir_XH
  */
-class Wdir_Controller
+class Controller
 {
     /**
      * Whether the JS has already been emitted.
@@ -178,7 +180,7 @@ EOT;
         if ($path[strlen($path) - 1] != '/') {
             $path .= '/';
         }
-        $view = new Wdir_TableView(new Wdir_Folder($path, $filter));
+        $view = new TableView(new Folder($path, $filter));
         return $view->render();
     }
 

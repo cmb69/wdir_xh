@@ -13,6 +13,8 @@
  * @link      http://3-magi.net/?CMSimple_XH/Wdir_XH
  */
 
+namespace Wdir;
+
 /**
  * The files.
  *
@@ -22,7 +24,7 @@
  * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
  * @link     http://3-magi.net/?CMSimple_XH/Wdir_XH
  */
-class Wdir_File
+class File
 {
     /**
      * The file path.

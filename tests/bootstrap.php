@@ -13,15 +13,7 @@
  * @link      http://3-magi.net/?CMSimple_XH/Wdir_XH
  */
 
-spl_autoload_register(
-    function ($class) {
-        global $pth;
-
-        $parts = explode('_', $class, 2);
-        if ($parts[0] == 'Wdir') {
-            include_once './classes/' . $parts[1] . '.php';
-        }
-    }
-);
-
-?>
+require_once "./classes/Controller.php";
+require_once "./classes/File.php";
+require_once "./classes/Folder.php";
+require_once "./classes/TableView.php";

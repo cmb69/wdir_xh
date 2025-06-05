@@ -13,6 +13,8 @@
  * @link      http://3-magi.net/?CMSimple_XH/Wdir_XH
  */
 
+namespace Wdir;
+
 /**
  * The table views.
  *
@@ -22,23 +24,23 @@
  * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
  * @link     http://3-magi.net/?CMSimple_XH/Wdir_XH
  */
-class Wdir_TableView
+class TableView
 {
     /**
      * The folder.
      *
-     * @var Wdir_Folder
+     * @var Folder
      */
     protected $folder;
 
     /**
      * Initializes a new instance.
      *
-     * @param Wdir_Folder $folder A folder.
+     * @param Folder $folder A folder.
      *
      * @return void
      */
-    public function __construct(Wdir_Folder $folder)
+    public function __construct(Folder $folder)
     {
         $this->folder = $folder;
     }
@@ -93,7 +95,7 @@ class Wdir_TableView
     /**
      * Renders a table body row.
      *
-     * @param Wdir_File $file A file.
+     * @param File $file A file.
      *
      * @return string (X)HTML.
      *
@@ -121,7 +123,7 @@ class Wdir_TableView
     /**
      * Returns the size of a file in KB (rounded up).
      *
-     * @param Wdir_File $file A file.
+     * @param File $file A file.
      *
      * @return string (X)HTML.
      */
@@ -133,7 +135,7 @@ class Wdir_TableView
     /**
      * Renders a file icon.
      *
-     * @param Wdir_File $file A file.
+     * @param File $file A file.
      *
      * @return string (X)HTML.
      *

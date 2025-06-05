@@ -13,6 +13,8 @@
  * @link      http://3-magi.net/?CMSimple_XH/Wdir_XH
  */
 
+use Wdir\Controller;
+
 /*
  * Prevent direct access and usage from unsupported CMSimple_XH versions.
  */
@@ -43,7 +45,7 @@ define('WDIR_VERSION', '1.1');
  *
  * @return string (X)HTML.
  *
- * @global Wdir_Controller The plugin controller.
+ * @global Controller The plugin controller.
  */
 function wdir($path, $filter = "")
 {
@@ -58,7 +60,7 @@ function wdir($path, $filter = "")
 /**
  * The plugin controller.
  */
-$_Wdir_controller = new Wdir_Controller();
+$_Wdir_controller = new Controller();
 $_Wdir_controller->dispatch();
 
 ?>

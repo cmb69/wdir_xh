@@ -32,7 +32,7 @@ class InfoViewTest extends TestCase
     /**
      * The subject under test.
      *
-     * @var Wdir_Controller
+     * @var Controller
      */
     protected $subject;
 
@@ -61,7 +61,7 @@ class InfoViewTest extends TestCase
         $plugin_tx = array(
             'wdir' => array('alt_icon' => 'Facebook')
         );
-        $this->subject = new Wdir_Controller();
+        $this->subject = new Controller();
         new PHPUnit_Extensions_MockFunction(
             'XH_registerStandardPluginMenuItems', $this->subject
         );

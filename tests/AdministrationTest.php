@@ -13,6 +13,8 @@
  * @link      http://3-magi.net/?CMSimple_XH/Wdir_XH
  */
 
+namespace Wdir;
+
 use PHPUnit\Framework\TestCase;
 
 require_once './vendor/autoload.php';
@@ -31,7 +33,7 @@ class AdministrationTest extends TestCase
     /**
      * The test subject.
      *
-     * @var Wdir_Controller
+     * @var Controller
      */
     protected $subject;
 
@@ -65,7 +67,7 @@ class AdministrationTest extends TestCase
     {
         $this->markTestSkipped("requires function mocks");
         $this->defineConstant('XH_ADM', true);
-        $this->subject = new Wdir_Controller();
+        $this->subject = new Controller();
         $this->registerStandardPluginMenuItemsMock
             = new PHPUnit_Extensions_MockFunction(
                 'XH_registerStandardPluginMenuItems', $this->subject

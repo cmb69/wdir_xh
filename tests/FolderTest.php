@@ -13,6 +13,8 @@
  * @link      http://3-magi.net/?CMSimple_XH/Wdir_XH
  */
 
+namespace Wdir;
+
 require_once './vendor/autoload.php';
 
 use org\bovigo\vfs\vfsStreamWrapper;
@@ -34,7 +36,7 @@ class FolderTest extends TestCase
     /**
      * The test subject.
      *
-     * @var Wdir_Folder
+     * @var Folder
      */
     protected $subject;
 
@@ -65,7 +67,7 @@ class FolderTest extends TestCase
             'filter_regexp' => ''
         );
 
-        $this->subject = new Wdir_Folder(vfsStream::url('test/'), '*.txt');
+        $this->subject = new Folder(vfsStream::url('test/'), '*.txt');
     }
 
     /**
@@ -79,14 +81,14 @@ class FolderTest extends TestCase
     }
 
     /**
-     * Tests that all findings are Wdir_File instances.
+     * Tests that all findings are File instances.
      *
      * @return void
      */
     public function testAllFindingsAreFileInstances()
     {
         $this->assertContainsOnlyInstancesOf(
-            'Wdir_File', $this->subject->getFiles()
+            File::class, $this->subject->getFiles()
         );
     }
 
@@ -177,9 +179,9 @@ class FolderTest extends TestCase
         global $plugin_cf;
 
         $plugin_cf['wdir']['filter_regexp'] = '';
-        $subject = new Wdir_Folder(vfsStream::url('test/'), '?a?.txt');
+        $subject = new Folder(vfsStream::url('test/'), '?a?.txt');
         $this->assertCount(2, $subject->getFiles());
-        $subject = new Wdir_Folder(vfsStream::url('test/'), 'foo.*');
+        $subject = new Folder(vfsStream::url('test/'), 'foo.*');
         $this->assertCount(2, $subject->getFiles());
     }
 
@@ -195,7 +197,7 @@ class FolderTest extends TestCase
         global $plugin_cf;
 
         $plugin_cf['wdir']['filter_regexp'] = 'true';
-        $subject = new Wdir_Folder(vfsStream::url('test/'), '/^foo/');
+        $subject = new Folder(vfsStream::url('test/'), '/^foo/');
         $this->assertCount(2, $subject->getFiles());
     }
 }

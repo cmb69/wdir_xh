@@ -13,6 +13,8 @@
  * @link      http://3-magi.net/?CMSimple_XH/Wdir_XH
  */
 
+namespace Wdir;
+
 require_once './vendor/autoload.php';
 
 use org\bovigo\vfs\vfsStreamWrapper;
@@ -34,7 +36,7 @@ class FileTest extends TestCase
     /**
      * The test subect.
      *
-     * @var Wdir_File
+     * @var File
      */
     protected $subject;
 
@@ -56,7 +58,7 @@ class FileTest extends TestCase
         vfsStreamWrapper::setRoot(new vfsStreamDirectory('test'));
         $this->path = vfsStream::url('test/foo.bar');
         file_put_contents($this->path, 'foobar');
-        $this->subject = new Wdir_File($this->path);
+        $this->subject = new File($this->path);
     }
 
     /**
