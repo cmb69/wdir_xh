@@ -35,7 +35,7 @@ class ControllerTest extends TestCase
 
     protected function setUp(): void
     {
-        global $pth, $plugin_cf, $plugin_tx;
+        global $plugin_cf, $plugin_tx;
 
         $plugin_cf['wdir'] = array(
             'sort_column' => 'name',
@@ -53,10 +53,6 @@ class ControllerTest extends TestCase
         vfsStreamWrapper::register();
         vfsStreamWrapper::setRoot(new vfsStreamDirectory('test'));
         $this->path = vfsStream::url('test');
-        $pth['folder'] = array(
-            'plugins' => $this->path . '/',
-            'userfiles' => $this->path . '/'
-        );
         mkdir($this->path . '/downloads/', 0777);
         touch($this->path . '/one.txt', 1749127703);
         touch($this->path . '/two.pdf', 1749127703);
@@ -68,7 +64,7 @@ class ControllerTest extends TestCase
 
     private function sut(): Controller
     {
-        return new Controller($this->view);
+        return new Controller($this->path . '/wdir/', $this->path . "/", $this->view);
     }
 
     public function testRendersTable(): void
@@ -79,14 +75,14 @@ class ControllerTest extends TestCase
 
     public function testRendersColumnHeading(): void
     {
-        $subject = new Controller($this->view);
+        $subject = $this->sut();
         $output = $subject->renderTable('');
         Approvals::verifyHtml($output);
     }
 
     public function testRenders1BodyRowWhenFilteredWithWildcardPattern(): void
     {
-        $subject = new Controller($this->view);
+        $subject = $this->sut();
         $output = $subject->renderTable('', '*.pdf');
         Approvals::verifyHtml($output);
     }
@@ -96,7 +92,7 @@ class ControllerTest extends TestCase
         global $plugin_cf;
 
         $plugin_cf['wdir']['filter_regexp'] = 'true';
-        $subject = new Controller($this->view);
+        $subject = $this->sut();
         $output = $subject->renderTable('', '/\.pdf$/');
         Approvals::verifyHtml($output);
     }

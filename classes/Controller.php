@@ -25,18 +25,20 @@ use Plib\View;
 
 class Controller
 {
+    private string $pluginFolder;
+    private string $userfilesFolder;
     private View $view;
 
-    public function __construct(View $view)
+    public function __construct(string $pluginFolder, string $userfilesFolder, View $view)
     {
+        $this->pluginFolder = $pluginFolder;
+        $this->userfilesFolder = $userfilesFolder;
         $this->view = $view;
     }
 
     public function renderTable(string $path, string $filter = ""): string
     {
-        global $pth;
-
-        $path = $pth['folder']['userfiles'] . (string) $path;
+        $path = $this->userfilesFolder . $path;
         if ($path[strlen($path) - 1] != '/') {
             $path .= '/';
         }
@@ -45,10 +47,9 @@ class Controller
 
     private function render(Folder $folder): string
     {
-        global $pth;
         return $this->view->render("wdir", [
             "config" => $this->jsConf(),
-            "script" => $pth['folder']['plugins'] . "wdir/wdir.js",
+            "script" => $this->pluginFolder . "wdir.js",
             "rows" => $this->rows($folder),
         ]);
     }
@@ -73,8 +74,6 @@ class Controller
     /** @return object{name:string,icon:string,path:string,size:int,rsize:string,mtime:int} */
     private function rowRecord(File $file)
     {
-        global $plugin_tx;
-
         return (object) [
             "name" => $file->getName(),
             "icon" => $this->renderFileIcon($file),
@@ -93,10 +92,10 @@ class Controller
     /** @todo alt attribute! */
     private function renderFileIcon(File $file): string
     {
-        global $pth, $plugin_tx;
+        global $plugin_tx;
 
         $ext = $file->getExtension();
-        $imageFolder = $pth['folder']['plugins'] . 'wdir/images/';
+        $imageFolder = $this->pluginFolder . 'images/';
         $src = $imageFolder . 'file-' . $ext . '.png';
         if (file_exists($src)) {
             $alt = sprintf($plugin_tx['wdir']['format_type'], strtoupper($ext));

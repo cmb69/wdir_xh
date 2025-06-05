@@ -29,7 +29,12 @@ class Plugin
 
     public static function controller(): Controller
     {
-        return new Controller(self::view());
+        global $pth;
+        return new Controller(
+            $pth["folder"]["plugins"] . "wdir/",
+            $pth["folder"]["userfiles"],
+            self::view()
+        );
     }
 
     public static function infoCommand(): InfoCommand
