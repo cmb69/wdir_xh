@@ -33,15 +33,8 @@ define('WDIR_VERSION', '1.1');
 
 function wdir(string $path, string $filter = ""): string
 {
-    global $_Wdir_controller;
-
-    return $_Wdir_controller->renderTable(
+    return (new Controller())->renderTable(
         html_entity_decode($path, ENT_QUOTES, 'UTF-8'),
         html_entity_decode($filter, ENT_QUOTES, 'UTF-8')
     );
 }
-
-/**
- * The plugin controller.
- */
-$_Wdir_controller = new Controller();
