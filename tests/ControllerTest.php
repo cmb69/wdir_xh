@@ -27,7 +27,7 @@ use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 
-class TableTest extends TestCase
+class ControllerTest extends TestCase
 {
     protected string $path;
 
