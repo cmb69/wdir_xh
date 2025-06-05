@@ -28,22 +28,11 @@ class Controller
     public function dispatch(): void
     {
         if (XH_ADM) { // @phpstan-ignore-line
-            if (function_exists('XH_registerStandardPluginMenuItems')) {
-                XH_registerStandardPluginMenuItems(false);
-            }
-            if ($this->isAdministrationRequested()) {
+            XH_registerStandardPluginMenuItems(false);
+            if (XH_wantsPluginAdministration('wdir')) {
                 $this->handleAdministration();
             }
         }
-    }
-
-    protected function isAdministrationRequested(): bool
-    {
-        global $wdir;
-
-        return function_exists('XH_wantsPluginAdministration')
-            && XH_wantsPluginAdministration('wdir')
-            || isset($wdir) && $wdir == 'true';
     }
 
     protected function handleAdministration(): void
@@ -56,7 +45,7 @@ class Controller
                 $o .= (new InfoCommand())();
                 break;
             default:
-                $o .= plugin_admin_common($action, $admin, 'wdir'); // @phpstan-ignore-line
+                $o .= plugin_admin_common();
         }
     }
 
