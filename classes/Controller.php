@@ -58,6 +58,7 @@ class Controller
         ]);
     }
 
+    /** @return array<string,mixed> */
     private function jsConf(): array
     {
         return [
@@ -65,6 +66,7 @@ class Controller
         ];
     }
 
+    /** @return list<object{name:string,icon:string,path:string,size:int,rsize:string,mtime:int}> */
     private function rows(Folder $folder): array
     {
         $res = [];

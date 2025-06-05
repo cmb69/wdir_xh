@@ -96,6 +96,10 @@ class Folder
         return (bool) preg_match('/^' . $pattern . '$/', $string);
     }
 
+    /**
+     * @param list<File> $files
+     * @return list<File>
+     */
     private function sortFiles(array $files): array
     {
         global $plugin_cf;

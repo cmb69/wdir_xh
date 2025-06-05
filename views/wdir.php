@@ -6,7 +6,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
 
 /**
  * @var View $this
- * @var array $config
+ * @var array<string,mixed> $config
  * @var string $script
  * @var string $head
  * @var list<object{name:string,icon:string,path:string,size:int,rsize:string,mtime:int}> $rows

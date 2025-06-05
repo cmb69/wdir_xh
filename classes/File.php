@@ -47,11 +47,11 @@ class File
 
     public function getSize(): int
     {
-        return filesize($this->path);
+        return (int) filesize($this->path);
     }
 
     public function getModificationTime(): int
     {
-        return filemtime($this->path);
+        return (int) filemtime($this->path);
     }
 }
