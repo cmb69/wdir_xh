@@ -18,6 +18,7 @@ require_once './vendor/autoload.php';
 use org\bovigo\vfs\vfsStreamWrapper;
 use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Testing the folder class.
@@ -28,7 +29,7 @@ use org\bovigo\vfs\vfsStream;
  * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
  * @link     http://3-magi.net/?CMSimple_XH/Wdir_XH
  */
-class FolderTest extends PHPUnit_Framework_TestCase
+class FolderTest extends TestCase
 {
     /**
      * The test subject.
@@ -44,7 +45,7 @@ class FolderTest extends PHPUnit_Framework_TestCase
      *
      * @global array The configuration of the plugins.
      */
-    public function setUp()
+    protected function setUp(): void
     {
         global $plugin_cf;
 

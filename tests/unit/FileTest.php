@@ -18,6 +18,7 @@ require_once './vendor/autoload.php';
 use org\bovigo\vfs\vfsStreamWrapper;
 use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Testing the file class.
@@ -28,7 +29,7 @@ use org\bovigo\vfs\vfsStream;
  * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
  * @link     http://3-magi.net/?CMSimple_XH/Wdir_XH
  */
-class FileTest extends PHPUnit_Framework_TestCase
+class FileTest extends TestCase
 {
     /**
      * The test subect.
@@ -49,7 +50,7 @@ class FileTest extends PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    public function setUp()
+    protected function setUp(): void
     {
         vfsStreamWrapper::register();
         vfsStreamWrapper::setRoot(new vfsStreamDirectory('test'));

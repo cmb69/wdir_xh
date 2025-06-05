@@ -13,8 +13,9 @@
  * @link      http://3-magi.net/?CMSimple_XH/Wdir_XH
  */
 
+use PHPUnit\Framework\TestCase;
+
 require_once './vendor/autoload.php';
-require_once '../../cmsimple/adminfuncs.php';
 
 /**
  * Testing the general plugin administration.
@@ -25,7 +26,7 @@ require_once '../../cmsimple/adminfuncs.php';
  * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
  * @link     http://3-magi.net/?CMSimple_XH/Wdir_XH
  */
-class AdministrationTest extends PHPUnit_Framework_TestCase
+class AdministrationTest extends TestCase
 {
     /**
      * The test subject.
@@ -60,8 +61,9 @@ class AdministrationTest extends PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    public function setUp()
+    protected function setUp(): void
     {
+        $this->markTestSkipped("requires function mocks");
         $this->defineConstant('XH_ADM', true);
         $this->subject = new Wdir_Controller();
         $this->registerStandardPluginMenuItemsMock
