@@ -22,6 +22,10 @@ Preto bol Wdir_XH od zájkladu prepísaný.
 
 Wdir_XH je plugin pre [CMSimple_XH](https://cmsimple-xh.org).
 Vyžaduje CMSimple_XH ≥ 1.8 a PHP ≥ 7.4.0.
+Wdir_XH also requires [Plib_XH](https://github.com/cmb69/plib_xh) ≥ 1.10;
+if that is not already installed (see `Settings` → `Info`),
+get the [lastest release](https://github.com/cmb69/plib_xh/releases/latest),
+and install it.
 
 ## Download
 
