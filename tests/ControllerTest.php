@@ -74,14 +74,7 @@ class ControllerTest extends TestCase
     public function testRendersTable(): void
     {
         $output = $this->sut()->renderTable('downloads');
-        $this->assertSame(
-            "\n<div class=\"wdir_config\" data-config='{\"caseInsensitive\":false}' style=\"display:none\"></div>\n"
-            . "<script type=\"module\" src=\"vfs://test/wdir/wdir.js\"></script>\n"
-            . "<table class=\"wdir_table\"><thead><tr>\n"
-            . "<td>Name</td>\n<td>Size</td>\n<td>Modified</td>\n</tr></thead>\n"
-            . '<tbody></tbody></table>',
-            $output
-        );
+        Approvals::verifyHtml($output);
     }
 
     public function testRendersColumnHeading(): void

@@ -40,50 +40,34 @@ class Controller
         if ($path[strlen($path) - 1] != '/') {
             $path .= '/';
         }
-        return $this->emitJs() . $this->render(new Folder($path, $filter));
-    }
-
-    private function emitJs(): string
-    {
-        global $pth, $plugin_cf;
-
-        $config = array(
-            'caseInsensitive' => $plugin_cf['wdir']['sort_column'] == 'name/i'
-        );
-        return $this->view->render("wdir", [
-            "config" => $config,
-            "script" => $pth['folder']['plugins'] . "wdir/wdir.js",
-        ]);
+        return $this->render(new Folder($path, $filter));
     }
 
     private function render(Folder $folder): string
     {
-        $html = '<table class="wdir_table">'
-            . $this->renderHead() . $this->renderBody($folder)
-            . '</table>';
-        return $html;
+        global $pth;
+        return $this->view->render("wdir", [
+            "config" => $this->jsConf(),
+            "script" => $pth['folder']['plugins'] . "wdir/wdir.js",
+            "rows" => $this->rows($folder),
+        ]);
     }
 
-    private function renderHead(): string
+    private function jsConf(): array
     {
-        global $plugin_tx;
-
-        $ptx = $plugin_tx['wdir'];
-        return '<thead><tr>' . "\n"
-            . '<td>' . $ptx['label_name'] . '</td>' . "\n"
-            . '<td>' . $ptx['label_size'] . '</td>' . "\n"
-            . '<td>' . $ptx['label_modified'] . '</td>' . "\n"
-            . '</tr></thead>' . "\n";
+        global $plugin_cf;
+        return [
+            'caseInsensitive' => $plugin_cf['wdir']['sort_column'] == 'name/i'
+        ];
     }
 
-    private function renderBody(Folder $folder): string
+    private function rows(Folder $folder): array
     {
-        $html = '<tbody>';
+        $res = [];
         foreach ($folder->getFiles() as $file) {
-            $html .= $this->renderBodyRow($file);
+            $res[] = $this->renderBodyRow($file);
         }
-        $html .= '</tbody>';
-        return $html;
+        return $res;
     }
 
     private function renderBodyRow(File $file): string
