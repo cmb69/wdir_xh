@@ -30,11 +30,6 @@ class File
         $this->path = $path;
     }
 
-    public function __toString(): string
-    {
-        return $this->getName();
-    }
-
     public function getPath(): string
     {
         return $this->path;

@@ -102,10 +102,10 @@ class Folder
 
         switch ($plugin_cf['wdir']['sort_column']) {
             case 'name':
-                sort($files);
+                usort($files, fn (File $a, File $b) => strcmp($a->getName(), $b->getName()));
                 break;
             case 'name/i':
-                usort($files, 'strcasecmp');
+                usort($files, fn (File $a, File $b) => strcasecmp($a->getName(), $b->getName()));
                 break;
             case 'size':
                 usort($files, fn (File $a, File $b) => $a->getSize() - $b->getSize());
