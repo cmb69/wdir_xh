@@ -17,61 +17,7 @@
  * along with Wdir_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*jslint browser: true, maxlen: 80 */
-
-/**
- * Returns a list of results of applying a function
- * to each element of a list.
- *
- * @param {Array}    element
- * @param {Function} func
- *
- * @returns {Array}
- */
-function map(elements, func) {
-    var i, len, result;
-
-    result = [];
-    for (i = 0, len = elements.length; i < len; i += 1) {
-        result.push(func(elements[i], i));
-    }
-    return result;
-}
-
-/**
- * Calls a function for each element in elements.
- *
- * @param {Array}    elements
- * @param {Function} func
- *
- * @returns {undefined}
- */
-function forEach(elements, func) {
-    var i, len;
-
-    for (i = 0, len = elements.length; i < len; i += 1) {
-        func(elements[i], i);
-    }
-}
-
-/**
- * Registers an event listener.
- *
- * @param {EventTarget}   element
- * @param {String}        type
- * @param {EventListener} listener
- *
- * @returns {undefined}
- */
-function on(element, type, listener) {
-    if (typeof element.addEventListener !== "undefined") {
-        element.addEventListener(type, listener, false);
-    } else if (typeof element.attachEvent !== "undefined") {
-        element.attachEvent("on" + type, listener);
-    }
-}
-
-on(window, "load", function () {
+window.onload = function () {
     var config, headings;
 
     /**
@@ -83,13 +29,13 @@ on(window, "load", function () {
         var tables, result;
 
         result = [];
-        tables = document.getElementsByTagName("table");
-        forEach(tables, function (table) {
+        tables = document.querySelectorAll("table");
+        tables.forEach(function (table) {
             if (table.className === "wdir_table") {
                 var cells;
 
-                cells = table.tHead.getElementsByTagName("td");
-                forEach(cells, function (cell) {
+                cells = table.tHead.querySelectorAll("td");
+                cells.forEach(function (cell) {
                     result.push(cell);
                 });
             }
@@ -110,7 +56,7 @@ on(window, "load", function () {
         var tbody, rows;
 
         tbody = table.tBodies[0];
-        rows = map(tbody.rows, function (tr) {
+        rows = Array.from(tbody.rows).map(function (tr) {
             var value;
 
             value = tr.getElementsByTagName("td")[column]
@@ -135,28 +81,28 @@ on(window, "load", function () {
             return a.value === b.value ? 0
                     : xor(a.value < b.value, desc) ? -1 : 1;
         });
-        forEach(rows, function (value) {
+        rows.forEach(function (value) {
             tbody.appendChild(value.element);
         });
     }
 
     config = JSON.parse(document.querySelector(".wdir_config").dataset.config);
     headings = findTableHeadingCells();
-    forEach(headings, function (heading, index) {
+    headings.forEach(function (heading, index) {
         if (index % 3 === 0) {
             heading.className = "wdir_asc";
         } else {
             heading.className = "wdir_ascdesc";
         }
-        on(heading, "click", function () {
+        heading.onclick = function () {
             var table, headings;
 
             table = heading;
             while (table.nodeName.toLowerCase() !== "table") {
                 table = table.parentNode;
             }
-            headings = table.tHead.getElementsByTagName("td");
-            forEach(headings, function (heading2) {
+            headings = table.tHead.querySelectorAll("td");
+            headings.forEach(function (heading2) {
                 if (heading2 !== heading) {
                     heading2.className = "wdir_ascdesc";
                 }
@@ -168,6 +114,6 @@ on(window, "load", function () {
                 heading.className = "wdir_asc";
                 sort(table, index % 3, false);
             }
-        });
+        };
     });
-});
+};
