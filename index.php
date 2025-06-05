@@ -19,21 +19,16 @@
  * along with Wdir_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Wdir\Controller;
+use Wdir\Plugin;
 
 if (!defined("CMSIMPLE_XH_VERSION")) {
     http_response_code(403);
     exit;
 }
 
-/**
- * The plugin version.
- */
-define('WDIR_VERSION', '1.1');
-
 function wdir(string $path, string $filter = ""): string
 {
-    return (new Controller())->renderTable(
+    return Plugin::controller()->renderTable(
         html_entity_decode($path, ENT_QUOTES, 'UTF-8'),
         html_entity_decode($filter, ENT_QUOTES, 'UTF-8')
     );

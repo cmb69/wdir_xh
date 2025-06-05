@@ -9,5 +9,4 @@ require_once "./classes/Controller.php";
 require_once "./classes/File.php";
 require_once "./classes/Folder.php";
 require_once "./classes/InfoCommand.php";
-
-const WDIR_VERSION = "1.1";
+require_once "./classes/Plugin.php";

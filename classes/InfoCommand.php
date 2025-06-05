@@ -27,7 +27,7 @@ class InfoCommand
     {
         return '<h1>Wdir</h1>' . "\n"
             . $this->renderIcon() . "\n"
-            . '<p>Version: ' . WDIR_VERSION . '</p>' . "\n"
+            . '<p>Version: ' . Plugin::VERSION . '</p>' . "\n"
             . $this->renderCopyright() . "\n" . $this->renderLicense() . "\n";
     }
 

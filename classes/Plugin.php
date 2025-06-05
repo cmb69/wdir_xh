@@ -19,26 +19,19 @@
  * along with Wdir_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Wdir\Plugin;
+namespace Wdir;
 
-if (!defined("CMSIMPLE_XH_VERSION")) {
-    http_response_code(403);
-    exit;
-}
+class Plugin
+{
+    public const VERSION = "1.1";
 
-/**
- * @var string $admin
- * @var string $o
- */
+    public static function controller(): Controller
+    {
+        return new Controller();
+    }
 
-XH_registerStandardPluginMenuItems(false);
-if (XH_wantsPluginAdministration("wdir")) {
-    $o .= print_plugin_admin("off");
-    switch ($admin) {
-        case '':
-            $o .= Plugin::infoCommand()();
-            break;
-        default:
-            $o .= plugin_admin_common();
+    public static function infoCommand(): InfoCommand
+    {
+        return new InfoCommand();
     }
 }
