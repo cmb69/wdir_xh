@@ -17,103 +17,101 @@
  * along with Wdir_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-window.onload = function () {
-    var config, headings;
+var config, headings;
 
-    /**
-     * Returns the wdir table heading cells.
-     *
-     * @return {Array}
-     */
-    function findTableHeadingCells() {
-        var tables, result;
+/**
+ * Returns the wdir table heading cells.
+ *
+ * @return {Array}
+ */
+function findTableHeadingCells() {
+    var tables, result;
 
-        result = [];
-        tables = document.querySelectorAll("table");
-        tables.forEach(function (table) {
-            if (table.className === "wdir_table") {
-                var cells;
+    result = [];
+    tables = document.querySelectorAll("table");
+    tables.forEach(function (table) {
+        if (table.className === "wdir_table") {
+            var cells;
 
-                cells = table.tHead.querySelectorAll("td");
-                cells.forEach(function (cell) {
-                    result.push(cell);
-                });
-            }
-        });
-        return result;
-    }
-
-    /**
-     * Sorts the rows of a table.
-     *
-     * @param {HTMLTableElement} table
-     * @param {Number}           column
-     * @param {Boolean}          desc
-     *
-     * @returns {undefined}
-     */
-    function sort(table, column, desc) {
-        var tbody, rows;
-
-        tbody = table.tBodies[0];
-        rows = Array.from(tbody.rows).map(function (tr) {
-            var value;
-
-            value = tr.getElementsByTagName("td")[column]
-                    .getAttribute("data-wdir");
-            if (column === 0) {
-                if (config.caseInsensitive) {
-                    value = value.toLowerCase();
-                }
-            } else {
-                value = +value;
-            }
-            return {
-                value: value,
-                element: tr
-            };
-        });
-        rows = rows.sort(function (a, b) {
-            function xor(a, b) {
-                return (a || b) && !(a && b);
-            }
-
-            return a.value === b.value ? 0
-                    : xor(a.value < b.value, desc) ? -1 : 1;
-        });
-        rows.forEach(function (value) {
-            tbody.appendChild(value.element);
-        });
-    }
-
-    config = JSON.parse(document.querySelector(".wdir_config").dataset.config);
-    headings = findTableHeadingCells();
-    headings.forEach(function (heading, index) {
-        if (index % 3 === 0) {
-            heading.className = "wdir_asc";
-        } else {
-            heading.className = "wdir_ascdesc";
-        }
-        heading.onclick = function () {
-            var table, headings;
-
-            table = heading;
-            while (table.nodeName.toLowerCase() !== "table") {
-                table = table.parentNode;
-            }
-            headings = table.tHead.querySelectorAll("td");
-            headings.forEach(function (heading2) {
-                if (heading2 !== heading) {
-                    heading2.className = "wdir_ascdesc";
-                }
+            cells = table.tHead.querySelectorAll("td");
+            cells.forEach(function (cell) {
+                result.push(cell);
             });
-            if (heading.className === "wdir_asc") {
-                heading.className = "wdir_desc";
-                sort(table, index % 3, true);
-            } else {
-                heading.className = "wdir_asc";
-                sort(table, index % 3, false);
+        }
+    });
+    return result;
+}
+
+/**
+ * Sorts the rows of a table.
+ *
+ * @param {HTMLTableElement} table
+ * @param {Number}           column
+ * @param {Boolean}          desc
+ *
+ * @returns {undefined}
+ */
+function sort(table, column, desc) {
+    var tbody, rows;
+
+    tbody = table.tBodies[0];
+    rows = Array.from(tbody.rows).map(function (tr) {
+        var value;
+
+        value = tr.getElementsByTagName("td")[column]
+                .getAttribute("data-wdir");
+        if (column === 0) {
+            if (config.caseInsensitive) {
+                value = value.toLowerCase();
             }
+        } else {
+            value = +value;
+        }
+        return {
+            value: value,
+            element: tr
         };
     });
-};
+    rows = rows.sort(function (a, b) {
+        function xor(a, b) {
+            return (a || b) && !(a && b);
+        }
+
+        return a.value === b.value ? 0
+                : xor(a.value < b.value, desc) ? -1 : 1;
+    });
+    rows.forEach(function (value) {
+        tbody.appendChild(value.element);
+    });
+}
+
+config = JSON.parse(document.querySelector(".wdir_config").dataset.config);
+headings = findTableHeadingCells();
+headings.forEach(function (heading, index) {
+    if (index % 3 === 0) {
+        heading.className = "wdir_asc";
+    } else {
+        heading.className = "wdir_ascdesc";
+    }
+    heading.onclick = function () {
+        var table, headings;
+
+        table = heading;
+        while (table.nodeName.toLowerCase() !== "table") {
+            table = table.parentNode;
+        }
+        headings = table.tHead.querySelectorAll("td");
+        headings.forEach(function (heading2) {
+            if (heading2 !== heading) {
+                heading2.className = "wdir_ascdesc";
+            }
+        });
+        if (heading.className === "wdir_asc") {
+            heading.className = "wdir_desc";
+            sort(table, index % 3, true);
+        } else {
+            heading.className = "wdir_asc";
+            sort(table, index % 3, false);
+        }
+    };
+});
