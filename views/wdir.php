@@ -11,7 +11,5 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
  */
 ?>
 
-<script type="text/javascript">/* <![CDATA[ */
-var WDIR = <?=json_encode($config)?>;
-/* ]]> */</script>
+<div class="wdir_config" data-config='<?=$this->json($config)?>' style="display:none"></div>
 <script type="text/javascript" src="<?=$this->esc($script)?>"></script>

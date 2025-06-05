@@ -18,7 +18,6 @@
  */
 
 /*jslint browser: true, maxlen: 80 */
-/*global WDIR */
 
 (function () {
     "use strict";
@@ -76,7 +75,7 @@
     }
 
     on(window, "load", function () {
-        var headings;
+        var config, headings;
 
         /**
          * Returns the wdir table heading cells.
@@ -120,7 +119,7 @@
                 value = tr.getElementsByTagName("td")[column]
                         .getAttribute("data-wdir");
                 if (column === 0) {
-                    if (WDIR.caseInsensitive) {
+                    if (config.caseInsensitive) {
                         value = value.toLowerCase();
                     }
                 } else {
@@ -144,6 +143,7 @@
             });
         }
 
+        config = JSON.parse(document.querySelector(".wdir_config").dataset.config);
         headings = findTableHeadingCells();
         forEach(headings, function (heading, index) {
             if (index % 3 === 0) {
