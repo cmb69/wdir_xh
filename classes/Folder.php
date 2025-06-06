@@ -26,15 +26,13 @@ use Collator;
 class Folder
 {
     private string $path;
-    private string $filter;
     /** @var array<string,string> */
     private array $conf;
 
     /** @param array<string,string> $conf */
-    public function __construct(string $path, string $filter, array $conf)
+    public function __construct(string $path, array $conf)
     {
         $this->path = $path;
-        $this->filter = $filter;
         $this->conf = $conf;
     }
 
@@ -42,8 +40,7 @@ class Folder
     public function getFiles(): array
     {
         $files = [];
-        $paths = $this->getFilePaths();
-        foreach ($paths as $path) {
+        foreach ($this->getFilePaths() as $path) {
             $files[] = new File($path);
         }
         return $files;
@@ -55,28 +52,40 @@ class Folder
         $files = [];
         if ($dir = opendir($this->path)) {
             while (($entry = readdir($dir)) !== false) {
-                $path = $this->path . $entry;
-                if ($this->isAllowedFile($path)) {
-                    $files[] = $path;
-                }
+                $files[] = $this->path . $entry;
             }
             closedir($dir);
         }
         return $files;
     }
 
-    private function isAllowedFile(string $filename): bool
+    /**
+     * @param list<File> $files
+     * @return list<File>
+     */
+    public function filter(array $files, string $filter): array
     {
-        return (!$this->filter || $this->matchesFilter(basename($filename)))
+        $res = [];
+        foreach ($files as $file) {
+            if ($this->isAllowedFile($file->path(), $filter)) {
+                $res[] = $file;
+            }
+        }
+        return $res;
+    }
+
+    private function isAllowedFile(string $filename, string $filter): bool
+    {
+        return (!$filter || $this->matchesFilter(basename($filename), $filter))
             && is_file($filename);
     }
 
-    private function matchesFilter(string $basename): bool
+    private function matchesFilter(string $basename, string $filter): bool
     {
         if ($this->conf["filter_regexp"]) {
-            return (bool) preg_match($this->filter, $basename);
+            return (bool) preg_match($filter, $basename);
         } else {
-            return $this->matchesSimpleFilter($this->filter, $basename);
+            return $this->matchesSimpleFilter($filter, $basename);
         }
     }
 
