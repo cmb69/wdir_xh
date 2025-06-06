@@ -4,33 +4,43 @@
 
 namespace Wdir;
 
+use Traversable;
+
 /** @template T */
 class Collection
 {
-    /** @var list<T> */
-    private array $array;
+    /** @var iterable<T> */
+    private iterable $array;
 
     /**
-     * @param list<T> $array
+     * @param iterable<T> $array
      * @return self<T>
      */
-    public static function of(array $array)
+    public static function of(iterable $array)
     {
         return new self($array);
     }
 
-    /** @param list<T> $array */
-    private function __construct(array $array)
+    /** @param iterable<T> $array */
+    private function __construct(iterable $array)
     {
         $this->array = $array;
     }
 
-    /**
-     * @return list<T>
-     */
-    public function array(): array
+    /** @return iterable<T> */
+    public function iterable(): iterable
     {
         return $this->array;
+    }
+
+    /** @return array<T> */
+    public function array(): array
+    {
+        if (is_array($this->array)) {
+            return $this->array;
+        }
+        assert($this->array instanceof Traversable);
+        return iterator_to_array($this->array);
     }
 
     /**
@@ -40,11 +50,11 @@ class Collection
      */
     public function map(callable $fun): self
     {
-        $array = [];
-        foreach ($this->array as $value) {
-            $array[] = $fun($value);
-        }
-        return new self($array);
+        return new self((function () use ($fun) {
+            foreach ($this->array as $value) {
+                yield $fun($value);
+            }
+        })());
     }
 
     /**
@@ -53,13 +63,13 @@ class Collection
      */
     public function filter(callable $fun): self
     {
-        $array = [];
-        foreach ($this->array as $value) {
-            if ($fun($value)) {
-                $array[] = $value;
+        return new self((function () use ($fun) {
+            foreach ($this->array as $value) {
+                if ($fun($value)) {
+                    yield $value;
+                }
             }
-        }
-        return new self($array);
+        })());
     }
 
     /**
