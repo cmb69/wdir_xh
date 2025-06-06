@@ -17,10 +17,17 @@
  * along with Wdir_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-document.querySelectorAll("table.wdir_table").forEach(widget);
+// @ts-check
 
+document.querySelectorAll("table.wdir_table").forEach((element) => {
+    if (!(element instanceof HTMLTableElement)) return;
+    widget(element);
+});
+
+/** @param {HTMLTableElement} table */
 function widget(table) {
-    const config = JSON.parse(table.dataset.config);
+    if (!(table instanceof HTMLTableElement)) return;
+    const config = JSON.parse(table.dataset.config || "{}");
     const headings = table.querySelectorAll("th");
     headings.forEach(function (heading, index) {
         if (heading.className === config.column) {
@@ -45,42 +52,43 @@ function widget(table) {
     });
 
     /**
-     * Sorts the rows of a table.
-     *
-     * @param {Number}           column
-     * @param {Boolean}          desc
-     *
-     * @returns {undefined}
+     * @param {number} column
+     * @param {boolean} desc
      */
     function sort(column, desc) {
         const tbody = table.tBodies[0];
+        const comparator = column === 0 ? compareString : compareNumber;
         let rows = Array.from(tbody.rows).map(function (tr) {
-            var value;
-
-            value = tr.getElementsByTagName("td")[column]
-                    .getAttribute("data-wdir");
-            if (column === 0) {
-                if (config.caseInsensitive) {
-                    value = value.toLowerCase();
-                }
-            } else {
-                value = +value;
-            }
             return {
-                value: value,
+                value: tr.getElementsByTagName("td")[column].dataset.wdir || "",
                 element: tr
             };
         });
-        rows = rows.sort(function (a, b) {
-            function xor(a, b) {
-                return (a || b) && !(a && b);
-            }
-
-            return a.value === b.value ? 0
-                    : xor(a.value < b.value, desc) ? -1 : 1;
-        });
+        rows = rows.sort(comparator);
+        if (desc) {
+            rows = rows.reverse();
+        }
         rows.forEach(function (value) {
             tbody.appendChild(value.element);
         });
+    }
+
+    /**
+     * @param {{value:string,element:HTMLTableRowElement}} a
+     * @param {{value:string,element:HTMLTableRowElement}} b
+     */
+    function compareString(a, b) {
+        if (config.caseInsensitive) {
+            return a.value.toLowerCase() === b.value.toLowerCase() ? 0 : a.value.toLowerCase() < b.value.toLowerCase() ? -1 : 1;
+        }
+        return a.value === b.value ? 0 : a.value < b.value ? -1 : 1;
+    }
+
+    /**
+     * @param {{value:string,element:HTMLTableRowElement}} a
+     * @param {{value:string,element:HTMLTableRowElement}} b
+     */
+    function compareNumber(a, b) {
+        return parseInt(a.value) - parseInt(b.value);
     }
 }
