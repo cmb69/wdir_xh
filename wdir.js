@@ -64,7 +64,7 @@ function sort(table, column, desc) {
 
 function init(table) {
     config = JSON.parse(table.dataset.config);
-    headings = table.tHead.querySelectorAll("td");
+    headings = table.querySelectorAll("th");
     headings.forEach(function (heading, index) {
         if (index === 0) {
             heading.className = "wdir_asc";
@@ -78,7 +78,7 @@ function init(table) {
             while (table.nodeName.toLowerCase() !== "table") {
                 table = table.parentNode;
             }
-            headings = table.tHead.querySelectorAll("td");
+            headings = table.querySelectorAll("th");
             headings.forEach(function (heading2) {
                 if (heading2 !== heading) {
                     heading2.className = "wdir_ascdesc";

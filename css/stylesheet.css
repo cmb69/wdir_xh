@@ -6,7 +6,7 @@
     border-collapse: collapse;
     width: 100%;
 }
-.wdir_table thead td {
+.wdir_table th {
     border: 1px solid #888;
     padding: 0.2em 0.5em;
 }
@@ -22,7 +22,7 @@
     background: url("desc.gif") no-repeat right center;
     cursor: pointer;
 }
-.wdir_table tbody td {
+.wdir_table td {
     padding: 0.2em 0.5em;
 }
 .wdir_name {}
