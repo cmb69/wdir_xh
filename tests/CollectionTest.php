@@ -35,4 +35,10 @@ class CollectionTest extends TestCase
         $actual = Collection::of([1, 2, 3, 4, 5])->drop(2)->array();
         $this->assertEquals([3, 4, 5], $actual);
     }
+
+    public function testSorts(): void
+    {
+        $actual = Collection::of([3, 2, 5, 4, 1])->sort(fn ($a, $b) => $a <=> $b)->array();
+        $this->assertEquals([1, 2, 3, 4, 5], $actual);
+    }
 }

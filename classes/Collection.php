@@ -111,4 +111,15 @@ class Collection
             }
         })());
     }
+
+    /**
+     * @param callable(T,T):int $comparator
+     * @return self<T>
+     */
+    public function sort(callable $comparator): self
+    {
+        $array = $this->array();
+        usort($array, $comparator);
+        return new self($array);
+    }
 }
