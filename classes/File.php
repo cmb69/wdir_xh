@@ -24,6 +24,8 @@ namespace Wdir;
 class File
 {
     private string $path;
+    private ?int $size = null;
+    private ?int $mtime = null;
 
     public function __construct(string $path)
     {
@@ -47,11 +49,17 @@ class File
 
     public function size(): int
     {
-        return (int) filesize($this->path);
+        if ($this->size === null) {
+            $this->size = (int) filesize($this->path);
+        }
+        return $this->size;
     }
 
     public function mtime(): int
     {
-        return (int) filemtime($this->path);
+        if ($this->mtime === null) {
+            $this->mtime = (int) filemtime($this->path);
+        }
+        return $this->mtime;
     }
 }
