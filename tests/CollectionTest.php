@@ -23,4 +23,16 @@ class CollectionTest extends TestCase
         $sum = Collection::of([1, 2, 3])->reduce(0, fn ($accu, $num) => $accu + $num);
         $this->assertSame(6, $sum);
     }
+
+    public function testTakesTwo(): void
+    {
+        $actual = Collection::of([1, 2, 3, 4, 5])->take(2)->array();
+        $this->assertEquals([1, 2], $actual);
+    }
+
+    public function testDropsTwo(): void
+    {
+        $actual = Collection::of([1, 2, 3, 4, 5])->drop(2)->array();
+        $this->assertEquals([3, 4, 5], $actual);
+    }
 }

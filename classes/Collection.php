@@ -85,4 +85,30 @@ class Collection
         }
         return $accu;
     }
+
+    /** @return self<T> */
+    public function take(int $count): self
+    {
+        return new self((function () use ($count) {
+            foreach ($this->array as $value) {
+                if (--$count < 0) {
+                    break;
+                }
+                yield $value;
+            }
+        })());
+    }
+
+    /** @return self<T> */
+    public function drop(int $count): self
+    {
+        return new self((function () use ($count) {
+            foreach ($this->array as $value) {
+                if (--$count >= 0) {
+                    continue;
+                }
+                yield $value;
+            }
+        })());
+    }
 }
