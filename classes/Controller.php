@@ -47,7 +47,7 @@ class Controller
         if ($path[strlen($path) - 1] != '/') {
             $path .= '/';
         }
-        return $this->render($request, new Folder($path, $this->conf), $filter);
+        return $this->render($request, new Folder($path), $filter);
     }
 
     private function render(Request $request, Folder $folder, string $filter): string
@@ -86,7 +86,7 @@ class Controller
     private function rows(Request $request, Folder $folder, string $filter): array
     {
         $files = $folder->getFiles();
-        $files = $folder->filter($files, $filter);
+        $files = $folder->filter($files, $filter, (bool) $this->conf["filter_regexp"]);
         $files = $folder->sortFiles(
             $files,
             $this->conf["sort_column"],

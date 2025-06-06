@@ -26,14 +26,10 @@ use Collator;
 class Folder
 {
     private string $path;
-    /** @var array<string,string> */
-    private array $conf;
 
-    /** @param array<string,string> $conf */
-    public function __construct(string $path, array $conf)
+    public function __construct(string $path)
     {
         $this->path = $path;
-        $this->conf = $conf;
     }
 
     /** @return list<File> */
@@ -63,8 +59,11 @@ class Folder
      * @param list<File> $files
      * @return list<File>
      */
-    public function filter(array $files, string $filter): array
+    public function filter(array $files, string $filter, bool $regex): array
     {
+        if ($filter && !$regex) {
+            $filter = $this->filterToPattern($filter);
+        }
         $res = [];
         foreach ($files as $file) {
             if ($this->isAllowedFile($file->path(), $filter)) {
@@ -82,30 +81,18 @@ class Folder
 
     private function matchesFilter(string $basename, string $filter): bool
     {
-        if ($this->conf["filter_regexp"]) {
-            return (bool) preg_match($filter, $basename);
-        } else {
-            return $this->matchesSimpleFilter($filter, $basename);
-        }
+        return (bool) preg_match($filter, $basename);
     }
 
-    /**
-     * Matches a string against a pattern in a simplyfied glob style.
-     *
-     * This is primarily a workaround for fnmatch() which might not be
-     * available on all platforms. To have the same behavior everywhere, we're
-     * using it throughout, though.
-     */
-    private function matchesSimpleFilter(string $filter, string $string): bool
+    private function filterToPattern(string $filter): string
     {
-        $pattern = strtr(
+        return '/^' . strtr(
             preg_quote($filter, '/'),
             [
                 '\\*' => '.*',
                 '\\?' => '.'
             ]
-        );
-        return (bool) preg_match('/^' . $pattern . '$/', $string);
+        ) . '$/';
     }
 
     /**

@@ -32,7 +32,7 @@ class FolderTest extends TestCase
     {
         $folder = $this->sut();
         $files = $folder->getFiles();
-        $files = $folder->filter($files, "*.txt");
+        $files = $folder->filter($files, "*.txt", false);
         $this->assertCount(3, $files);
     }
 
@@ -46,7 +46,7 @@ class FolderTest extends TestCase
     {
         $folder = $this->sut();
         $files = $folder->getFiles();
-        $files = $folder->filter($files, "*.txt");
+        $files = $folder->filter($files, "*.txt", false);
         $files = $folder->sortFiles($files, "name", "en", true);
         $this->assertEquals('bar.txt', $files[0]->name());
     }
@@ -55,7 +55,7 @@ class FolderTest extends TestCase
     {
         $folder = $this->sut();
         $files = $folder->getFiles();
-        $files = $folder->filter($files, "*.txt");
+        $files = $folder->filter($files, "*.txt", false);
         $files = $folder->sortFiles($files, "size", "en", true);
         $this->assertEquals('Baz.txt', $files[0]->name());
     }
@@ -73,29 +73,27 @@ class FolderTest extends TestCase
     {
         $folder = $this->sut();
         $files = $folder->getFiles();
-        $files = $folder->filter($files, "*.txt");
+        $files = $folder->filter($files, "*.txt", false);
         $files = $folder->sortFiles($files, "name", "en", false);
         $this->assertEquals('bar.txt', $files[2]->name());
     }
 
     public function testSimpleFilter(): void
     {
-        $this->conf["filter_regexp"] = "";
         $folder = $this->sut();
         $files = $folder->getFiles();
-        $files = $folder->filter($files, "?a?.txt");
+        $files = $folder->filter($files, "?a?.txt", false);
         $this->assertCount(2, $files);
         $files = $folder->getFiles();
-        $files = $folder->filter($files, "foo.*");
+        $files = $folder->filter($files, "foo.*", false);
         $this->assertCount(2, $files);
     }
 
     public function testRegexpFilter(): void
     {
-        $this->conf["filter_regexp"] = "true";
         $folder = $this->sut();
         $files = $folder->getFiles();
-        $files = $folder->filter($files, '/^foo/');
+        $files = $folder->filter($files, '/^foo/', true);
         $this->assertCount(2, $files);
     }
 }
