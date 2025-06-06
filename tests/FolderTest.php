@@ -9,7 +9,6 @@ use PHPUnit\Framework\TestCase;
 
 class FolderTest extends TestCase
 {
-    private Folder $subject;
     private array $conf;
 
     protected function setUp(): void
@@ -25,77 +24,65 @@ class FolderTest extends TestCase
         touch(vfsStream::url('test/foo.bar'));
 
         $this->conf = XH_includeVar("./config/config.php", "plugin_cf")["wdir"];
-        $this->subject = new Folder(vfsStream::url('test/'), '*.txt', $this->conf);
     }
 
     private function sut(): Folder
     {
-        return new Folder(vfsStream::url('test/'), '*.txt', $this->conf);
+        return new Folder(vfsStream::url('test/'), '*.txt', "en", $this->conf);
     }
 
     public function testTwoFilesAreFound(): void
     {
-        $this->assertCount(3, $this->subject->getFiles());
+        $this->assertCount(3, $this->sut()->getFiles());
     }
 
     public function testAllFindingsAreFileInstances(): void
     {
-        $this->assertContainsOnlyInstancesOf(File::class, $this->subject->getFiles());
+        $this->assertContainsOnlyInstancesOf(File::class, $this->sut()->getFiles());
     }
 
+    /** @requires extension intl */
     public function testFilesAreSortedByName(): void
     {
-        $files = $this->subject->getFiles();
-        $this->assertEquals('Baz.txt', $files[0]->getName());
-    }
-
-    public function testFilesAreSortedByNameCaseInsensitive(): void
-    {
-        $this->conf["sort_column"] = "name/i";
         $files = $this->sut()->getFiles();
         $this->assertEquals('bar.txt', $files[0]->getName());
     }
 
     public function testFilesAreSortedBySize(): void
     {
-        global $plugin_cf;
-
-        $plugin_cf['wdir']['sort_column'] = 'size';
-        $files = $this->subject->getFiles();
+        $this->conf["sort_column"] = "size";
+        $files = $this->sut()->getFiles();
         $this->assertEquals('Baz.txt', $files[0]->getName());
     }
 
     public function testFilesAreSortedByDate(): void
     {
-        global $plugin_cf;
-
-        $plugin_cf['wdir']['sort_column'] = 'date';
-        $files = $this->subject->getFiles();
+        $this->conf["sort_column"] = "date";
+        $files = $this->sut()->getFiles();
         $this->assertEquals('Baz.txt', $files[0]->getName());
     }
 
+    /** @requires extension intl */
     public function testFilesAreSortedDescendingByName(): void
     {
         $this->conf["sort_ascending"] = "";
         $files = $this->sut()->getFiles();
-        $this->assertEquals('Baz.txt', $files[2]->getName());
+        $this->assertEquals('bar.txt', $files[2]->getName());
     }
 
     public function testSimpleFilter(): void
     {
-        global $plugin_cf;
-
-        $plugin_cf['wdir']['filter_regexp'] = '';
-        $subject = new Folder(vfsStream::url('test/'), '?a?.txt', $this->conf);
+        $this->conf["filter_regexp"] = "";
+        $subject = new Folder(vfsStream::url('test/'), '?a?.txt', "en", $this->conf);
         $this->assertCount(2, $subject->getFiles());
-        $subject = new Folder(vfsStream::url('test/'), 'foo.*', $this->conf);
+        $subject = new Folder(vfsStream::url('test/'), 'foo.*', "en", $this->conf);
         $this->assertCount(2, $subject->getFiles());
     }
 
     public function testRegexpFilter(): void
     {
         $this->conf["filter_regexp"] = "true";
-        $subject = new Folder(vfsStream::url('test/'), '/^foo/', $this->conf);
+        $subject = new Folder(vfsStream::url('test/'), '/^foo/', "en", $this->conf);
         $this->assertCount(2, $subject->getFiles());
     }
 }

@@ -78,10 +78,7 @@ function widget(table) {
      * @param {{value:string,element:HTMLTableRowElement}} b
      */
     function compareString(a, b) {
-        if (config.caseInsensitive) {
-            return a.value.toLowerCase() === b.value.toLowerCase() ? 0 : a.value.toLowerCase() < b.value.toLowerCase() ? -1 : 1;
-        }
-        return a.value === b.value ? 0 : a.value < b.value ? -1 : 1;
+        return a.value.localeCompare(b.value);
     }
 
     /**

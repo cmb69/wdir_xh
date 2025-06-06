@@ -21,6 +21,7 @@
 
 namespace Wdir;
 
+use Plib\Request;
 use Plib\View;
 
 class Controller
@@ -40,13 +41,13 @@ class Controller
         $this->view = $view;
     }
 
-    public function renderTable(string $path, string $filter = ""): string
+    public function renderTable(Request $request, string $path, string $filter = ""): string
     {
         $path = $this->userfilesFolder . $path;
         if ($path[strlen($path) - 1] != '/') {
             $path .= '/';
         }
-        return $this->render(new Folder($path, $filter, $this->conf));
+        return $this->render(new Folder($path, $filter, $request->language(), $this->conf));
     }
 
     private function render(Folder $folder): string
@@ -63,6 +64,9 @@ class Controller
     {
         switch ($this->conf["sort_column"]) {
             default:
+                $column = null;
+                break;
+            case "name":
                 $column = "wdir_name";
                 break;
             case "size":
@@ -75,7 +79,6 @@ class Controller
         return [
             "column" => $column,
             "ascending" => $this->conf["sort_ascending"],
-            "caseInsensitive" => $this->conf["sort_column"] == "name/i",
         ];
     }
 

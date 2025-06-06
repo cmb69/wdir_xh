@@ -26,6 +26,7 @@ use org\bovigo\vfs\vfsStreamWrapper;
 use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
+use Plib\FakeRequest;
 use Plib\View;
 
 class ControllerTest extends TestCase
@@ -63,29 +64,33 @@ class ControllerTest extends TestCase
 
     public function testRendersTable(): void
     {
-        $output = $this->sut()->renderTable('downloads');
+        $request = new FakeRequest();
+        $output = $this->sut()->renderTable($request, "downloads");
         Approvals::verifyHtml($output);
     }
 
     public function testRendersColumnHeading(): void
     {
+        $request = new FakeRequest();
         $subject = $this->sut();
-        $output = $subject->renderTable('');
+        $output = $subject->renderTable($request, "");
         Approvals::verifyHtml($output);
     }
 
     public function testRenders1BodyRowWhenFilteredWithWildcardPattern(): void
     {
+        $request = new FakeRequest();
         $subject = $this->sut();
-        $output = $subject->renderTable('', '*.pdf');
+        $output = $subject->renderTable($request, "", "*.pdf");
         Approvals::verifyHtml($output);
     }
 
     public function testRenders1BodyRowWhenFilteredWithRegexpPattern(): void
     {
         $this->conf["filter_regexp"] = "true";
+        $request = new FakeRequest();
         $subject = $this->sut();
-        $output = $subject->renderTable('', '/\.pdf$/');
+        $output = $subject->renderTable($request, "", '/\.pdf$/');
         Approvals::verifyHtml($output);
     }
 }

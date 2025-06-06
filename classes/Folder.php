@@ -21,18 +21,23 @@
 
 namespace Wdir;
 
+use Collator;
+use Plib\Request;
+
 class Folder
 {
     private string $path;
     private string $filter;
+    private string $language;
     /** @var array<string,string> */
     private array $conf;
 
     /** @param array<string,string> $conf */
-    public function __construct(string $path, string $filter, array $conf)
+    public function __construct(string $path, string $filter, string $language, array $conf)
     {
         $this->path = $path;
         $this->filter = $filter;
+        $this->language = $language;
         $this->conf = $conf;
     }
 
@@ -104,16 +109,19 @@ class Folder
     private function sortFiles(array $files): array
     {
         switch ($this->conf["sort_column"]) {
-            case 'name':
-                usort($files, fn (File $a, File $b) => strcmp($a->getName(), $b->getName()));
+            case "name":
+                if (class_exists(Collator::class)) {
+                    $collator = new Collator($this->language);
+                    $collator->setStrength(Collator::TERTIARY);
+                    usort($files, fn (File $a, File $b) => (int) $collator->compare($a->getName(), $b->getName()));
+                } else {
+                    usort($files, fn (File $a, File $b) => strcmp($a->getName(), $b->getName()));
+                }
                 break;
-            case 'name/i':
-                usort($files, fn (File $a, File $b) => strcasecmp($a->getName(), $b->getName()));
-                break;
-            case 'size':
+            case "size":
                 usort($files, fn (File $a, File $b) => $a->getSize() - $b->getSize());
                 break;
-            case 'date':
+            case "date":
                 usort($files, fn (File $a, File $b) => $a->getModificationTime() - $b->getModificationTime());
                 break;
         }

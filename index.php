@@ -19,6 +19,7 @@
  * along with Wdir_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Plib\Request;
 use Wdir\Plugin;
 
 if (!defined("CMSIMPLE_XH_VERSION")) {
@@ -29,6 +30,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {
 function wdir(string $path, string $filter = ""): string
 {
     return Plugin::controller()->renderTable(
+        Request::current(),
         html_entity_decode($path, ENT_QUOTES, 'UTF-8'),
         html_entity_decode($filter, ENT_QUOTES, 'UTF-8')
     );
