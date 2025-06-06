@@ -96,24 +96,24 @@ class Controller
     private function rowRecord(File $file)
     {
         return (object) [
-            "name" => $file->getName(),
+            "name" => $file->name(),
             "icon" => $this->renderFileIcon($file),
-            "path" => $file->getPath(),
-            "size" => $file->getSize(),
+            "path" => $file->path(),
+            "size" => $file->size(),
             "rsize" => $this->renderFileSize($file),
-            "mtime" => $file->getModificationTime(),
+            "mtime" => $file->mtime(),
         ];
     }
 
     private function renderFileSize(File $file): string
     {
-        return ceil($file->getSize() / 1024) . ' KB';
+        return ceil($file->size() / 1024) . ' KB';
     }
 
     /** @todo alt attribute! */
     private function renderFileIcon(File $file): string
     {
-        $ext = $file->getExtension();
+        $ext = $file->extension();
         $imageFolder = $this->pluginFolder . 'images/';
         $src = $imageFolder . 'file-' . $ext . '.png';
         if (file_exists($src)) {

@@ -30,27 +30,27 @@ class File
         $this->path = $path;
     }
 
-    public function getPath(): string
+    public function path(): string
     {
         return $this->path;
     }
 
-    public function getName(): string
+    public function name(): string
     {
         return basename($this->path);
     }
 
-    public function getExtension(): string
+    public function extension(): string
     {
         return pathinfo($this->path, PATHINFO_EXTENSION);
     }
 
-    public function getSize(): int
+    public function size(): int
     {
         return (int) filesize($this->path);
     }
 
-    public function getModificationTime(): int
+    public function mtime(): int
     {
         return (int) filemtime($this->path);
     }

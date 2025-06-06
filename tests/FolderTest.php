@@ -44,21 +44,21 @@ class FolderTest extends TestCase
     public function testFilesAreSortedByName(): void
     {
         $files = $this->sut()->getFiles();
-        $this->assertEquals('bar.txt', $files[0]->getName());
+        $this->assertEquals('bar.txt', $files[0]->name());
     }
 
     public function testFilesAreSortedBySize(): void
     {
         $this->conf["sort_column"] = "size";
         $files = $this->sut()->getFiles();
-        $this->assertEquals('Baz.txt', $files[0]->getName());
+        $this->assertEquals('Baz.txt', $files[0]->name());
     }
 
     public function testFilesAreSortedByDate(): void
     {
         $this->conf["sort_column"] = "date";
         $files = $this->sut()->getFiles();
-        $this->assertEquals('Baz.txt', $files[0]->getName());
+        $this->assertEquals('Baz.txt', $files[0]->name());
     }
 
     /** @requires extension intl */
@@ -66,7 +66,7 @@ class FolderTest extends TestCase
     {
         $this->conf["sort_ascending"] = "";
         $files = $this->sut()->getFiles();
-        $this->assertEquals('bar.txt', $files[2]->getName());
+        $this->assertEquals('bar.txt', $files[2]->name());
     }
 
     public function testSimpleFilter(): void

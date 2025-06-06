@@ -113,16 +113,16 @@ class Folder
                 if (class_exists(Collator::class)) {
                     $collator = new Collator($this->language);
                     $collator->setStrength(Collator::TERTIARY);
-                    usort($files, fn (File $a, File $b) => (int) $collator->compare($a->getName(), $b->getName()));
+                    usort($files, fn (File $a, File $b) => (int) $collator->compare($a->name(), $b->name()));
                 } else {
-                    usort($files, fn (File $a, File $b) => strcmp($a->getName(), $b->getName()));
+                    usort($files, fn (File $a, File $b) => strcmp($a->name(), $b->name()));
                 }
                 break;
             case "size":
-                usort($files, fn (File $a, File $b) => $a->getSize() - $b->getSize());
+                usort($files, fn (File $a, File $b) => $a->size() - $b->size());
                 break;
             case "date":
-                usort($files, fn (File $a, File $b) => $a->getModificationTime() - $b->getModificationTime());
+                usort($files, fn (File $a, File $b) => $a->mtime() - $b->mtime());
                 break;
         }
         if (!$this->conf["sort_ascending"]) {
