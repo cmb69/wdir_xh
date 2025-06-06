@@ -22,22 +22,19 @@
 namespace Wdir;
 
 use Collator;
-use Plib\Request;
 
 class Folder
 {
     private string $path;
     private string $filter;
-    private string $language;
     /** @var array<string,string> */
     private array $conf;
 
     /** @param array<string,string> $conf */
-    public function __construct(string $path, string $filter, string $language, array $conf)
+    public function __construct(string $path, string $filter, array $conf)
     {
         $this->path = $path;
         $this->filter = $filter;
-        $this->language = $language;
         $this->conf = $conf;
     }
 
@@ -49,7 +46,7 @@ class Folder
         foreach ($paths as $path) {
             $files[] = new File($path);
         }
-        return $this->sortFiles($files);
+        return $files;
     }
 
     /** @return list<string> */
@@ -106,12 +103,12 @@ class Folder
      * @param list<File> $files
      * @return list<File>
      */
-    private function sortFiles(array $files): array
+    public function sortFiles(array $files, string $field, string $locale, bool $ascending): array
     {
-        switch ($this->conf["sort_column"]) {
+        switch ($field) {
             case "name":
                 if (class_exists(Collator::class)) {
-                    $collator = new Collator($this->language);
+                    $collator = new Collator($locale);
                     $collator->setStrength(Collator::TERTIARY);
                     usort($files, fn (File $a, File $b) => (int) $collator->compare($a->name(), $b->name()));
                 } else {
@@ -125,7 +122,7 @@ class Folder
                 usort($files, fn (File $a, File $b) => $a->mtime() - $b->mtime());
                 break;
         }
-        if (!$this->conf["sort_ascending"]) {
+        if (!$ascending) {
             $files = array_reverse($files);
         }
         return $files;

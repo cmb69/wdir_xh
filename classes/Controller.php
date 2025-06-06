@@ -47,15 +47,15 @@ class Controller
         if ($path[strlen($path) - 1] != '/') {
             $path .= '/';
         }
-        return $this->render(new Folder($path, $filter, $request->language(), $this->conf));
+        return $this->render($request, new Folder($path, $filter, $this->conf));
     }
 
-    private function render(Folder $folder): string
+    private function render(Request $request, Folder $folder): string
     {
         return $this->view->render("wdir", [
             "config" => $this->jsConf(),
             "script" => $this->pluginFolder . "wdir.js",
-            "rows" => $this->rows($folder),
+            "rows" => $this->rows($request, $folder),
         ]);
     }
 
@@ -83,10 +83,17 @@ class Controller
     }
 
     /** @return list<object{name:string,icon:string,path:string,size:int,rsize:string,mtime:int}> */
-    private function rows(Folder $folder): array
+    private function rows(Request $request, Folder $folder): array
     {
+        $files = $folder->getFiles();
+        $files = $folder->sortFiles(
+            $files,
+            $this->conf["sort_column"],
+            $request->language(),
+            (bool) $this->conf["sort_ascending"]
+        );
         $res = [];
-        foreach ($folder->getFiles() as $file) {
+        foreach ($files as $file) {
             $res[] = $this->rowRecord($file);
         }
         return $res;

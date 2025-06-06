@@ -27,7 +27,7 @@ class FolderTest extends TestCase
 
     private function sut(): Folder
     {
-        return new Folder(vfsStream::url('test/'), $this->filter, "en", $this->conf);
+        return new Folder(vfsStream::url('test/'), $this->filter, $this->conf);
     }
 
     public function testTwoFilesAreFound(): void
@@ -43,29 +43,34 @@ class FolderTest extends TestCase
     /** @requires extension intl */
     public function testFilesAreSortedByName(): void
     {
-        $files = $this->sut()->getFiles();
+        $folder = $this->sut();
+        $files = $folder->getFiles();
+        $files = $folder->sortFiles($files, "name", "en", true);
         $this->assertEquals('bar.txt', $files[0]->name());
     }
 
     public function testFilesAreSortedBySize(): void
     {
-        $this->conf["sort_column"] = "size";
-        $files = $this->sut()->getFiles();
+        $folder = $this->sut();
+        $files = $folder->getFiles();
+        $files = $folder->sortFiles($files, "size", "en", true);
         $this->assertEquals('Baz.txt', $files[0]->name());
     }
 
     public function testFilesAreSortedByDate(): void
     {
-        $this->conf["sort_column"] = "date";
-        $files = $this->sut()->getFiles();
+        $folder = $this->sut();
+        $files = $folder->getFiles();
+        $files = $folder->sortFiles($files, "date", "en", true);
         $this->assertEquals('Baz.txt', $files[0]->name());
     }
 
     /** @requires extension intl */
     public function testFilesAreSortedDescendingByName(): void
     {
-        $this->conf["sort_ascending"] = "";
-        $files = $this->sut()->getFiles();
+        $folder = $this->sut();
+        $files = $folder->getFiles();
+        $files = $folder->sortFiles($files, "name", "en", false);
         $this->assertEquals('bar.txt', $files[2]->name());
     }
 
