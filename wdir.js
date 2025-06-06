@@ -63,7 +63,7 @@ function sort(table, column, desc) {
 }
 
 function init(table) {
-    config = JSON.parse(document.querySelector(".wdir_config").dataset.config);
+    config = JSON.parse(table.dataset.config);
     headings = table.tHead.querySelectorAll("td");
     headings.forEach(function (heading, index) {
         if (index === 0) {

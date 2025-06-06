@@ -13,9 +13,8 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
  */
 ?>
 
-<div class="wdir_config" data-config='<?=$this->json($config)?>' style="display:none"></div>
 <script type="module" src="<?=$this->esc($script)?>"></script>
-<table class="wdir_table">
+<table class="wdir_table" data-config='<?=$this->json($config)?>'>
 <thead>
   <tr>
     <td><?=$this->text("label_name")?></td>
