@@ -41,4 +41,10 @@ class CollectionTest extends TestCase
         $actual = Collection::of([3, 2, 5, 4, 1])->sort(fn ($a, $b) => $a <=> $b)->array();
         $this->assertEquals([1, 2, 3, 4, 5], $actual);
     }
+
+    public function testsGroups(): void
+    {
+        $actual = Collection::of(["bat", "it", "a", "the"])->group(fn ($val) => strlen($val))->array();
+        $this->assertEquals([3 => ["bat", "the"], 2 => ["it"], 1 => ["a"]], $actual);
+    }
 }

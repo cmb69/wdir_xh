@@ -122,4 +122,22 @@ class Collection
         usort($array, $comparator);
         return new self($array);
     }
+
+    /**
+     * @template S
+     * @param callable(T):S $fun
+     * @return self<non-empty-list<T>>
+     */
+    public function group(callable $fun): self
+    {
+        $res = [];
+        foreach ($this->array as $value) {
+            $key = $fun($value);
+            if (!isset($res[$key])) {
+                $res[$key] = [];
+            }
+            $res[$key][] = $value;
+        }
+        return new self($res);
+    }
 }
