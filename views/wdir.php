@@ -17,9 +17,9 @@ if (!defined("CMSIMPLE_XH_VERSION")) {http_response_code(403); exit;}
 <table class="wdir_table" data-config='<?=$this->json($config)?>'>
 <thead>
   <tr>
-    <th><?=$this->text("label_name")?></th>
-    <th><?=$this->text("label_size")?></th>
-    <th><?=$this->text("label_modified")?></th>
+    <th class="wdir_name"><?=$this->text("label_name")?></th>
+    <th class="wdir_size"><?=$this->text("label_size")?></th>
+    <th class="wdir_modified"><?=$this->text("label_modified")?></th>
   </tr>
 </thead>
 <tbody>

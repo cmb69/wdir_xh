@@ -23,8 +23,8 @@ function widget(table) {
     const config = JSON.parse(table.dataset.config);
     const headings = table.querySelectorAll("th");
     headings.forEach(function (heading, index) {
-        if (index === 0) {
-            heading.className = "wdir_asc";
+        if (heading.className === config.column) {
+            heading.className = config.ascending ? "wdir_asc" : "wdir_desc";
         } else {
             heading.className = "wdir_ascdesc";
         }

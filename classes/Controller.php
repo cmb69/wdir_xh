@@ -61,8 +61,21 @@ class Controller
     /** @return array<string,mixed> */
     private function jsConf(): array
     {
+        switch ($this->conf["sort_column"]) {
+            default:
+                $column = "wdir_name";
+                break;
+            case "size":
+                $column = "wdir_size";
+                break;
+            case "date":
+                $column = "wdir_modified";
+                break;
+        }
         return [
-            'caseInsensitive' => $this->conf["sort_column"] == 'name/i'
+            "column" => $column,
+            "ascending" => $this->conf["sort_ascending"],
+            "caseInsensitive" => $this->conf["sort_column"] == "name/i",
         ];
     }
 
