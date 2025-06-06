@@ -6,34 +6,36 @@ namespace Wdir;
 
 use Traversable;
 
-/** @template T */
-class Collection
+/**
+ * @template V
+ */
+final class Collection
 {
-    /** @var iterable<T> */
+    /** @var iterable<V> */
     private iterable $array;
 
     /**
-     * @param iterable<T> $array
-     * @return self<T>
+     * @param iterable<V> $array
+     * @return self<V>
      */
     public static function of(iterable $array)
     {
         return new self($array);
     }
 
-    /** @param iterable<T> $array */
+    /** @param iterable<V> $array */
     private function __construct(iterable $array)
     {
         $this->array = $array;
     }
 
-    /** @return iterable<T> */
+    /** @return iterable<V> */
     public function iterable(): iterable
     {
         return $this->array;
     }
 
-    /** @return array<T> */
+    /** @return array<V> */
     public function array(): array
     {
         if (is_array($this->array)) {
@@ -43,40 +45,50 @@ class Collection
         return iterator_to_array($this->array);
     }
 
-    /**
-     * @template S
-     * @param callable(T):S $fun
-     * @return self<S>
-     */
-    public function map(callable $fun): self
+    /** @return self<V> */
+    public function list(): self
     {
-        return new self((function () use ($fun) {
-            foreach ($this->array as $value) {
-                yield $fun($value);
+        return new self((function () {
+            foreach ($this->array as $val) {
+                yield $val;
             }
         })());
     }
 
     /**
-     * @param callable(T):bool $fun
-     * @return self<T>
+     * @template V1
+     * @param callable(V):V1 $fun
+     * @return self<V1>
+     */
+    public function map(callable $fun): self
+    {
+        return new self((function () use ($fun) {
+            foreach ($this->array as $key => $val) {
+                yield $key => $fun($val);
+            }
+        })());
+    }
+
+    /**
+     * @param callable(V):bool $fun
+     * @return self<V>
      */
     public function filter(callable $fun): self
     {
         return new self((function () use ($fun) {
-            foreach ($this->array as $value) {
-                if ($fun($value)) {
-                    yield $value;
+            foreach ($this->array as $key => $val) {
+                if ($fun($val)) {
+                    yield $key => $val;
                 }
             }
         })());
     }
 
     /**
-     * @template S
-     * @param S $accu
-     * @param callable(S,T):S $fun
-     * @return S
+     * @template T
+     * @param T $accu
+     * @param callable(T,V):T $fun
+     * @return T
      */
     public function reduce($accu, callable $fun)
     {
@@ -86,47 +98,46 @@ class Collection
         return $accu;
     }
 
-    /** @return self<T> */
+    /** @return self<V> */
     public function take(int $count): self
     {
         return new self((function () use ($count) {
-            foreach ($this->array as $value) {
+            foreach ($this->array as $key => $val) {
                 if (--$count < 0) {
                     break;
                 }
-                yield $value;
+                yield $key => $val;
             }
         })());
     }
 
-    /** @return self<T> */
+    /** @return self<V> */
     public function drop(int $count): self
     {
         return new self((function () use ($count) {
-            foreach ($this->array as $value) {
+            foreach ($this->array as $key => $val) {
                 if (--$count >= 0) {
                     continue;
                 }
-                yield $value;
+                yield $key => $val;
             }
         })());
     }
 
     /**
-     * @param callable(T,T):int $comparator
-     * @return self<T>
+     * @param callable(V,V):int $comparator
+     * @return self<V>
      */
     public function sort(callable $comparator): self
     {
         $array = $this->array();
-        usort($array, $comparator);
+        uasort($array, $comparator);
         return new self($array);
     }
 
     /**
-     * @template S
-     * @param callable(T):S $fun
-     * @return self<non-empty-list<T>>
+     * @param callable(V):(int|string) $fun
+     * @return self<non-empty-list<V>>
      */
     public function group(callable $fun): self
     {

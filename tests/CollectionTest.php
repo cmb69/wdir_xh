@@ -15,7 +15,7 @@ class CollectionTest extends TestCase
     public function testFilter(): void
     {
         $odds = Collection::of([1, 2, 3])->filter(fn ($num) => $num % 2 !== 0);
-        $this->assertEquals([1, 3], $odds->array());
+        $this->assertEquals([1, 3], $odds->list()->array());
     }
 
     public function testReduce(): void
@@ -26,20 +26,20 @@ class CollectionTest extends TestCase
 
     public function testTakesTwo(): void
     {
-        $actual = Collection::of([1, 2, 3, 4, 5])->take(2)->array();
-        $this->assertEquals([1, 2], $actual);
+        $actual = Collection::of([1, 2, 3, 4, 5])->take(2);
+        $this->assertEquals([1, 2], $actual->list()->array());
     }
 
     public function testDropsTwo(): void
     {
-        $actual = Collection::of([1, 2, 3, 4, 5])->drop(2)->array();
-        $this->assertEquals([3, 4, 5], $actual);
+        $actual = Collection::of([1, 2, 3, 4, 5])->drop(2);
+        $this->assertEquals([3, 4, 5], $actual->list()->array());
     }
 
     public function testSorts(): void
     {
-        $actual = Collection::of([3, 2, 5, 4, 1])->sort(fn ($a, $b) => $a <=> $b)->array();
-        $this->assertEquals([1, 2, 3, 4, 5], $actual);
+        $actual = Collection::of([3, 2, 5, 4, 1])->sort(fn ($a, $b) => $a <=> $b);
+        $this->assertEquals([1, 2, 3, 4, 5], $actual->list()->array());
     }
 
     public function testsGroups(): void
