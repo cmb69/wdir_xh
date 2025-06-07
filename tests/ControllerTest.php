@@ -22,8 +22,6 @@
 namespace Wdir;
 
 use ApprovalTests\Approvals;
-use org\bovigo\vfs\vfsStreamWrapper;
-use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 use Plib\FakeRequest;
@@ -37,60 +35,68 @@ class ControllerTest extends TestCase
 
     protected function setUp(): void
     {
-        global $plugin_cf;
-
-        $plugin_cf['wdir'] = [
-            'sort_column' => 'name',
-            'sort_ascending' => 'true',
-            'filter_regexp' => ''
-        ];
-        vfsStreamWrapper::register();
-        vfsStreamWrapper::setRoot(new vfsStreamDirectory('test'));
-        $this->path = vfsStream::url('test');
-        mkdir($this->path . '/downloads/', 0777);
-        touch($this->path . '/one.txt', 1749127703);
-        touch($this->path . '/two.pdf', 1749127703);
-        touch($this->path . '/three', 1749127703);
-        mkdir($this->path . '/wdir/images', 0777, true);
-        touch($this->path . '/wdir/images/file-txt.png', 1749127703);
+        vfsStream::setup("test", null, [
+            "downloads" => [],
+            "one.txt" => "***",
+            "two.pdf" => "**",
+            "three" => "*",
+        ]);
+        $this->path = vfsStream::url("test");
+        touch($this->path . "/one.txt", strtotime("2025-06-06T12:48:23+00:00"));
+        touch($this->path . "/two.pdf", strtotime("2025-06-05T12:48:23+00:00"));
+        touch($this->path . "/three", strtotime("2025-06-07T12:48:23+00:00"));
         $this->conf = XH_includeVar("./config/config.php", "plugin_cf")["wdir"];
         $this->view = new View("./views/", XH_includeVar("./languages/en.php", "plugin_tx")["wdir"]);
     }
 
     private function sut(): Controller
     {
-        return new Controller($this->path . '/wdir/', $this->path . "/", $this->conf, $this->view);
+        return new Controller("./", $this->path, $this->conf, $this->view);
     }
 
     public function testRendersTable(): void
     {
         $request = new FakeRequest();
-        $output = $this->sut()->renderTable($request, "downloads");
+        $output = $this->sut()->renderTable($request, "");
         Approvals::verifyHtml($output);
     }
 
-    public function testRendersColumnHeading(): void
+    public function testRendersTableFilteredWithWildcardPattern(): void
     {
         $request = new FakeRequest();
-        $subject = $this->sut();
-        $output = $subject->renderTable($request, "");
+        $output = $this->sut()->renderTable($request, "", "*.pdf");
         Approvals::verifyHtml($output);
     }
 
-    public function testRenders1BodyRowWhenFilteredWithWildcardPattern(): void
-    {
-        $request = new FakeRequest();
-        $subject = $this->sut();
-        $output = $subject->renderTable($request, "", "*.pdf");
-        Approvals::verifyHtml($output);
-    }
-
-    public function testRenders1BodyRowWhenFilteredWithRegexpPattern(): void
+    public function testRendersTableFilteredWithRegexpPattern(): void
     {
         $this->conf["filter_regexp"] = "true";
         $request = new FakeRequest();
-        $subject = $this->sut();
-        $output = $subject->renderTable($request, "", '/\.pdf$/');
+        $output = $this->sut()->renderTable($request, "", '/\.pdf$/');
+        Approvals::verifyHtml($output);
+    }
+
+    public function testRendersTableSortedBySize(): void
+    {
+        $this->conf["sort_column"] = "size";
+        $request = new FakeRequest();
+        $output = $this->sut()->renderTable($request, "");
+        Approvals::verifyHtml($output);
+    }
+
+    public function testRendersTableSortedByDate(): void
+    {
+        $this->conf["sort_column"] = "date";
+        $request = new FakeRequest();
+        $output = $this->sut()->renderTable($request, "");
+        Approvals::verifyHtml($output);
+    }
+
+    public function testRendersUnsortedTable(): void
+    {
+        $this->conf["sort_column"] = "";
+        $request = new FakeRequest();
+        $output = $this->sut()->renderTable($request, "");
         Approvals::verifyHtml($output);
     }
 }
