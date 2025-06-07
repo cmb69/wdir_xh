@@ -4,12 +4,14 @@
 
 namespace Wdir;
 
+use IteratorAggregate;
 use Traversable;
 
 /**
  * @template V
+ * @implements IteratorAggregate<int|string,V>
  */
-final class Collection
+final class Collection implements IteratorAggregate
 {
     /** @var iterable<V> */
     private iterable $array;
@@ -29,30 +31,12 @@ final class Collection
         $this->array = $array;
     }
 
-    /** @return iterable<V> */
-    public function iterable(): iterable
+    /** @return Traversable<V> */
+    public function getIterator(): Traversable
     {
-        return $this->array;
-    }
-
-    /** @return array<V> */
-    public function array(): array
-    {
-        if (is_array($this->array)) {
-            return $this->array;
+        foreach ($this->array as $key => $val) {
+            yield $key => $val;
         }
-        assert($this->array instanceof Traversable);
-        return iterator_to_array($this->array);
-    }
-
-    /** @return self<V> */
-    public function list(): self
-    {
-        return new self((function () {
-            foreach ($this->array as $val) {
-                yield $val;
-            }
-        })());
     }
 
     /**
@@ -150,5 +134,15 @@ final class Collection
             $res[$key][] = $value;
         }
         return new self($res);
+    }
+
+    /** @return array<V> */
+    private function array(): array
+    {
+        if (is_array($this->array)) {
+            return $this->array;
+        }
+        assert($this->array instanceof Traversable);
+        return iterator_to_array($this->array);
     }
 }
