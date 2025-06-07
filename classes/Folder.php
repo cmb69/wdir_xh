@@ -56,16 +56,16 @@ class Folder
     {
         $res = [];
         foreach ($files as $file) {
-            if ($this->matchesFilter($file->path(), $filter)) {
+            if ($this->matchesFilter($file->name(), $filter)) {
                 $res[] = $file;
             }
         }
         return $res;
     }
 
-    private function matchesFilter(string $filename, string $filter): bool
+    private function matchesFilter(string $basename, string $filter): bool
     {
-        return !$filter || (bool) preg_match($filter, basename($filename));
+        return !$filter || (bool) preg_match($filter, $basename);
     }
 
     /**
