@@ -54,6 +54,7 @@ class ControllerTest extends TestCase
         return new Controller("./", $this->path, $this->conf, $this->view);
     }
 
+    /** @requires extension intl */
     public function testRendersTable(): void
     {
         $request = new FakeRequest();

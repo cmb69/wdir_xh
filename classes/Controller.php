@@ -21,6 +21,8 @@
 
 namespace Wdir;
 
+use Collator;
+use LogicException;
 use Plib\Request;
 use Plib\View;
 
@@ -82,18 +84,20 @@ class Controller
         ];
     }
 
-    /** @return list<object{name:string,icon:string,path:string,size:int,rsize:string,mtime:int}> */
-    private function rows(Request $request, Folder $folder, string $filter): array
+    /** @return iterable<object{name:string,icon:string,path:string,size:int,rsize:string,mtime:int}> */
+    private function rows(Request $request, Folder $folder, string $filter): iterable
     {
-        $files = $folder->getFiles();
         $filter = $this->filterToPattern($filter);
-        $files = $folder->filter($files, $filter);
-        $files = $folder->sortFiles(
-            $files,
+        $comparator = $this->comparator(
             $this->conf["sort_column"],
-            $request->language(),
-            (bool) $this->conf["sort_ascending"]
+            $request->language()
         );
+        $files = $folder->getFiles();
+        $files = $folder->filter($files, $filter);
+        usort($files, $comparator);
+        if (!$this->conf["sort_ascending"]) {
+            $files = array_reverse($files);
+        }
         $res = [];
         foreach ($files as $file) {
             $res[] = $this->rowRecord($file);
@@ -140,5 +144,26 @@ class Controller
             return $filter;
         }
         return "/^" . strtr(preg_quote($filter, "/"), ["\\*" => ".*", "\\?" => "."]) . "$/";
+    }
+
+    /** @return callable(File,File):int */
+    public function comparator(string $field, string $locale): callable
+    {
+        switch ($field) {
+            case "name":
+                if (class_exists(Collator::class)) {
+                    $collator = new Collator($locale);
+                    $collator->setStrength(Collator::TERTIARY);
+                    return fn (File $a, File $b) => (int) $collator->compare($a->name(), $b->name());
+                } else {
+                    return fn (File $a, File $b) => strcmp($a->name(), $b->name());
+                }
+            case "size":
+                return fn (File $a, File $b) => $a->size() - $b->size();
+            case "date":
+                return fn (File $a, File $b) => $a->mtime() - $b->mtime();
+            default:
+                return fn (File $a, File $b) => 0;
+        }
     }
 }

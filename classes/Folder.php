@@ -67,33 +67,4 @@ class Folder
     {
         return !$filter || (bool) preg_match($filter, $basename);
     }
-
-    /**
-     * @param list<File> $files
-     * @return list<File>
-     */
-    public function sortFiles(array $files, string $field, string $locale, bool $ascending): array
-    {
-        switch ($field) {
-            case "name":
-                if (class_exists(Collator::class)) {
-                    $collator = new Collator($locale);
-                    $collator->setStrength(Collator::TERTIARY);
-                    usort($files, fn (File $a, File $b) => (int) $collator->compare($a->name(), $b->name()));
-                } else {
-                    usort($files, fn (File $a, File $b) => strcmp($a->name(), $b->name()));
-                }
-                break;
-            case "size":
-                usort($files, fn (File $a, File $b) => $a->size() - $b->size());
-                break;
-            case "date":
-                usort($files, fn (File $a, File $b) => $a->mtime() - $b->mtime());
-                break;
-        }
-        if (!$ascending) {
-            $files = array_reverse($files);
-        }
-        return $files;
-    }
 }

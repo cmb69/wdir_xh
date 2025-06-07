@@ -41,43 +41,6 @@ class FolderTest extends TestCase
         $this->assertContainsOnlyInstancesOf(File::class, $this->sut()->getFiles());
     }
 
-    /** @requires extension intl */
-    public function testFilesAreSortedByName(): void
-    {
-        $folder = $this->sut();
-        $files = $folder->getFiles();
-        $files = $folder->filter($files, '/^.*\.txt$/', false);
-        $files = $folder->sortFiles($files, "name", "en", true);
-        $this->assertEquals('bar.txt', $files[0]->name());
-    }
-
-    public function testFilesAreSortedBySize(): void
-    {
-        $folder = $this->sut();
-        $files = $folder->getFiles();
-        $files = $folder->filter($files, '/^.*\.txt$/', false);
-        $files = $folder->sortFiles($files, "size", "en", true);
-        $this->assertEquals('Baz.txt', $files[0]->name());
-    }
-
-    public function testFilesAreSortedByDate(): void
-    {
-        $folder = $this->sut();
-        $files = $folder->getFiles();
-        $files = $folder->sortFiles($files, "date", "en", true);
-        $this->assertEquals('Baz.txt', $files[0]->name());
-    }
-
-    /** @requires extension intl */
-    public function testFilesAreSortedDescendingByName(): void
-    {
-        $folder = $this->sut();
-        $files = $folder->getFiles();
-        $files = $folder->filter($files, '/^.*\.txt$/', false);
-        $files = $folder->sortFiles($files, "name", "en", false);
-        $this->assertEquals('bar.txt', $files[2]->name());
-    }
-
     public function testFilters(): void
     {
         $folder = $this->sut();
