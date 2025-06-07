@@ -38,7 +38,10 @@ class Folder
         $files = [];
         if ($dir = opendir($this->path)) {
             while (($entry = readdir($dir)) !== false) {
-                $files[] = new File($this->path . $entry);
+                $filename = $this->path . $entry;
+                if (is_file($filename)) {
+                    $files[] = new File($filename);
+                }
             }
             closedir($dir);
         }
@@ -56,22 +59,16 @@ class Folder
         }
         $res = [];
         foreach ($files as $file) {
-            if ($this->isAllowedFile($file->path(), $filter)) {
+            if ($this->matchesFilter($file->path(), $filter)) {
                 $res[] = $file;
             }
         }
         return $res;
     }
 
-    private function isAllowedFile(string $filename, string $filter): bool
+    private function matchesFilter(string $filename, string $filter): bool
     {
-        return (!$filter || $this->matchesFilter(basename($filename), $filter))
-            && is_file($filename);
-    }
-
-    private function matchesFilter(string $basename, string $filter): bool
-    {
-        return (bool) preg_match($filter, $basename);
+        return !$filter || (bool) preg_match($filter, basename($filename));
     }
 
     private function filterToPattern(string $filter): string
