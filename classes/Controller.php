@@ -21,41 +21,41 @@
 
 namespace Wdir;
 
+use Collator;
 use Plib\Request;
 use Plib\View;
 
 class Controller
 {
     private string $pluginFolder;
-    private string $userfilesFolder;
+    private Userfiles $userfiles;
     /** @var array<string,string> */
     private array $conf;
     private View $view;
 
     /** @param array<string,string> $conf */
-    public function __construct(string $pluginFolder, string $userfilesFolder, array $conf, View $view)
+    public function __construct(string $pluginFolder, Userfiles $userfiles, array $conf, View $view)
     {
         $this->pluginFolder = $pluginFolder;
-        $this->userfilesFolder = $userfilesFolder;
+        $this->userfiles = $userfiles;
         $this->conf = $conf;
         $this->view = $view;
     }
 
     public function renderTable(Request $request, string $path, string $filter = ""): string
     {
-        $path = $this->userfilesFolder . $path;
-        if ($path[strlen($path) - 1] != '/') {
-            $path .= '/';
+        if ($path !== "" && $path[strlen($path) - 1] !== "/") {
+            $path .= "/";
         }
-        return $this->render(new Folder($path, $filter, $request->language(), $this->conf));
+        return $this->render($request, $path, $filter);
     }
 
-    private function render(Folder $folder): string
+    private function render(Request $request, string $path, string $filter): string
     {
         return $this->view->render("wdir", [
             "config" => $this->jsConf(),
             "script" => $this->pluginFolder . "wdir.js",
-            "rows" => $this->rows($folder),
+            "rows" => $this->rows($request, $path, $filter),
         ]);
     }
 
@@ -82,14 +82,21 @@ class Controller
         ];
     }
 
-    /** @return list<object{name:string,icon:string,path:string,size:int,rsize:string,mtime:int}> */
-    private function rows(Folder $folder): array
+    /** @return iterable<object{name:string,icon:string,path:string,size:int,rsize:string,mtime:int}> */
+    private function rows(Request $request, string $path, string $filter): iterable
     {
-        $res = [];
-        foreach ($folder->getFiles() as $file) {
-            $res[] = $this->rowRecord($file);
+        $filter = $this->filterToPattern($filter);
+        $comparator = $this->comparator(
+            $this->conf["sort_column"],
+            $request->language()
+        );
+        if (!$this->conf["sort_ascending"]) {
+            $comparator = fn ($a, $b) => -$comparator($a, $b);
         }
-        return $res;
+        return $this->userfiles->find($path)
+            ->filter(fn ($file) => $filter ? (bool) preg_match($filter, $file->name()) : true)
+            ->sort($comparator)
+            ->map(fn ($file) => $this->rowRecord($file));
     }
 
     /** @return object{name:string,icon:string,path:string,size:int,rsize:string,mtime:int} */
@@ -123,5 +130,34 @@ class Controller
             $alt = $this->view->text("label_file");
         }
         return '<img src="' . $src . '" alt="' . $alt . '" title="' . $alt . '">';
+    }
+
+    private function filterToPattern(string $filter): string
+    {
+        if (!$filter || $this->conf["filter_regexp"]) {
+            return $filter;
+        }
+        return "/^" . strtr(preg_quote($filter, "/"), ["\\*" => ".*", "\\?" => "."]) . "$/";
+    }
+
+    /** @return callable(File,File):int */
+    public function comparator(string $field, string $locale): callable
+    {
+        switch ($field) {
+            case "name":
+                if (class_exists(Collator::class)) {
+                    $collator = new Collator($locale);
+                    $collator->setStrength(Collator::TERTIARY);
+                    return fn (File $a, File $b) => (int) $collator->compare($a->name(), $b->name());
+                } else {
+                    return fn (File $a, File $b) => strcmp($a->name(), $b->name());
+                }
+            case "size":
+                return fn (File $a, File $b) => $a->size() - $b->size();
+            case "date":
+                return fn (File $a, File $b) => $a->mtime() - $b->mtime();
+            default:
+                return fn (File $a, File $b) => 0;
+        }
     }
 }

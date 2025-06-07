@@ -21,35 +21,30 @@
 
 namespace Wdir;
 
-use Plib\View;
-
-class Plugin
+class Userfiles
 {
-    public const VERSION = "1.1";
+    private string $folder;
 
-    public static function controller(): Controller
+    public function __construct(string $folder)
     {
-        global $pth, $plugin_cf;
-        return new Controller(
-            $pth["folder"]["plugins"] . "wdir/",
-            new Userfiles($pth["folder"]["userfiles"]),
-            $plugin_cf["wdir"],
-            self::view()
-        );
+        $this->folder = $folder;
     }
 
-    public static function infoCommand(): InfoCommand
+    /** @return Collection<File> */
+    public function find(string $path): Collection
     {
-        global $pth;
-        return new InfoCommand(
-            $pth["folder"]["plugins"] . "wdir/",
-            self::view()
-        );
-    }
-
-    private static function view(): View
-    {
-        global $pth, $plugin_tx;
-        return new View($pth["folder"]["plugins"] . "wdir/views/", $plugin_tx["wdir"]);
+        $files = [];
+        if ($dir = opendir($this->folder . $path)) {
+            while (($entry = readdir($dir)) !== false) {
+                $filename = $this->folder . $path . $entry;
+                if (is_file($filename)) {
+                    $files[] = new File($filename);
+                }
+            }
+            closedir($dir);
+        }
+        /** @var Collection<File> */
+        $collection = Collection::of($files);
+        return $collection;
     }
 }
