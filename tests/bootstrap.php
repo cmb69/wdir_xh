@@ -10,6 +10,7 @@ require_once "../plib/classes/Url.php";
 require_once "../plib/classes/View.php";
 require_once "../plib/classes/FakeRequest.php";
 
+require_once "./classes/Collection.php";
 require_once "./classes/Controller.php";
 require_once "./classes/File.php";
 require_once "./classes/Folder.php";
