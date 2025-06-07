@@ -92,17 +92,13 @@ class Controller
             $this->conf["sort_column"],
             $request->language()
         );
-        $files = $folder->getFiles();
-        $files = $folder->filter($files, $filter);
-        usort($files, $comparator);
         if (!$this->conf["sort_ascending"]) {
-            $files = array_reverse($files);
+            $comparator = fn ($a, $b) => -$comparator($a, $b);
         }
-        $res = [];
-        foreach ($files as $file) {
-            $res[] = $this->rowRecord($file);
-        }
-        return $res;
+        return $folder->getFiles()
+            ->filter(fn ($file) => $filter ? (bool) preg_match($filter, $file->name()) : true)
+            ->sort($comparator)
+            ->map(fn ($file) => $this->rowRecord($file));
     }
 
     /** @return object{name:string,icon:string,path:string,size:int,rsize:string,mtime:int} */

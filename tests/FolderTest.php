@@ -28,30 +28,8 @@ class FolderTest extends TestCase
         return new Folder(vfsStream::url('test/'), $this->conf);
     }
 
-    public function testTwoFilesAreFound(): void
-    {
-        $folder = $this->sut();
-        $files = $folder->getFiles();
-        $files = $folder->filter($files, '/^.*\.txt$/', false);
-        $this->assertCount(3, $files);
-    }
-
     public function testAllFindingsAreFileInstances(): void
     {
         $this->assertContainsOnlyInstancesOf(File::class, $this->sut()->getFiles());
-    }
-
-    public function testFilters(): void
-    {
-        $folder = $this->sut();
-        $files = $folder->getFiles();
-        $files = $folder->filter($files, '/^.a.\.txt$/', false);
-        $this->assertCount(2, $files);
-        $files = $folder->getFiles();
-        $files = $folder->filter($files, '/^foo.*$/', false);
-        $this->assertCount(2, $files);
-        $files = $folder->getFiles();
-        $files = $folder->filter($files, '/^foo/', true);
-        $this->assertCount(2, $files);
     }
 }

@@ -57,6 +57,7 @@ class ControllerTest extends TestCase
     /** @requires extension intl */
     public function testRendersTable(): void
     {
+        $this->conf["sort_ascending"] = "";
         $request = new FakeRequest();
         $output = $this->sut()->renderTable($request, "");
         Approvals::verifyHtml($output);

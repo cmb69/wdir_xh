@@ -21,8 +21,6 @@
 
 namespace Wdir;
 
-use Collator;
-
 class Folder
 {
     private string $path;
@@ -32,8 +30,8 @@ class Folder
         $this->path = $path;
     }
 
-    /** @return list<File> */
-    public function getFiles(): array
+    /** @return Collection<File> */
+    public function getFiles(): Collection
     {
         $files = [];
         if ($dir = opendir($this->path)) {
@@ -45,26 +43,8 @@ class Folder
             }
             closedir($dir);
         }
-        return $files;
-    }
-
-    /**
-     * @param list<File> $files
-     * @return list<File>
-     */
-    public function filter(array $files, string $filter): array
-    {
-        $res = [];
-        foreach ($files as $file) {
-            if ($this->matchesFilter($file->name(), $filter)) {
-                $res[] = $file;
-            }
-        }
-        return $res;
-    }
-
-    private function matchesFilter(string $basename, string $filter): bool
-    {
-        return !$filter || (bool) preg_match($filter, $basename);
+        /** @var Collection<File> */
+        $collection = Collection::of($files);
+        return $collection;
     }
 }
