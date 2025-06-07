@@ -36,19 +36,9 @@ class Folder
     public function getFiles(): array
     {
         $files = [];
-        foreach ($this->getFilePaths() as $path) {
-            $files[] = new File($path);
-        }
-        return $files;
-    }
-
-    /** @return list<string> */
-    private function getFilePaths(): array
-    {
-        $files = [];
         if ($dir = opendir($this->path)) {
             while (($entry = readdir($dir)) !== false) {
-                $files[] = $this->path . $entry;
+                $files[] = new File($this->path . $entry);
             }
             closedir($dir);
         }
