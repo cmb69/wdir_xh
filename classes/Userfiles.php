@@ -21,22 +21,22 @@
 
 namespace Wdir;
 
-class Folder
+class Userfiles
 {
-    private string $path;
+    private string $folder;
 
-    public function __construct(string $path)
+    public function __construct(string $folder)
     {
-        $this->path = $path;
+        $this->folder = $folder;
     }
 
     /** @return Collection<File> */
-    public function getFiles(): Collection
+    public function find(string $path): Collection
     {
         $files = [];
-        if ($dir = opendir($this->path)) {
+        if ($dir = opendir($this->folder . $path)) {
             while (($entry = readdir($dir)) !== false) {
-                $filename = $this->path . $entry;
+                $filename = $this->folder . $path . $entry;
                 if (is_file($filename)) {
                     $files[] = new File($filename);
                 }

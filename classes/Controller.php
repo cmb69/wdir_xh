@@ -22,42 +22,40 @@
 namespace Wdir;
 
 use Collator;
-use LogicException;
 use Plib\Request;
 use Plib\View;
 
 class Controller
 {
     private string $pluginFolder;
-    private string $userfilesFolder;
+    private Userfiles $userfiles;
     /** @var array<string,string> */
     private array $conf;
     private View $view;
 
     /** @param array<string,string> $conf */
-    public function __construct(string $pluginFolder, string $userfilesFolder, array $conf, View $view)
+    public function __construct(string $pluginFolder, Userfiles $userfiles, array $conf, View $view)
     {
         $this->pluginFolder = $pluginFolder;
-        $this->userfilesFolder = $userfilesFolder;
+        $this->userfiles = $userfiles;
         $this->conf = $conf;
         $this->view = $view;
     }
 
     public function renderTable(Request $request, string $path, string $filter = ""): string
     {
-        $path = $this->userfilesFolder . $path;
-        if ($path[strlen($path) - 1] != '/') {
-            $path .= '/';
+        if ($path !== "" && $path[strlen($path) - 1] !== "/") {
+            $path .= "/";
         }
-        return $this->render($request, new Folder($path), $filter);
+        return $this->render($request, $path, $filter);
     }
 
-    private function render(Request $request, Folder $folder, string $filter): string
+    private function render(Request $request, string $path, string $filter): string
     {
         return $this->view->render("wdir", [
             "config" => $this->jsConf(),
             "script" => $this->pluginFolder . "wdir.js",
-            "rows" => $this->rows($request, $folder, $filter),
+            "rows" => $this->rows($request, $path, $filter),
         ]);
     }
 
@@ -85,7 +83,7 @@ class Controller
     }
 
     /** @return iterable<object{name:string,icon:string,path:string,size:int,rsize:string,mtime:int}> */
-    private function rows(Request $request, Folder $folder, string $filter): iterable
+    private function rows(Request $request, string $path, string $filter): iterable
     {
         $filter = $this->filterToPattern($filter);
         $comparator = $this->comparator(
@@ -95,7 +93,7 @@ class Controller
         if (!$this->conf["sort_ascending"]) {
             $comparator = fn ($a, $b) => -$comparator($a, $b);
         }
-        return $folder->getFiles()
+        return $this->userfiles->find($path)
             ->filter(fn ($file) => $filter ? (bool) preg_match($filter, $file->name()) : true)
             ->sort($comparator)
             ->map(fn ($file) => $this->rowRecord($file));

@@ -13,8 +13,8 @@ require_once "../plib/classes/FakeRequest.php";
 require_once "./classes/Collection.php";
 require_once "./classes/Controller.php";
 require_once "./classes/File.php";
-require_once "./classes/Folder.php";
 require_once "./classes/InfoCommand.php";
 require_once "./classes/Plugin.php";
+require_once "./classes/Userfiles.php";
 
 const CMSIMPLE_XH_VERSION = "CMSimple_XH 1.8";

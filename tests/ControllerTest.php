@@ -29,7 +29,7 @@ use Plib\View;
 
 class ControllerTest extends TestCase
 {
-    private string $path;
+    private Userfiles $userfiles;
     private array $conf;
     private View $view;
 
@@ -41,17 +41,18 @@ class ControllerTest extends TestCase
             "two.pdf" => "**",
             "three" => "*",
         ]);
-        $this->path = vfsStream::url("test");
-        touch($this->path . "/one.txt", strtotime("2025-06-06T12:48:23+00:00"));
-        touch($this->path . "/two.pdf", strtotime("2025-06-05T12:48:23+00:00"));
-        touch($this->path . "/three", strtotime("2025-06-07T12:48:23+00:00"));
+        $path = vfsStream::url("test");
+        touch($path . "/one.txt", strtotime("2025-06-06T12:48:23+00:00"));
+        touch($path . "/two.pdf", strtotime("2025-06-05T12:48:23+00:00"));
+        touch($path . "/three", strtotime("2025-06-07T12:48:23+00:00"));
+        $this->userfiles = new Userfiles($path . "/");
         $this->conf = XH_includeVar("./config/config.php", "plugin_cf")["wdir"];
         $this->view = new View("./views/", XH_includeVar("./languages/en.php", "plugin_tx")["wdir"]);
     }
 
     private function sut(): Controller
     {
-        return new Controller("./", $this->path, $this->conf, $this->view);
+        return new Controller("./", $this->userfiles, $this->conf, $this->view);
     }
 
     /** @requires extension intl */

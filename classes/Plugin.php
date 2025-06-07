@@ -32,7 +32,7 @@ class Plugin
         global $pth, $plugin_cf;
         return new Controller(
             $pth["folder"]["plugins"] . "wdir/",
-            $pth["folder"]["userfiles"],
+            new Userfiles($pth["folder"]["userfiles"]),
             $plugin_cf["wdir"],
             self::view()
         );
