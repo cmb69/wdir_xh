@@ -86,7 +86,8 @@ class Controller
     private function rows(Request $request, Folder $folder, string $filter): array
     {
         $files = $folder->getFiles();
-        $files = $folder->filter($files, $filter, (bool) $this->conf["filter_regexp"]);
+        $filter = $this->filterToPattern($filter);
+        $files = $folder->filter($files, $filter);
         $files = $folder->sortFiles(
             $files,
             $this->conf["sort_column"],
@@ -131,5 +132,13 @@ class Controller
             $alt = $this->view->text("label_file");
         }
         return '<img src="' . $src . '" alt="' . $alt . '" title="' . $alt . '">';
+    }
+
+    private function filterToPattern(string $filter): string
+    {
+        if (!$filter || $this->conf["filter_regexp"]) {
+            return $filter;
+        }
+        return "/^" . strtr(preg_quote($filter, "/"), ["\\*" => ".*", "\\?" => "."]) . "$/";
     }
 }

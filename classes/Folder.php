@@ -52,11 +52,8 @@ class Folder
      * @param list<File> $files
      * @return list<File>
      */
-    public function filter(array $files, string $filter, bool $regex): array
+    public function filter(array $files, string $filter): array
     {
-        if ($filter && !$regex) {
-            $filter = $this->filterToPattern($filter);
-        }
         $res = [];
         foreach ($files as $file) {
             if ($this->matchesFilter($file->path(), $filter)) {
@@ -69,17 +66,6 @@ class Folder
     private function matchesFilter(string $filename, string $filter): bool
     {
         return !$filter || (bool) preg_match($filter, basename($filename));
-    }
-
-    private function filterToPattern(string $filter): string
-    {
-        return '/^' . strtr(
-            preg_quote($filter, '/'),
-            [
-                '\\*' => '.*',
-                '\\?' => '.'
-            ]
-        ) . '$/';
     }
 
     /**
